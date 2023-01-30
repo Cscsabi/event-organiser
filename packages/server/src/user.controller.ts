@@ -14,16 +14,11 @@ export const createUserController = async ({
   input: CreateUserInput;
 }) => {
   try {
-    console.log(typeof input.birthday);
     const user = await prisma.user.create({
       data: {
+        email: input.email,
         firstname: input.firstname,
         lastname: input.lastname,
-        email: input.email,
-        password: input.password,
-        birthday: input.birthday,
-        gender: input.gender,
-        isactive: input.isactive,
       },
     });
 
@@ -84,16 +79,14 @@ export const findUserController = async ({
   paramsInput: ParamsInput;
 }) => {
   try {
-    console.log("IIIIIIII");
     const user = await prisma.user.findFirst({
       where: { email: paramsInput.email },
     });
 
     if (!user) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "User with that email not found",
-      });
+      return {
+        status: "NOT FOUND",
+      };
     }
 
     return {
@@ -134,7 +127,6 @@ export const deleteUserController = async ({
   paramsInput: ParamsInput;
 }) => {
   try {
-    console.log(paramsInput.email);
     await prisma.user.delete({ where: { email: paramsInput.email } });
 
     return {

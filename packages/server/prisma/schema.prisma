@@ -3,25 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("VITE_DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(uuid())
+  email     String   @id
   firstname String
   lastname  String
-  email     String   @unique
-  password  String
-  birthday  DateTime @db.Date
-  gender    Gender   
-  isactive  Boolean  @default(false)
 
   @@map("users")
-}
-
-enum Gender {
-  MALE
-  FEMALE
-  CUSTOM
-}
+} 

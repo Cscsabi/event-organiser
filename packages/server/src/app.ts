@@ -1,5 +1,4 @@
-// TODO: Create own app
-
+import "./load.env";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -27,15 +26,6 @@ const t = initTRPC.create({
 });
 
 const appRouter = t.router({
-  getHello: t.procedure.query(async (req) => {
-    return {
-      message: await prisma.user.findFirst({
-        where: {
-          email: "cscsabi2001@gmail.com",
-        },
-      }),
-    };
-  }),
   createUser: t.procedure
     .input(createUserSchema)
     .mutation(({ input }) => createUserController({ input })),
