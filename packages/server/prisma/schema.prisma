@@ -3,14 +3,93 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  email     String   @id
+  email     String      @id
   firstname String
   lastname  String
+  role      UserRoles[]
+  events    Event[]
 
   @@map("users")
-} 
+}
+
+model UserRoles {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [email], references: [email])
+  email  String 
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId Int
+
+  @@map("user_roles")
+}
+
+model Role {
+  id        Int         @id @default(autoincrement())
+  userRoles UserRoles[] 
+  name      Roles      @unique
+
+  @@map("roles")
+}
+
+model Event {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [email], references: [email])
+  email     String
+  type      EventType
+  date      DateTime
+  budget    Decimal
+  location  String
+  headcount Int
+
+  @@map("events")
+}
+
+model Location {
+  id          String  @id @default(uuid())
+  name        String
+  description String
+  address     Address @relation(fields: [addressId], references: [id])
+  addressId   String  @unique
+  type        String
+  price       Decimal
+  phone       String
+  link        String
+}
+
+model Address {
+  id        String     @id @default(uuid())
+  country   Country    @relation(fields: [countryId], references: [id])
+  countryId Int
+  street    String
+  city      String
+  state     String
+  zip_code  Decimal
+  Location  Location?
+
+  @@map("addresses")
+}
+
+model Country {
+  id      Int       @id @default(autoincrement())
+  address Address[]
+  name    String
+  ISO     String
+
+  @@map("countries")
+}
+
+enum Roles {
+  USER
+  ADMIN
+}
+
+enum EventType {
+  WEDDING
+  GRADUATION
+  ONLINE
+  CUSTOM
+}
