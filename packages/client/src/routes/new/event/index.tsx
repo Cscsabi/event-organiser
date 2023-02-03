@@ -1,20 +1,65 @@
-import { component$, useStore } from "@builder.io/qwik";
+import {
+  component$,
+  Resource,
+  useClientEffect$,
+  useResource$,
+  useStore,
+} from "@builder.io/qwik";
 import type { EventInterface } from "~/types";
 import { EventType } from "@prisma/client";
+import { client } from "~/utils/trpc";
+import { getUser } from "~/utils/supabase.client";
+import { useNavigate } from "@builder.io/qwik-city";
+import { paths } from "~/utils/paths";
 
 export default component$(() => {
+  const navigate = useNavigate();
   const store = useStore<EventInterface>({
     name: "",
-    type: EventType.CUSTOM,
+    type: EventType.WEDDING,
     date: new Date(),
     budget: 0,
-    locationId: "",
+    locationId: "d0f359b2-bf6c-43d8-83ac-c7376ce9e055",
     email: "",
     headcount: 0,
   });
+
+  const resource = useResource$(() => {
+    return client.getLocations.query();
+  });
+
+  useClientEffect$(() => {
+    getUser().then((user) => {
+      store.email = user.data.user?.email || "";
+    });
+  });
+
   return (
     <div>
-      <form>
+      <form
+        preventdefault:submit
+        onSubmit$={() => {
+          if (store.locationId === "") {
+            // TODO: Fix locationId
+            //store.locationId = event.target;
+          }
+          const status = client.addEvent.mutate({
+            budget: store.budget,
+            date: new Date(store.date),
+            headcount: store.headcount,
+            name: store.name,
+            type: store.type,
+            userEmail: store.email,
+            locationId: store.locationId,
+          });
+
+          status.then((result) => {
+            if (result.status === "success") {
+              navigate.path = paths.events;
+            }
+          });
+        }}
+      >
         <label for="eventName">Event name:</label>
         <input
           onInput$={(event) =>
@@ -25,6 +70,7 @@ export default component$(() => {
         ></input>
         <label for="eventType">Event type:</label>
         <select
+          id="eventType"
           name="eventType"
           onClick$={(event) =>
             (store.type = (event.target as HTMLInputElement).value as EventType)
@@ -59,6 +105,28 @@ export default component$(() => {
           type="number"
           name="email"
         ></input>
+        <Resource
+          value={resource}
+          onPending={() => <div>Loading...</div>}
+          onResolved={(result) => {
+            return (
+              <select
+                name="location"
+                onChange$={(event) => {
+                  console.log(event.target);
+                  store.locationId = (
+                    event.target as unknown as HTMLInputElement
+                  ).value;
+                }}
+              >
+                {result.locations.map((location) => {
+                  return <option value={location.id}>{location.name}</option>;
+                })}
+                ;
+              </select>
+            );
+          }}
+        />
         <input type="submit"></input>
       </form>
     </div>

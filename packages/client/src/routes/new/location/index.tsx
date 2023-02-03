@@ -1,8 +1,15 @@
-import { component$, Resource, useResource$, useStore } from "@builder.io/qwik";
+import {
+  component$,
+  Resource,
+  useClientEffect$,
+  useResource$,
+  useStore,
+} from "@builder.io/qwik";
 import type { LocationInterface } from "~/types";
 import { client } from "~/utils/trpc";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
+import { getUser } from "~/utils/supabase.client";
 
 export default component$(() => {
   const navigate = useNavigate();
@@ -11,12 +18,12 @@ export default component$(() => {
   });
 
   const store = useStore<LocationInterface>({
-    email: "adsads@g.c",
+    email: "",
     name: "",
     description: "",
-    addressId: "TEST",
+    addressId: "",
     city: "",
-    countryId: 0,
+    countryId: 1,
     street: "",
     state: "",
     zipCode: 0,
@@ -26,11 +33,18 @@ export default component$(() => {
     link: "",
   });
 
+  useClientEffect$(() => {
+    getUser().then((user) => {
+      store.email = user.data.user?.email || "";
+    });
+  });
+
   return (
     <div>
       <form
         preventdefault:submit
         onSubmit$={() => {
+          console.log(store);
           const status = client.addLocation.mutate({
             name: store.name,
             description: store.description,
@@ -116,8 +130,10 @@ export default component$(() => {
             return (
               <select
                 name="country"
-                onClick$={(event) =>
-                  (store.countryId = +(event.target as HTMLInputElement).value)
+                onChange$={(event) =>
+                  (store.countryId = +(
+                    event.target as unknown as HTMLInputElement
+                  ).value)
                 }
               >
                 {result.countries.map((country) => {
@@ -157,7 +173,7 @@ export default component$(() => {
           onInput$={(event) =>
             (store.zipCode = +(event.target as HTMLInputElement).value)
           }
-          type="text"
+          type="number"
           name="zipcode"
         ></input>
         <input type="submit"></input>

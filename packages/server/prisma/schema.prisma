@@ -38,7 +38,7 @@ model Role {
 
 model Event {
   id         String    @id @default(uuid())
-  name       String    
+  name       String    @unique
   user       User      @relation(fields: [email], references: [email])
   email      String    
   type       EventType
@@ -55,7 +55,7 @@ model Location {
   id          String  @id @default(uuid()) 
   user        User    @relation(fields: [email], references: [email])
   email       String  
-  name        String
+  name        String  @unique
   events      Event[]
   description String
   address     Address @relation(fields: [addressId], references: [id])

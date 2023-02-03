@@ -4,7 +4,7 @@ import { registerUser } from "~/utils/supabase.client";
 import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
-import type { CreateUserInput } from "event-organiser-api-server/src/user.schema";
+import type { CreateUserInput } from "event-organiser-api-server/src/user/user.schema";
 
 export default component$(() => {
   const navigate = useNavigate();
