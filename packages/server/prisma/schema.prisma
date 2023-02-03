@@ -13,6 +13,7 @@ model User {
   lastname  String
   role      UserRoles[]
   events    Event[]
+  locations Location[]
 
   @@map("users")
 }
@@ -36,21 +37,26 @@ model Role {
 }
 
 model Event {
-  id        String    @id @default(uuid())
-  user      User      @relation(fields: [email], references: [email])
-  email     String
-  type      EventType
-  date      DateTime
-  budget    Decimal
-  location  String
-  headcount Int
+  id         String    @id @default(uuid())
+  name       String    
+  user       User      @relation(fields: [email], references: [email])
+  email      String    
+  type       EventType
+  date       DateTime
+  budget     Decimal
+  location   Location  @relation(fields: [locationId], references: [id])
+  locationId String
+  headcount  Int
 
   @@map("events")
 }
 
 model Location {
-  id          String  @id @default(uuid())
+  id          String  @id @default(uuid()) 
+  user        User    @relation(fields: [email], references: [email])
+  email       String  
   name        String
+  events      Event[]
   description String
   address     Address @relation(fields: [addressId], references: [id])
   addressId   String  @unique
@@ -58,17 +64,19 @@ model Location {
   price       Decimal
   phone       String
   link        String
+
+  @@map("locations")
 }
 
 model Address {
-  id        String     @id @default(uuid())
-  country   Country    @relation(fields: [countryId], references: [id])
-  countryId Int
-  street    String
-  city      String
-  state     String
-  zip_code  Decimal
-  Location  Location?
+  id         String     @id @default(uuid())
+  country    Country    @relation(fields: [countryId], references: [id])
+  countryId  Int
+  street     String
+  city       String
+  state      String
+  zip_code   Decimal
+  Location   Location? 
 
   @@map("addresses")
 }

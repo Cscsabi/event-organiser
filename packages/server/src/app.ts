@@ -6,6 +6,8 @@ import { initTRPC } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { PrismaClient } from "@prisma/client";
 import {
+  addEventInput,
+  addLocationInput,
   createUserSchema,
   filterQuery,
   params,
@@ -17,6 +19,9 @@ import {
   findAllUsersController,
   findUserController,
   updateUserController,
+  addEventController,
+  addLocationController,
+  getCountriesController,
 } from "./user.controller";
 import SuperJSON from "superjson";
 
@@ -43,6 +48,15 @@ const appRouter = t.router({
   getUsers: t.procedure
     .input(filterQuery)
     .query(({ input }) => findAllUsersController({ filterQuery: input })),
+  addEvent: t.procedure
+    .input(addEventInput)
+    .mutation(({ input }) => addEventController({ addEventInput: input })),
+  addLocation: t.procedure
+    .input(addLocationInput)
+    .mutation(({ input }) =>
+      addLocationController({ addLocationInput: input })
+    ),
+  getCountries: t.procedure.query(() => getCountriesController()),
 });
 
 export type AppRouter = typeof appRouter;

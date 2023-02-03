@@ -4,5 +4,8 @@ export const paths = {
   logout: "/",
   login: "/login",
   profile: "/profile",
-  events: "/events"
+  events: "/events",
+  newEvent: "/new/event",
+  newLocation: "/new/location",
+  location: "/locations/[locationId]",
 };
