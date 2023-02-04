@@ -10,8 +10,17 @@ const supabaseClient = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY as string
 );
 
-export async function getUser() {
-  return await supabaseClient.auth.getUser();
+export async function getUser(token?: string) {
+  if (token !== "") {
+    const userResponseWithToken = await supabaseClient.auth.getUser();
+    if (!userResponseWithToken.error) {
+      console.log(userResponseWithToken.data.user);
+      return userResponseWithToken;
+    }
+  }
+
+  const userResponse = await supabaseClient.auth.getUser();
+  return userResponse;
 }
 
 export async function resetPassword(email: string) {

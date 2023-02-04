@@ -53,7 +53,9 @@ export default component$(() => {
           name="password"
           value={store.password}
         ></input>
-        <input type="submit" value="Sign in"></input>
+        <button type="submit">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign in
+        </button>
         <button
           onClick$={() =>
             loginUserWithProvider({
@@ -65,7 +67,7 @@ export default component$(() => {
             })
           }
         >
-          Sign in with Google
+          <i class="fa-solid fa-right-to-bracket"></i> Sign in with Google
         </button>
       </form>
     </>

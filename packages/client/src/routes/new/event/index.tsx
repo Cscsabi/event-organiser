@@ -4,6 +4,7 @@ import {
   useClientEffect$,
   useResource$,
   useStore,
+  useContext,
 } from "@builder.io/qwik";
 import type { EventInterface } from "~/types";
 import { EventType } from "@prisma/client";
@@ -11,21 +12,25 @@ import { client } from "~/utils/trpc";
 import { getUser } from "~/utils/supabase.client";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
+import { CTX } from "~/routes/layout";
 
 export default component$(() => {
   const navigate = useNavigate();
+  const context = useContext(CTX);
   const store = useStore<EventInterface>({
     name: "",
-    type: EventType.WEDDING,
+    type: EventType.CUSTOM,
     date: new Date(),
     budget: 0,
-    locationId: "d0f359b2-bf6c-43d8-83ac-c7376ce9e055",
-    email: "",
+    locationId: "",
+    email: context.value,
     headcount: 0,
   });
 
-  const resource = useResource$(() => {
-    return client.getLocations.query();
+  const resource = useResource$((context) => {
+    context.track(() => store.email);
+    const result = client.getLocations.query({ email: store.email });
+    return result;
   });
 
   useClientEffect$(() => {
@@ -39,10 +44,6 @@ export default component$(() => {
       <form
         preventdefault:submit
         onSubmit$={() => {
-          if (store.locationId === "") {
-            // TODO: Fix locationId
-            //store.locationId = event.target;
-          }
           const status = client.addEvent.mutate({
             budget: store.budget,
             date: new Date(store.date),
@@ -55,7 +56,7 @@ export default component$(() => {
 
           status.then((result) => {
             if (result.status === "success") {
-              navigate.path = paths.events;
+              navigate.path = paths.event;
             }
           });
         }}
@@ -76,6 +77,9 @@ export default component$(() => {
             (store.type = (event.target as HTMLInputElement).value as EventType)
           }
         >
+          <option value="" selected disabled hidden>
+            Choose here
+          </option>
           <option value="WEDDING">Wedding</option>
           <option value="GRADUATION">Graduation</option>
           <option value="ONLINE">Online</option>
@@ -119,6 +123,9 @@ export default component$(() => {
                   ).value;
                 }}
               >
+                <option value="" selected disabled hidden>
+                  Choose here
+                </option>
                 {result.locations.map((location) => {
                   return <option value={location.id}>{location.name}</option>;
                 })}

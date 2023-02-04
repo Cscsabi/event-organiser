@@ -1,7 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../app";
-import { AddEventInput, AddLocationInput, GetByIdInput } from "./event.schema";
+import { GetByEmailInput, GetByIdInput } from "../general/general.schema";
+import { AddEventInput } from "./event.schema";
 
 export const addEventController = async ({
   addEventInput,
@@ -9,7 +10,7 @@ export const addEventController = async ({
   addEventInput: AddEventInput;
 }) => {
   try {
-    await prisma.event.create({
+    const event = await prisma.event.create({
       data: {
         name: addEventInput.name,
         type: addEventInput.type,
@@ -21,53 +22,7 @@ export const addEventController = async ({
       },
     });
 
-    return {
-      status: "success",
-    };
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === "P2002") {
-        throw new TRPCError({
-          code: "CONFLICT",
-        });
-      }
-    }
-    throw error;
-  }
-};
-
-export const addLocationController = async ({
-  addLocationInput,
-}: {
-  addLocationInput: AddLocationInput;
-}) => {
-  try {
-    await prisma.location.create({
-      data: {
-        user: {
-          connect: { email: addLocationInput.userEmail },
-        },
-        name: addLocationInput.name,
-        address: {
-          create: {
-            city: addLocationInput.address.city,
-            street: addLocationInput.address.street,
-            state: addLocationInput.address.state,
-            zip_code: addLocationInput.address.zipCode,
-            country: {
-              connect: {
-                id: addLocationInput.address.country.id,
-              },
-            },
-          },
-        },
-        description: addLocationInput.description,
-        type: addLocationInput.type,
-        price: addLocationInput.price,
-        phone: addLocationInput.phone,
-        link: addLocationInput.link,
-      },
-    });
+    console.log(event);
 
     return {
       status: "success",
@@ -99,53 +54,17 @@ export const getCountriesController = async () => {
   }
 };
 
-export const getLocationsController = async () => {
-  try {
-    const locations = await prisma.location.findMany();
-
-    return {
-      status: "success",
-      results: locations.length,
-      locations,
-    };
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getLocationController = async ({
-  getByIdInput,
+export const getEventsController = async ({
+  getByEmailInput,
 }: {
-  getByIdInput: GetByIdInput;
+  getByEmailInput: GetByEmailInput;
 }) => {
   try {
-    const location = await prisma.location.findFirst({
+    const events = await prisma.event.findMany({
       where: {
-        id: getByIdInput.id,
-      },
-      include: {
-        address: true,
+        email: getByEmailInput.email,
       },
     });
-
-    if (!location) {
-      return {
-        status: "NOT FOUND",
-      };
-    }
-
-    return {
-      status: "success",
-      location,
-    };
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getEventsController = async () => {
-  try {
-    const events = await prisma.event.findMany();
 
     return {
       status: "success",

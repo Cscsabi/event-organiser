@@ -9,29 +9,45 @@ import {
 import type { Signal } from "@builder.io/qwik";
 import { ProtectedHeader } from "~/components/header/protectedHeader";
 import { PublicHeader } from "../components/header/publicHeader";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { getUser } from "~/utils/supabase.client";
 
 export const CTX = createContext<Signal<string>>("header-type");
 
 export default component$(() => {
-  const authTokenName: string = import.meta.env.VITE_AUTH_TOKEN;
-  const user: Signal<string> = useSignal("");
+  const userEmail: Signal<string> = useSignal("");
 
-  useContextProvider<Signal<string>>(CTX, user);
+  useContextProvider<Signal<string>>(CTX, userEmail);
 
   useClientEffect$(({ track }) => {
-    track(() => user.value);
-    const authToken: string = localStorage.getItem(authTokenName) || "";
-    user.value = authToken;
+    track(() => userEmail.value);
+    getUser().then((userResponse) => (
+      userEmail.value = userResponse.data.user?.email || ""
+    ));
   });
 
   return (
     <>
       <main>
         <section>
-          {user.value ? <ProtectedHeader /> : <PublicHeader />}
+          {userEmail.value ? <ProtectedHeader /> : <PublicHeader />}
           <Slot />
+          <script
+            src="https://kit.fontawesome.com/bb097e18f6.js"
+            crossOrigin="anonymous"
+          ></script>
         </section>
       </main>
     </>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Event Organiser",
+  meta: [
+    {
+      name: "description",
+      content: "Event organiser",
+    },
+  ],
+};

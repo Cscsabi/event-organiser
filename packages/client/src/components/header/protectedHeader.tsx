@@ -17,7 +17,9 @@ export const ProtectedHeader = component$(() => {
       </div>
       <ul>
         <li>
-          <Link href={paths.profile}>My Profile</Link>
+          <Link href={paths.profile}>
+            <i class="fa-regular fa-user"></i> Profile
+          </Link>
         </li>
         <li>
           <button
@@ -30,11 +32,18 @@ export const ProtectedHeader = component$(() => {
               });
             }}
           >
-            Logout
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
           </button>
         </li>
         <li>
-          <Link href={paths.events}>All Events</Link>
+          <Link href={paths.events}>
+            <i class="fa-solid fa-calendar-days"></i> My Events
+          </Link>
+        </li>
+        <li>
+          <Link href={paths.locations}>
+            <i class="fa-solid fa-location-pin"></i> My Locations
+          </Link>
         </li>
       </ul>
     </header>

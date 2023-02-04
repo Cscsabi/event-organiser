@@ -21,18 +21,14 @@ import {
 import SuperJSON from "superjson";
 import {
   addEventController,
-  addLocationController,
   getCountriesController,
   getEventController,
   getEventsController,
-  getLocationController,
-  getLocationsController,
 } from "./event/event.controller";
-import {
-  addEventInput,
-  addLocationInput,
-  getByIdInput,
-} from "./event/event.schema";
+import { addEventInput } from "./event/event.schema";
+import { addLocationInput } from "./location/location.schema";
+import { getByEmailInput, getByIdInput } from "./general/general.schema";
+import { addLocationController, getLocationController, getLocationsController } from "./location/location.controller";
 
 export const prisma = new PrismaClient();
 const t = initTRPC.create({
@@ -67,11 +63,15 @@ const appRouter = t.router({
     ),
   getCountries: t.procedure.query(() => getCountriesController()),
   // TODO: Add email parameter
-  getLocations: t.procedure.query(() => getLocationsController()),
+  getLocations: t.procedure
+    .input(getByEmailInput)
+    .query(({ input }) => getLocationsController({ getByEmailInput: input })),
   getLocation: t.procedure
     .input(getByIdInput)
     .query(({ input }) => getLocationController({ getByIdInput: input })),
-  getEvents: t.procedure.query(() => getEventsController()),
+  getEvents: t.procedure
+    .input(getByEmailInput)
+    .query(({ input }) => getEventsController({ getByEmailInput: input })),
   getEvent: t.procedure
     .input(getByIdInput)
     .query(({ input }) => getEventController({ getByIdInput: input })),

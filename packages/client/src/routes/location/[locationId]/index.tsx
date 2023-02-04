@@ -3,6 +3,7 @@ import { useLocation } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import type { LocationInterface } from "~/types";
+import { getUser } from "~/utils/supabase.client";
 
 export default component$(() => {
   const { params } = useLocation();
@@ -33,7 +34,7 @@ export default component$(() => {
 
   return (
     <div>
-      Example: {params.locationId}
+      <p>{params.locationId}</p>
       <p>{locationStore.value?.city}</p>
       <p>{locationStore.value?.description}</p>
       <p>{locationStore.value?.email}</p>
@@ -50,7 +51,11 @@ export default component$(() => {
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
-  const result = await client.getLocations.query();
+  const userResponse = await getUser();
+
+  const result = await client.getLocations.query({
+    email: userResponse.data.user?.email || "",
+  });
 
   return {
     params: result.locations.map((locations) => {

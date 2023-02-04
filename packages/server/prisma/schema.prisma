@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   email     String      @id
-  firstname String
+  firstname String      
   lastname  String
   role      UserRoles[]
   events    Event[]

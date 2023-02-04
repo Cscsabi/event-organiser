@@ -13,10 +13,10 @@ export const PublicHeader = component$(() => {
       </div>
       <ul class="menu menu-horizontal p-0">
         <li class="marker:accent-current">
-          <Link href={paths.login}>Login</Link>
+          <Link href={paths.login}><i class="fa-solid fa-right-to-bracket"></i> Login</Link>
         </li>
         <li class="marker:accent-current">
-          <Link href={paths.register}>Register</Link>
+          <Link href={paths.register}><i class="fa-solid fa-user-plus"></i> Register</Link>
         </li>
       </ul>
     </header>

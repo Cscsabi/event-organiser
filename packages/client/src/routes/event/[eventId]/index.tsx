@@ -3,6 +3,7 @@ import { useLocation } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import type { EventInterface } from "~/types";
+import { getUser } from "~/utils/supabase.client";
 
 export default component$(() => {
   const { params } = useLocation();
@@ -27,7 +28,7 @@ export default component$(() => {
 
   return (
     <div>
-      Example: {params.eventId}
+      <p>{params.eventId}</p>
       <p>{newEventStore.value?.budget}</p>
       <p>{newEventStore.value?.date.toString()}</p>
       <p>{newEventStore.value?.email}</p>
@@ -40,7 +41,9 @@ export default component$(() => {
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
-  const result = await client.getEvents.query();
+  const result = await client.getEvents.query({
+    email: (await getUser()).data.user?.email || "",
+  });
 
   return {
     params: result.events.map((event) => {

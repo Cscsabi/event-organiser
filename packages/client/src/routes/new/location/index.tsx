@@ -68,7 +68,7 @@ export default component$(() => {
 
           status.then((result) => {
             if (result.status === "success") {
-              navigate.path = paths.location;
+              navigate.path = paths.location + result.location.id;
             }
           });
         }}
@@ -136,6 +136,9 @@ export default component$(() => {
                   ).value)
                 }
               >
+                <option value="" selected disabled hidden>
+                  Choose here
+                </option>
                 {result.countries.map((country) => {
                   return <option value={country.id}>{country.name}</option>;
                 })}

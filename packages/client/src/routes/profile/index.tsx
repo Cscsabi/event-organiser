@@ -1,11 +1,11 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { component$, useSignal, useClientEffect$ } from "@builder.io/qwik";
 import type { UserResponse } from "@supabase/supabase-js";
 import { getUser, resetPassword } from "~/utils/supabase.client";
 
 export default component$(() => {
-  const email = useSignal("");
+  const email = useSignal("Loading...");
 
-  useTask$(({ track }) => {
+  useClientEffect$(({ track }) => {
     track(() => email.value);
     getUser().then((userResponse: UserResponse) => {
       if (userResponse.data.user?.email) {
