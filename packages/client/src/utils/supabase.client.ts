@@ -4,22 +4,30 @@ import type {
   SignUpWithPasswordCredentials,
 } from "@supabase/supabase-js";
 import { createClient } from "@supabase/supabase-js";
+import { client } from "./trpc";
 
 const supabaseClient = createClient(
   import.meta.env.VITE_SUPABASE_URL as string,
   import.meta.env.VITE_SUPABASE_ANON_KEY as string
 );
 
-export async function getUser(token?: string) {
-  if (token !== "") {
-    const userResponseWithToken = await supabaseClient.auth.getUser();
-    if (!userResponseWithToken.error) {
-      console.log(userResponseWithToken.data.user);
-      return userResponseWithToken;
+export async function getUser() {
+  const userResponse = await supabaseClient.auth.getUser();
+  console.log(userResponse.data.user);
+  if (userResponse.data.user?.email) {
+    const result = await client.getUser.query({
+      email: userResponse.data.user.email,
+    });
+    if (result.status === "NOT FOUND") {
+      const firstName = userResponse.data.user.user_metadata.name.split(" ")[0];
+      const lastName = userResponse.data.user.user_metadata.name.split(" ")[1];
+      await client.createUser.mutate({
+        email: userResponse.data.user.email,
+        firstname: firstName,
+        lastname: lastName,
+      });
     }
   }
-
-  const userResponse = await supabaseClient.auth.getUser();
   return userResponse;
 }
 

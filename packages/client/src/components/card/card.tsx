@@ -7,6 +7,7 @@ export default component$(
     id: string;
     name: string;
     description: string;
+    location?: string;
     color: string;
     goTo: string;
     icon: string;
@@ -26,6 +27,7 @@ export default component$(
               </div>
               <h2 class="card__title">{card.name}</h2>
               <p>{card.description}</p>
+              <p>{card.location}</p>
               <p class="card__apply"></p>
             </div>
           </div>

@@ -26,6 +26,7 @@ export const addEventController = async ({
 
     return {
       status: "success",
+      event: event,
     };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -63,6 +64,13 @@ export const getEventsController = async ({
     const events = await prisma.event.findMany({
       where: {
         email: getByEmailInput.email,
+      },
+      include: {
+        location: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 

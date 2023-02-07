@@ -1,15 +1,23 @@
 import { component$, useClientEffect$, useSignal } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
+import { useNavigate } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import type { LocationInterface } from "~/types";
 import { getUser } from "~/utils/supabase.client";
+import { paths } from "~/utils/paths";
 
 export default component$(() => {
   const { params } = useLocation();
   const locationStore = useSignal<LocationInterface>();
+  const navigate = useNavigate();
 
   useClientEffect$(() => {
+    getUser().then((result) => {
+      if (!result.data.user) {
+        navigate.path = paths.login;
+      }
+    });
     getCurrentLocation(params.locationId).then((location) => {
       if (location) {
         const currentLocation: LocationInterface = {

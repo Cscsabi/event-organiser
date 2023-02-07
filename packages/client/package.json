@@ -54,6 +54,7 @@
     "@builder.io/sdk-qwik": "^0.1.6",
     "@trpc/client": "^10.9.0",
     "event-organiser-api-server": "^1.0.0",
+    "sass": "^1.58.0",
     "trpc-qwik-city": "^0.0.1"
   }
 }

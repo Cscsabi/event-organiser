@@ -4,43 +4,50 @@ import {
   useClientEffect$,
   useResource$,
   useSignal,
-  useContext,
+  useStyles$,
 } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import Card from "~/components/card/card";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import { getUser } from "~/utils/supabase.client";
-import { CTX } from "../layout";
+import styles from "./index.css?inline";
+import type { GetLocationsReturnType } from "~/types";
 
 export default component$(() => {
+  useStyles$(styles);
+  const email = useSignal("");
   const navigate = useNavigate();
-  const context = useContext(CTX);
-  const email = useSignal(context.value);
 
   useClientEffect$(async ({ track }) => {
     track(() => email.value);
     const userResponse = await getUser();
+    if (!userResponse.data.user) {
+      navigate.path = paths.login;
+    }
     if (userResponse.data.user?.email) {
       email.value = userResponse.data.user.email;
     }
   });
 
-  const resource = useResource$(async (context) => {
-    context.track(() => email.value);
-    return client.getLocations.query({ email: email.value });
-  });
+  const resource = useResource$<GetLocationsReturnType>(
+    async ({ track, cleanup }): Promise<GetLocationsReturnType> => {
+      track(() => email.value);
+      const controller = new AbortController();
+      cleanup(() => controller.abort());
+      return client.getLocations.query({
+        email: email.value,
+      });
+    }
+  );
 
   return (
     <div>
-      <button onClick$={() => (navigate.path = paths.newLocation)}>
-        <i class="fa-solid fa-house"></i> Add new Location
-      </button>
       {email.value ? (
         <Resource
           value={resource}
           onPending={() => <div>Loading...</div>}
-          onResolved={(result: Object) => {
+          onResolved={(result) => {
             return (
               <div>
                 {result.locations.map((location) => {

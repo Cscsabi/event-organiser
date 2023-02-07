@@ -1,5 +1,5 @@
 import type { JSX } from "@builder.io/qwik/jsx-runtime";
-import type { EventType } from "@prisma/client";
+import type { EventType, Location, Event } from "@prisma/client";
 
 export interface BadgeInterface {
   text: string;
@@ -48,4 +48,16 @@ export interface LocationInterface {
   price: number;
   phone: string;
   link: string;
+}
+
+export interface GetLocationsReturnType {
+  status: string;
+  results: number;
+  locations: Location[];
+}
+
+export interface GetEventsReturnType {
+  status: string;
+  results: number;
+  events: Event[];
 }

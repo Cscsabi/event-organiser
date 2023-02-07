@@ -34,8 +34,6 @@ export const filterQuery = z.object({
   page: z.number().default(10),
 });
 
-
-
 export type ParamsInput = z.TypeOf<typeof params>;
 export type FilterQueryInput = z.TypeOf<typeof filterQuery>;
 export type CreateUserInput = z.TypeOf<typeof createUserSchema>;
