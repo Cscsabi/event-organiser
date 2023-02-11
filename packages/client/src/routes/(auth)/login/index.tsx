@@ -29,18 +29,17 @@ export default component$(() => {
           <div class="">
             <form
               preventdefault:submit
-              onSubmit$={() => {
+              onSubmit$={async () => {
                 // TODO: Check the values, send feedback according to the input
                 const credentials: SignInWithPasswordCredentials = {
                   email: store.email,
                   password: store.password,
                 };
-                loginUserWithPassword(credentials).then((login) => {
-                  if (login?.result === "success") {
-                    navigate.path = paths.index;
-                    user.value = login.data?.session?.access_token || "";
-                  }
-                });
+                const login = await loginUserWithPassword(credentials);
+                if (login?.result === "success") {
+                  navigate.path = paths.index;
+                  user.value = login.data?.session?.access_token || "";
+                }
               }}
             >
               <label for="email">Email:</label>
@@ -78,29 +77,27 @@ export default component$(() => {
               <input type="submit" value="Login"></input>
               <button
                 class="loginBtn loginBtn--google"
-                onClick$={() =>
-                  loginUserWithProvider({
+                onClick$={async () => {
+                  const login = await loginUserWithProvider({
                     provider: "google",
-                  }).then((login) => {
-                    if (login.result === "success") {
-                      navigate.path = paths.index;
-                    }
-                  })
-                }
+                  });
+                  if (login.result === "success") {
+                    navigate.path = paths.index;
+                  }
+                }}
               >
                 Sign in with Google
               </button>
               <button
                 class="loginBtn loginBtn--facebook"
-                onClick$={() =>
-                  loginUserWithProvider({
+                onClick$={async () => {
+                  const login = await loginUserWithProvider({
                     provider: "facebook",
-                  }).then((login) => {
-                    if (login.result === "success") {
-                      navigate.path = paths.index;
-                    }
-                  })
-                }
+                  });
+                  if (login.result === "success") {
+                    navigate.path = paths.index;
+                  }
+                }}
               >
                 Sign in with Facebook
               </button>

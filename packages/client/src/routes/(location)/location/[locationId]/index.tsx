@@ -12,32 +12,30 @@ export default component$(() => {
   const locationStore = useSignal<LocationInterface>();
   const navigate = useNavigate();
 
-  useClientEffect$(() => {
-    getUser().then((result) => {
-      if (!result.data.user) {
-        navigate.path = paths.login;
-      }
-    });
-    getCurrentLocation(params.locationId).then((location) => {
-      if (location) {
-        const currentLocation: LocationInterface = {
-          addressId: location.addressId,
-          city: location.address.city,
-          countryId: location.address.countryId,
-          description: location.description,
-          email: location.email,
-          link: location.link,
-          name: location.name,
-          phone: location.phone,
-          price: +location.price,
-          state: location.address.state,
-          street: location.address.street,
-          type: location.type,
-          zipCode: +location.address.zip_code,
-        };
-        locationStore.value = currentLocation;
-      }
-    });
+  useClientEffect$(async () => {
+    const result = await getUser();
+    if (!result.data.user) {
+      navigate.path = paths.login;
+    }
+    const location = await getCurrentLocation(params.locationId);
+    if (location) {
+      const currentLocation: LocationInterface = {
+        addressId: location.addressId,
+        city: location.address.city,
+        countryId: location.address.countryId,
+        description: location.description,
+        email: location.email,
+        link: location.link,
+        name: location.name,
+        phone: location.phone,
+        price: +location.price,
+        state: location.address.state,
+        street: location.address.street,
+        type: location.type,
+        zipCode: +location.address.zip_code,
+      };
+      locationStore.value = currentLocation;
+    }
   });
 
   return (

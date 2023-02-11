@@ -24,7 +24,7 @@ export const updateUserSchema = z.object({
       lastname: z.string(),
       password: z.string(),
       email: z.string(),
-      isactive: z.boolean(),
+      notifications: z.boolean(),
     })
     .partial(),
 });

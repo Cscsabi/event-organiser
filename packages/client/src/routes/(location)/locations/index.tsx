@@ -54,7 +54,7 @@ export default component$(() => {
                   return (
                     <Card
                       id={location.id}
-                      description={location.description}
+                      description={location.price.toString() + " Ft"}
                       name={location.name}
                       color="card-1"
                       goTo={paths.location + location.id}

@@ -36,28 +36,27 @@ export default component$(() => {
     link: "",
   });
 
-  useClientEffect$(() => {
-    getUser().then((user) => {
-      if (!user.data.user) {
-        navigate.path = paths.login;
-      }
-      store.email = user.data.user?.email || "";
-    });
+  useClientEffect$(async () => {
+    const userResponse = await getUser();
+    if (!userResponse.data.user) {
+      navigate.path = paths.login;
+    }
+    store.email = userResponse.data.user?.email || "";
   });
 
   return (
     <div class="form_wrapper">
       <div class="form_container">
         <div class="title_container">
-          <h2>Create New Event</h2>
+          <h2>Create New Location</h2>
         </div>
         <div class="row clearfix">
           <div class="">
             <form
               preventdefault:submit
-              onSubmit$={() => {
+              onSubmit$={async () => {
                 console.log(store);
-                const status = client.addLocation.mutate({
+                const result = await client.addLocation.mutate({
                   name: store.name,
                   description: store.description,
                   type: store.type,
@@ -78,11 +77,9 @@ export default component$(() => {
                   },
                 });
 
-                status.then((result) => {
-                  if (result.status === "success") {
-                    navigate.path = paths.location + result.location.id;
-                  }
-                });
+                if (result.status === "success") {
+                  navigate.path = paths.location + result.location.id;
+                }
               }}
             >
               <label for="locationName">Location name:</label>

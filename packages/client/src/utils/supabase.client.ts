@@ -31,6 +31,10 @@ export async function getUser() {
   return userResponse;
 }
 
+export async function getUserData(email: string) {
+  return await client.getUser.query({ email: email });
+}
+
 export async function resetPassword(email: string) {
   await supabaseClient.auth.resetPasswordForEmail(email);
 }
@@ -78,4 +82,16 @@ export async function logoutUser() {
   }
 
   return { result: "success" };
+}
+
+export async function updateUserNotifications(email: string, checkbox: boolean) {
+  console.log(checkbox);
+  await client.updateUser.mutate({
+    params: {
+      email: email
+    },
+    body: {
+      notifications: checkbox,
+    },
+  });
 }

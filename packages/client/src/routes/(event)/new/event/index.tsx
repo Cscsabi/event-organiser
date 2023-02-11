@@ -37,14 +37,13 @@ export default component$(() => {
     }
   );
 
-  useClientEffect$(() => {
-    getUser().then((user) => {
-      if (!user.data.user) {
-        navigate.path = paths.login;
-      } else {
-        store.email = user.data.user?.email || "";
-      }
-    });
+  useClientEffect$(async () => {
+    const userDetails = await getUser();
+    if (!userDetails.data.user) {
+      navigate.path = paths.login;
+    } else {
+      store.email = userDetails.data.user.email || "";
+    }
   });
 
   return (
@@ -57,8 +56,8 @@ export default component$(() => {
           <div class="">
             <form
               preventdefault:submit
-              onSubmit$={() => {
-                const status = client.addEvent.mutate({
+              onSubmit$={async () => {
+                const result = await client.addEvent.mutate({
                   budget: store.budget,
                   date: new Date(store.date),
                   headcount: store.headcount,
@@ -68,11 +67,9 @@ export default component$(() => {
                   locationId: store.locationId,
                 });
 
-                status.then((result) => {
-                  if (result.status === "success") {
-                    navigate.path = paths.event + result.event.id;
-                  }
-                });
+                if (result.status === "success") {
+                  navigate.path = paths.event + result.event.id;
+                }
               }}
             >
               <label for="eventName">Event name:</label>

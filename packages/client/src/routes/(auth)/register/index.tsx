@@ -28,17 +28,16 @@ export default component$(() => {
           <div class="">
             <form
               preventdefault:submit
-              onSubmit$={() => {
-                handleRegister(
+              onSubmit$={async () => {
+                const result = await handleRegister(
                   store.email,
                   store.password,
                   store.firstname,
                   store.lastname
-                ).then((result) => {
-                  if (result) {
-                    navigate.path = paths.index;
-                  }
-                });
+                );
+                if (result) {
+                  navigate.path = paths.index;
+                }
               }}
             >
               <label for="firstname">First name:</label>

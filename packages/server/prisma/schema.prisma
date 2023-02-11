@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  email     String      @id
-  firstname String      
-  lastname  String
-  role      UserRoles[]
-  events    Event[]
-  locations Location[]
+  email         String      @id
+  firstname     String      
+  lastname      String
+  role          UserRoles[]
+  events        Event[]
+  locations     Location[]
+  notifications Boolean
 
   @@map("users")
 }
@@ -98,6 +99,8 @@ enum Roles {
 enum EventType {
   WEDDING
   GRADUATION
-  ONLINE
+  PARTY
+  CONFERENCE
+  EXHIBITION
   CUSTOM
 }

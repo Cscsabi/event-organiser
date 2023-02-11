@@ -11,26 +11,25 @@ export default component$(() => {
   const newEventStore = useSignal<EventInterface>();
   const navigate = useNavigate();
 
-  useClientEffect$(() => {
-    getUser().then((result) => {
-      if (!result.data.user) {
-        navigate.path = paths.login;
-      }
-    });
-    getCurrentEvent(params.eventId).then((event) => {
-      if (event) {
-        const currentLocation: EventInterface = {
-          budget: +event.budget,
-          date: event.date,
-          email: event.email,
-          headcount: event.headcount,
-          locationId: event.locationId,
-          name: event.name,
-          type: event.type,
-        };
-        newEventStore.value = currentLocation;
-      }
-    });
+  useClientEffect$(async () => {
+    const userDetails = await getUser();
+    if (!userDetails.data.user) {
+      navigate.path = paths.login;
+    }
+
+    const event = await getCurrentEvent(params.eventId);
+    if (event) {
+      const currentLocation: EventInterface = {
+        budget: +event.budget,
+        date: event.date,
+        email: event.email,
+        headcount: event.headcount,
+        locationId: event.locationId,
+        name: event.name,
+        type: event.type,
+      };
+      newEventStore.value = currentLocation;
+    }
   });
 
   return (

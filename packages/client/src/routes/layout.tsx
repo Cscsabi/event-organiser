@@ -19,11 +19,10 @@ export default component$(() => {
 
   useContextProvider<Signal<string>>(CTX, userEmail);
 
-  useClientEffect$(({ track }) => {
+  useClientEffect$(async ({ track }) => {
     track(() => userEmail.value);
-    getUser().then((userResponse) => (
-      userEmail.value = userResponse.data.user?.email || ""
-    ));
+    const userResponse = await getUser();
+    userEmail.value = userResponse.data.user?.email || "";
   });
 
   return (

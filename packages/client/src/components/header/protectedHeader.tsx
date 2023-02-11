@@ -34,14 +34,13 @@ export const ProtectedHeader = component$(() => {
           <i class="fa-regular fa-user"></i> Profile
         </Link>
         <a
-          onClick$={() => {
+          onClick$={async () => {
             console.log("Clicked!");
-            logoutUser().then((logout) => {
-              if (logout.result === "success") {
-                navigate.path = paths.logout;
-                user.value = "";
-              }
-            });
+            const logout = await logoutUser();
+            if (logout.result === "success") {
+              navigate.path = paths.logout;
+              user.value = "";
+            }
           }}
         >
           <i class="fa-solid fa-right-from-bracket"></i> Logout

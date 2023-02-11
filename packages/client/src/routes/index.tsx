@@ -12,16 +12,15 @@ export default component$(() => {
 
   const authTokenValue = useSignal("");
   const authToken: string = import.meta.env.VITE_AUTH_TOKEN;
-  useClientEffect$(() => {
+  useClientEffect$(async () => {
     authTokenValue.value = window.location.hash.slice(1);
     if (
       localStorage.getItem(authToken) === null &&
       authTokenValue.value.startsWith("access_token")
     ) {
       localStorage.setItem(authToken, authTokenValue.value);
-      getUser().then(
-        (userResponse) => (userEmail.value = userResponse.data.user?.email || "")
-      );
+      const userDetails = await getUser();
+      userEmail.value = userDetails.data.user?.email || "";
     }
   });
 
