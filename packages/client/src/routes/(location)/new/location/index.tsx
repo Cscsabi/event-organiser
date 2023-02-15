@@ -41,7 +41,7 @@ export default component$(() => {
     if (!userResponse.data.user) {
       navigate.path = paths.login;
     }
-    store.email = userResponse.data.user?.email || "";
+    store.email = userResponse.data.user?.email ?? "";
   });
 
   return (

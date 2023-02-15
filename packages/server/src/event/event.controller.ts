@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../app";
-import { GetByEmailInput, GetByIdInput } from "../general/general.schema";
-import { AddEventInput } from "./event.schema";
+import { ByIdInput, GetByEmailInput } from "../general/general.schema";
+import { AddEventInput, UpdateEventInput } from "./event.schema";
 
 export const addEventController = async ({
   addEventInput,
@@ -20,6 +20,77 @@ export const addEventController = async ({
         email: addEventInput.userEmail,
         locationId: addEventInput.locationId,
       },
+    });
+
+    console.log(event);
+
+    return {
+      status: "success",
+      event: event,
+    };
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+        });
+      }
+    }
+    throw error;
+  }
+};
+
+export const updateEventController = async ({
+  updateEventInput,
+}: {
+  updateEventInput: UpdateEventInput;
+}) => {
+  try {
+    console.log(updateEventInput);
+    const event = await prisma.event.update({
+      where: {
+        id: updateEventInput.id,
+      },
+      data: {
+        name: updateEventInput.name,
+        type: updateEventInput.type,
+        date: updateEventInput.date,
+        budget: updateEventInput.budget,
+        headcount: updateEventInput.headcount,
+        locationId: updateEventInput.locationId,
+        email: updateEventInput.userEmail,
+      },
+    });
+
+    console.log(event);
+
+    return {
+      status: "success",
+      event: event,
+    };
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+        });
+      }
+    }
+    throw error;
+  }
+};
+
+export const deleteEventController = async ({
+  deleteInput,
+}: {
+  deleteInput: ByIdInput;
+}) => {
+  try {
+    const event = await prisma.event.delete({
+      where: {
+        id: deleteInput.id,
+      },
+      include: { EventGuest: { where: { eventId: deleteInput.id } } },
     });
 
     console.log(event);
@@ -87,7 +158,7 @@ export const getEventsController = async ({
 export const getEventController = async ({
   getByIdInput,
 }: {
-  getByIdInput: GetByIdInput;
+  getByIdInput: ByIdInput;
 }) => {
   try {
     const event = await prisma.event.findFirst({

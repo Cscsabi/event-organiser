@@ -42,8 +42,9 @@ export default component$(() => {
     if (!userDetails.data.user) {
       navigate.path = paths.login;
     } else {
-      store.email = userDetails.data.user.email || "";
+      store.email = userDetails.data.user.email ?? "";
     }
+    console.log(new Date().toISOString().replace(/:\d{2}\.\d{3}Z$/, ""))
   });
 
   return (
@@ -95,22 +96,26 @@ export default component$(() => {
                   <option value="" selected disabled hidden>
                     Choose here
                   </option>
-                  <option value="WEDDING">Wedding</option>
-                  <option value="GRADUATION">Graduation</option>
-                  <option value="ONLINE">Online</option>
-                  <option value="CUSTOM">Custom</option>
+                  <option value="WEDDING">WEDDING</option>
+                  <option value="GRADUATION">GRADUATION</option>
+                  <option value="PARTY">PARTY</option>
+                  <option value="CONFERENCE">CONFERENCE</option>
+                  <option value="EXHIBITION">EXHIBITION</option>
+                  <option value="CUSTOM">CUSTOM</option>
                 </select>
               </div>
               <label for="date">Date:</label>
               <div class="input_field">
                 <input
+                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
                   onInput$={(event) =>
                     (store.date = new Date(
                       (event.target as HTMLInputElement).value
                     ))
                   }
-                  type="date"
+                  type="datetime-local"
                   name="email"
+                  min={new Date().toISOString().replace(/:\d{2}\.\d{3}Z$/, "")}
                 ></input>
               </div>
               <label for="budget">Event budget:</label>
@@ -134,6 +139,7 @@ export default component$(() => {
                   name="email"
                 ></input>
               </div>
+              <label for="location">Location:</label>
               <Resource
                 value={resource}
                 onPending={() => <div>Loading...</div>}

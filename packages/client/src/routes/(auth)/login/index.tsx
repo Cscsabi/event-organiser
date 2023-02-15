@@ -38,7 +38,7 @@ export default component$(() => {
                 const login = await loginUserWithPassword(credentials);
                 if (login?.result === "success") {
                   navigate.path = paths.index;
-                  user.value = login.data?.session?.access_token || "";
+                  user.value = login.data?.session?.access_token ?? "";
                 }
               }}
             >
@@ -54,6 +54,7 @@ export default component$(() => {
                   }
                   type="email"
                   name="email"
+                  pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
                   value={store.email}
                   required
                 ></input>

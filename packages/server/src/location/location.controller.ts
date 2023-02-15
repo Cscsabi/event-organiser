@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { AddLocationInput } from "./location.schema";
+import { AddLocationInput, UpdateLocationInput } from "./location.schema";
 import { prisma } from "../app";
-import { GetByEmailInput, GetByIdInput } from "../general/general.schema";
+import { GetByEmailInput, ByIdInput } from "../general/general.schema";
 
 export const addLocationController = async ({
   addLocationInput,
@@ -55,6 +55,88 @@ export const addLocationController = async ({
   }
 };
 
+// TODO: Finish
+export const updateLocationController = async ({
+  updateLocationInput,
+}: {
+  updateLocationInput: UpdateLocationInput;
+}) => {
+  try {
+    const location = await prisma.location.update({
+      where: {
+        id: updateLocationInput.id,
+      },
+      data: {
+        name: updateLocationInput.name,
+        address: {
+          create: {
+            city: updateLocationInput.address.city,
+            street: updateLocationInput.address.street,
+            state: updateLocationInput.address.state,
+            zip_code: updateLocationInput.address.zipCode,
+            country: {
+              connect: {
+                id: updateLocationInput.address.country.id,
+              },
+            },
+          },
+        },
+        description: updateLocationInput.description,
+        type: updateLocationInput.type,
+        price: updateLocationInput.price,
+        phone: updateLocationInput.phone,
+        link: updateLocationInput.link,
+      },
+    });
+
+    console.log(location);
+
+    return {
+      status: "success",
+      location,
+    };
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+        });
+      }
+    }
+    throw error;
+  }
+};
+
+export const deleteLocationController = async ({
+  deleteLocationInput,
+}: {
+  deleteLocationInput: ByIdInput;
+}) => {
+  try {
+    const location = await prisma.location.delete({
+      where: {
+        id: deleteLocationInput.id,
+      },
+    });
+
+    console.log(location);
+
+    return {
+      status: "success",
+      location,
+    };
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+        });
+      }
+    }
+    throw error;
+  }
+};
+
 export const getLocationsController = async ({
   getByEmailInput,
 }: {
@@ -80,7 +162,7 @@ export const getLocationsController = async ({
 export const getLocationController = async ({
   getByIdInput,
 }: {
-  getByIdInput: GetByIdInput;
+  getByIdInput: ByIdInput;
 }) => {
   try {
     const location = await prisma.location.findFirst({

@@ -21,18 +21,42 @@ import {
 import SuperJSON from "superjson";
 import {
   addEventController,
+  deleteEventController,
   getCountriesController,
   getEventController,
   getEventsController,
+  updateEventController,
 } from "./event/event.controller";
-import { addEventInput } from "./event/event.schema";
-import { addLocationInput } from "./location/location.schema";
-import { getByEmailInput, getByIdInput } from "./general/general.schema";
+import { addEventInput, updateEventInput } from "./event/event.schema";
+import {
+  addLocationInput,
+  updateLocationInput,
+} from "./location/location.schema";
+import { byIdInput, getByEmailInput } from "./general/general.schema";
 import {
   addLocationController,
+  deleteLocationController,
   getLocationController,
   getLocationsController,
+  updateLocationController,
 } from "./location/location.controller";
+import {
+  addGuestInput,
+  deleteGuestInput,
+  getGuestInput,
+  updateGuestInput,
+  guestEventInput,
+  addGuestAndConnectToEventInput,
+} from "./guest/guest.schema";
+import {
+  addGuestAndConnectToEventController,
+  addGuestController,
+  deleteEventGuestController,
+  deleteGuestController,
+  getGuestController,
+  getGuestsController,
+  updateGuestController,
+} from "./guest/guest.controller";
 
 export const prisma = new PrismaClient();
 const t = initTRPC.create({
@@ -60,24 +84,73 @@ const appRouter = t.router({
   addEvent: t.procedure
     .input(addEventInput)
     .mutation(({ input }) => addEventController({ addEventInput: input })),
+  updateEvent: t.procedure
+    .input(updateEventInput)
+    .mutation(({ input }) =>
+      updateEventController({ updateEventInput: input })
+    ),
+  deleteEvent: t.procedure
+    .input(byIdInput)
+    .mutation(({ input }) => deleteEventController({ deleteInput: input })),
+  getEvents: t.procedure
+    .input(getByEmailInput)
+    .query(({ input }) => getEventsController({ getByEmailInput: input })),
+  getEvent: t.procedure
+    .input(byIdInput)
+    .query(({ input }) => getEventController({ getByIdInput: input })),
+  getGuests: t.procedure
+    .input(getByEmailInput)
+    .query(({ input }) => getGuestsController({ getByEmailInput: input })),
+  getGuest: t.procedure
+    .input(getGuestInput)
+    .query(({ input }) => getGuestController({ getGuestInput: input })),
+  createGuest: t.procedure
+    .input(addGuestInput)
+    .mutation(({ input }) => addGuestController({ addGuestInput: input })),
+  createGuestAndConnectToEvent: t.procedure
+    .input(addGuestAndConnectToEventInput)
+    .mutation(({ input }) =>
+      addGuestAndConnectToEventController({
+        addGuestAndConnectToEventInput: input,
+      })
+    ),
+  updateGuest: t.procedure
+    .input(updateGuestInput)
+    .mutation(({ input }) =>
+      updateGuestController({ updateGuestInput: input })
+    ),
+  deleteGuest: t.procedure
+    .input(deleteGuestInput)
+    .mutation(({ input }) =>
+      deleteGuestController({ deleteGuestInput: input })
+    ),
+  deleteEventGuest: t.procedure
+    .input(guestEventInput)
+    .mutation(({ input }) =>
+      deleteEventGuestController({ deleteEventGuestInput: input })
+    ),
   addLocation: t.procedure
     .input(addLocationInput)
     .mutation(({ input }) =>
       addLocationController({ addLocationInput: input })
     ),
-  getCountries: t.procedure.query(() => getCountriesController()),
+  updateLocation: t.procedure
+    .input(updateLocationInput)
+    .mutation(({ input }) =>
+      updateLocationController({ updateLocationInput: input })
+    ),
+  deleteLocation: t.procedure
+    .input(byIdInput)
+    .mutation(({ input }) =>
+      deleteLocationController({ deleteLocationInput: input })
+    ),
   getLocations: t.procedure
     .input(getByEmailInput)
     .query(({ input }) => getLocationsController({ getByEmailInput: input })),
   getLocation: t.procedure
-    .input(getByIdInput)
+    .input(byIdInput)
     .query(({ input }) => getLocationController({ getByIdInput: input })),
-  getEvents: t.procedure
-    .input(getByEmailInput)
-    .query(({ input }) => getEventsController({ getByEmailInput: input })),
-  getEvent: t.procedure
-    .input(getByIdInput)
-    .query(({ input }) => getEventController({ getByIdInput: input })),
+  getCountries: t.procedure.query(() => getCountriesController()),
 });
 
 export type AppRouter = typeof appRouter;

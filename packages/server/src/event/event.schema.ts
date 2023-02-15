@@ -11,5 +11,16 @@ export const addEventInput = z.object({
   locationId: z.string(),
 });
 
-export type AddEventInput = z.TypeOf<typeof addEventInput>;
+export const updateEventInput = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: z.nativeEnum(EventType),
+  date: z.date(),
+  budget: z.number(),
+  headcount: z.number(),
+  userEmail: z.string(),
+  locationId: z.string(),
+});
 
+export type AddEventInput = z.TypeOf<typeof addEventInput>;
+export type UpdateEventInput = z.TypeOf<typeof updateEventInput>;

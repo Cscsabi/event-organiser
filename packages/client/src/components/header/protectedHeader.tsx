@@ -18,17 +18,17 @@ export const ProtectedHeader = component$(() => {
         </Link>
       </div>
       <div class="topnav-right">
-        <Link href={paths.events}>
-          <i class="fa-solid fa-calendar-days"></i> My Events
+        <Link href={paths.previousEvents}>
+        <i class="fa-regular fa-calendar-xmark"></i> Previous Events
         </Link>
-        <Link href={paths.newEvent}>
-          <i class="fa-solid fa-calendar-plus"></i> Add Event
+        <Link href={paths.events}>
+          <i class="fa-solid fa-calendar-days"></i> Active Events
+        </Link>
+        <Link href={paths.guests}>
+        <i class="fa-solid fa-person"></i> Guests
         </Link>
         <Link href={paths.locations}>
           <i class="fa-solid fa-location-pin"></i> My Locations
-        </Link>
-        <Link href={paths.newLocation}>
-          <i class="fa-solid fa-map-pin"></i> Add Location
         </Link>
         <Link href={paths.profile}>
           <i class="fa-regular fa-user"></i> Profile

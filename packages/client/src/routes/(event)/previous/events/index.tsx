@@ -5,7 +5,7 @@ import {
   useSignal,
   useClientEffect$,
 } from "@builder.io/qwik";
-import { Link, useNavigate } from "@builder.io/qwik-city";
+import { useNavigate } from "@builder.io/qwik-city";
 import Card from "~/components/card/card";
 import type { GetEventsReturnType } from "~/types";
 import { paths } from "~/utils/paths";
@@ -38,9 +38,6 @@ export default component$(() => {
 
   return (
     <div>
-      <Link href={paths.newEvent}>
-        <i class="fa-solid fa-calendar-plus"></i> Add Event
-      </Link>
       <Resource
         value={resource}
         onPending={() => <div>Loading...</div>}
@@ -48,15 +45,15 @@ export default component$(() => {
           return (
             <div>
               {result.events
-                .filter((event) => event.date >= new Date())
+                .filter((event) => event.date < new Date())
                 .map((event) => {
                   return (
                     <Card
                       id={event.id}
                       description={event.type}
                       name={event.name}
-                      color="card-2"
-                      goTo={paths.event + event.id}
+                      color="card-3"
+                      goTo={paths.previousEvent + event.id}
                       icon="event"
                       location={event.location.name}
                     />

@@ -23,13 +23,19 @@ export const addLocationInput = z.object({
   link: z.string(),
 });
 
-export const getByEmailInput = z.object({
-  email: z.string(),
-});
-
-export const getByIdInput = z.object({
+export const updateLocationInput = z.object({
   id: z.string(),
+  userEmail: z.string(),
+  name: z.string(),
+  description: z.string(),
+  addressId: z.string(),
+  address: addAddressInput,
+  type: z.string(),
+  price: z.number(),
+  phone: z.string(),
+  link: z.string(),
 });
 
 export type AddLocationInput = z.TypeOf<typeof addLocationInput>;
 export type AddAddressInput = z.TypeOf<typeof addAddressInput>;
+export type UpdateLocationInput = z.TypeOf<typeof updateLocationInput>;

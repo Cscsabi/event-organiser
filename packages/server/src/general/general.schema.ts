@@ -4,9 +4,9 @@ export const getByEmailInput = z.object({
   email: z.string(),
 });
 
-export const getByIdInput = z.object({
+export const byIdInput = z.object({
   id: z.string(),
 });
 
-export type GetByIdInput = z.TypeOf<typeof getByIdInput>;
+export type ByIdInput = z.TypeOf<typeof byIdInput>;
 export type GetByEmailInput = z.TypeOf<typeof getByEmailInput>;

@@ -20,7 +20,7 @@ export default component$(() => {
     ) {
       localStorage.setItem(authToken, authTokenValue.value);
       const userDetails = await getUser();
-      userEmail.value = userDetails.data.user?.email || "";
+      userEmail.value = userDetails.data.user?.email ?? "";
     }
   });
 

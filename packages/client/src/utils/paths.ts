@@ -7,7 +7,10 @@ export const paths = {
   events: "/events",
   event: "/event/",
   newEvent: "/new/event",
+  previousEvent: "/previous/",
+  previousEvents: "/previous/events",
   locations: "/locations",
   location: "/location/",
   newLocation: "/new/location",
+  guests: "/guests",
 };

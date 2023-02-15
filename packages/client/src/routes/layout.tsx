@@ -22,7 +22,7 @@ export default component$(() => {
   useClientEffect$(async ({ track }) => {
     track(() => userEmail.value);
     const userResponse = await getUser();
-    userEmail.value = userResponse.data.user?.email || "";
+    userEmail.value = userResponse.data.user?.email ?? "";
   });
 
   return (

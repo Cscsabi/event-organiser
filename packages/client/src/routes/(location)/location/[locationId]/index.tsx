@@ -19,39 +19,54 @@ export default component$(() => {
     }
     const location = await getCurrentLocation(params.locationId);
     if (location) {
-      const currentLocation: LocationInterface = {
-        addressId: location.addressId,
-        city: location.address.city,
-        countryId: location.address.countryId,
-        description: location.description,
-        email: location.email,
-        link: location.link,
-        name: location.name,
-        phone: location.phone,
-        price: +location.price,
-        state: location.address.state,
-        street: location.address.street,
-        type: location.type,
-        zipCode: +location.address.zip_code,
-      };
-      locationStore.value = currentLocation;
+      locationStore.value = location;
     }
   });
 
   return (
     <div>
-      <p>{params.locationId}</p>
-      <p>{locationStore.value?.city}</p>
-      <p>{locationStore.value?.description}</p>
-      <p>{locationStore.value?.email}</p>
-      <p>{locationStore.value?.link}</p>
-      <p>{locationStore.value?.name}</p>
-      <p>{locationStore.value?.phone}</p>
-      <p>{locationStore.value?.price}</p>
-      <p>{locationStore.value?.state}</p>
-      <p>{locationStore.value?.street}</p>
-      <p>{locationStore.value?.zipCode}</p>
-      <p>{locationStore.value?.type}</p>
+      <input value={params.locationId}></input>
+      <input value={locationStore.value?.city}></input>
+      <input value={locationStore.value?.description}></input>
+      <input value={locationStore.value?.email}></input>
+      <input value={locationStore.value?.link}></input>
+      <input value={locationStore.value?.name}></input>
+      <input value={locationStore.value?.phone}></input>
+      <input value={locationStore.value?.price}></input>
+      <input value={locationStore.value?.state}></input>
+      <input value={locationStore.value?.street}></input>
+      <input value={locationStore.value?.zipCode}></input>
+      <input value={locationStore.value?.type}></input>
+      <input
+        preventdefault:click
+        type="button"
+        value="save"
+        onClick$={async () => {
+          if (locationStore.value) {
+            client.updateLocation.mutate({
+              addressId: locationStore.value.addressId,
+              address: {
+                city: locationStore.value.city,
+                country: {
+                  id: +locationStore.value.countryId,
+                },
+                state: locationStore.value.state,
+                street: locationStore.value.street,
+                zipCode: locationStore.value.zipCode,
+                countryId: locationStore.value.countryId,
+              },
+              description: locationStore.value.description,
+              userEmail: locationStore.value.email,
+              link: locationStore.value.link,
+              name: locationStore.value.name,
+              phone: locationStore.value.phone,
+              price: +locationStore.value.price,
+              type: locationStore.value.type,
+              id: params.locationId
+            });
+          }
+        }}
+      ></input>
     </div>
   );
 });
@@ -60,7 +75,7 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
   const userResponse = await getUser();
 
   const result = await client.getLocations.query({
-    email: userResponse.data.user?.email || "",
+    email: userResponse.data.user?.email ?? "",
   });
 
   return {
@@ -75,5 +90,21 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
 
 export async function getCurrentLocation(locationId: string) {
   const result = await client.getLocation.query({ id: locationId });
-  return result.location;
+  if (result.location) {
+    return {
+      addressId: result.location?.addressId,
+      city: result.location.address.city,
+      countryId: result.location.address.countryId,
+      description: result.location.description,
+      email: result.location.email,
+      link: result.location.link,
+      name: result.location.name,
+      phone: result.location.phone,
+      price: +result.location.price,
+      state: result.location.address.state,
+      street: result.location.address.street,
+      type: result.location.type,
+      zipCode: +result.location.address.zip_code,
+    } as LocationInterface;
+  }
 }

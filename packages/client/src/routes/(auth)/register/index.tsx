@@ -84,6 +84,7 @@ export default component$(() => {
                   }
                   type="email"
                   name="email"
+                  pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
                   value={store.email}
                   required
                 ></input>
@@ -147,6 +148,6 @@ export async function handleRegister(
   return false;
 }
 
-function capitalize(input: string) {
+export function capitalize(input: string) {
   return input.charAt(0).toUpperCase() + input.toLowerCase().slice(1);
 }

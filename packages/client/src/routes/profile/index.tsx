@@ -1,6 +1,5 @@
 import { component$, useSignal, useClientEffect$ } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
-import type { UserResponse } from "@supabase/supabase-js";
 import { paths } from "~/utils/paths";
 import {
   getUser,
@@ -10,14 +9,14 @@ import {
 } from "~/utils/supabase.client";
 import { QwikCalendar } from "~/integrations/react/calendar";
 import { client } from "~/utils/trpc";
-
+import type { CalendarEvent } from "~/types";
 export default component$(() => {
   const checkbox = useSignal(false);
   const email = useSignal("Loading...");
   const input = useSignal<EventTarget & HTMLInputElement>();
   const date = useSignal<Date>(new Date());
   const navigate = useNavigate();
-  const datesToAddContentTo = useSignal<Date[] | undefined>();
+  const events = useSignal<CalendarEvent[]>([]);
 
   useClientEffect$(async ({ track }) => {
     track(() => email.value);
@@ -37,7 +36,7 @@ export default component$(() => {
       }
     }
 
-    datesToAddContentTo.value = await getDatesToAddContentTo();
+    events.value = await getEvents(email.value);
   });
 
   return (
@@ -50,14 +49,15 @@ export default component$(() => {
       <QwikCalendar
         client:load
         onChange$={(event: Date) => {
-          console.log(date.value);
-
           date.value = event;
-          console.log(date.value);
         }}
         value={date.value}
         defaultView="year"
         view="month"
+        events={events.value}
+        onClickDay$={() => {
+          console.log("clicked");
+        }}
       />
       <label for="emailCheckbox">Enable email reminders:</label>
       <input
@@ -74,43 +74,17 @@ export default component$(() => {
   );
 });
 
-export async function tileContent(
-  date: Date,
-  view: string,
-  datesToAddContentTo: Date[] | undefined
-) {
-  if (view === "month") {
-    if (datesToAddContentTo?.find((dDate) => isSameDay(dDate, date))) {
-      return "My content";
-    }
-  }
-  return "";
+export async function getEvents(email: string) {
+  const result = await client.getEvents.query({
+    email: email,
+  });
+
+  return result.events.map((event) => {
+    const calendarEvent: CalendarEvent = {
+      name: event.name,
+      date: event.date,
+    };
+
+    return calendarEvent;
+  });
 }
-
-export async function getDatesToAddContentTo() {
-  const userResponse = await getUser();
-  if (userResponse.data.user?.email) {
-    const result = await client.getEvents.query({
-      email: userResponse.data.user.email,
-    });
-
-    return result.events.map((event) => {
-      return event.date;
-    });
-  }
-}
-
-export function isSameDay(date1: Date, date2: Date) {
-  if (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate()
-  ) {
-    return true;
-  }
-  return false;
-}
-
-// tileContent={async ({ date, view }) => {
-//   return await tileContent(date, view);
-// }}

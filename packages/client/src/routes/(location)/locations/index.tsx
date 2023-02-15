@@ -6,7 +6,7 @@ import {
   useSignal,
   useStyles$,
 } from "@builder.io/qwik";
-import { useNavigate } from "@builder.io/qwik-city";
+import { Link, useNavigate } from "@builder.io/qwik-city";
 import Card from "~/components/card/card";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
@@ -43,32 +43,31 @@ export default component$(() => {
 
   return (
     <div>
-      {email.value ? (
-        <Resource
-          value={resource}
-          onPending={() => <div>Loading...</div>}
-          onResolved={(result) => {
-            return (
-              <div>
-                {result.locations.map((location) => {
-                  return (
-                    <Card
-                      id={location.id}
-                      description={location.price.toString() + " Ft"}
-                      name={location.name}
-                      color="card-1"
-                      goTo={paths.location + location.id}
-                      icon="location"
-                    />
-                  );
-                })}
-              </div>
-            );
-          }}
-        />
-      ) : (
-        ""
-      )}
+      <Link href={paths.newLocation}>
+        <i class="fa-solid fa-map-pin"></i> Add Location
+      </Link>
+      <Resource
+        value={resource}
+        onPending={() => <div>Loading...</div>}
+        onResolved={(result) => {
+          return (
+            <div>
+              {result.locations.map((location) => {
+                return (
+                  <Card
+                    id={location.id}
+                    description={location.price.toString() + " Ft"}
+                    name={location.name}
+                    color="card-1"
+                    goTo={paths.location + location.id}
+                    icon="location"
+                  />
+                );
+              })}
+            </div>
+          );
+        }}
+      />
     </div>
   );
 });
