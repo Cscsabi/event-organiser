@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { prisma } from "../app";
 import { ByIdInput, GetByEmailInput } from "../general/general.schema";
 import { AddEventInput, UpdateEventInput } from "./event.schema";
+import { Status } from "../status.enum";
 
 export const addEventController = async ({
   addEventInput,
@@ -25,7 +26,7 @@ export const addEventController = async ({
     console.log(event);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       event: event,
     };
   } catch (error) {
@@ -65,7 +66,7 @@ export const updateEventController = async ({
     console.log(event);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       event: event,
     };
   } catch (error) {
@@ -96,7 +97,7 @@ export const deleteEventController = async ({
     console.log(event);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       event: event,
     };
   } catch (error) {
@@ -117,7 +118,7 @@ export const getCountriesController = async () => {
     const countries = await prisma.country.findMany();
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       results: countries.length,
       countries,
     };
@@ -146,7 +147,7 @@ export const getEventsController = async ({
     });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       results: events.length,
       events,
     };
@@ -169,12 +170,12 @@ export const getEventController = async ({
 
     if (!event) {
       return {
-        status: "NOT FOUND",
+        status: Status.NOT_FOUND,
       };
     }
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       event,
     };
   } catch (error) {

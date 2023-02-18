@@ -5,6 +5,7 @@ import type {
 } from "@supabase/supabase-js";
 import { createClient } from "@supabase/supabase-js";
 import { client } from "./trpc";
+import { Status } from "event-organiser-api-server/src/status.enum";
 
 const supabaseClient = createClient(
   import.meta.env.VITE_SUPABASE_URL as string,
@@ -18,7 +19,7 @@ export async function getUser() {
     const result = await client.getUser.query({
       email: userResponse.data.user.email,
     });
-    if (result.status === "NOT FOUND") {
+    if (result.status === Status.NOT_FOUND) {
       const firstName = userResponse.data.user.user_metadata.name.split(" ")[0];
       const lastName = userResponse.data.user.user_metadata.name.split(" ")[1];
       await client.createUser.mutate({
@@ -42,9 +43,9 @@ export async function resetPassword(email: string) {
 export async function registerUser(credentials: SignUpWithPasswordCredentials) {
   const { data, error } = await supabaseClient.auth.signUp(credentials);
   if (error) {
-    return { result: "failed" };
+    return { result: Status.FAILED };
   }
-  return { result: "success", data: data };
+  return { result: Status.SUCCESS, data: data };
 }
 
 export async function loginUserWithProvider(
@@ -54,9 +55,9 @@ export async function loginUserWithProvider(
     provider: credentials.provider,
   });
   if (error) {
-    return { result: "failed" };
+    return { result: Status.FAILED };
   }
-  return { result: "success", data: data };
+  return { result: Status.SUCCESS, data: data };
 }
 
 export async function loginUserWithPassword(
@@ -67,9 +68,9 @@ export async function loginUserWithPassword(
       credentials
     );
     if (error) {
-      return { result: "failed" };
+      return { result: Status.FAILED };
     }
-    return { result: "success", data: data };
+    return { result: Status.SUCCESS, data: data };
   } catch (error) {
     console.log(error);
   }
@@ -78,17 +79,20 @@ export async function loginUserWithPassword(
 export async function logoutUser() {
   const { error } = await supabaseClient.auth.signOut();
   if (error) {
-    return { result: "failed" };
+    return { result: Status.FAILED };
   }
 
-  return { result: "success" };
+  return { result: Status.SUCCESS };
 }
 
-export async function updateUserNotifications(email: string, checkbox: boolean) {
+export async function updateUserNotifications(
+  email: string,
+  checkbox: boolean
+) {
   console.log(checkbox);
   await client.updateUser.mutate({
     params: {
-      email: email
+      email: email,
     },
     body: {
       notifications: checkbox,

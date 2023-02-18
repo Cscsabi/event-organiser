@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { AddLocationInput, UpdateLocationInput } from "./location.schema";
 import { prisma } from "../app";
 import { GetByEmailInput, ByIdInput } from "../general/general.schema";
+import { Status } from "../status.enum";
 
 export const addLocationController = async ({
   addLocationInput,
@@ -40,7 +41,7 @@ export const addLocationController = async ({
     console.log(location);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       location,
     };
   } catch (error) {
@@ -92,7 +93,7 @@ export const updateLocationController = async ({
     console.log(location);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       location,
     };
   } catch (error) {
@@ -122,7 +123,7 @@ export const deleteLocationController = async ({
     console.log(location);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       location,
     };
   } catch (error) {
@@ -150,7 +151,7 @@ export const getLocationsController = async ({
     });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       results: locations.length,
       locations,
     };
@@ -176,12 +177,12 @@ export const getLocationController = async ({
 
     if (!location) {
       return {
-        status: "NOT FOUND",
+        status: Status.NOT_FOUND,
       };
     }
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       location,
     };
   } catch (error) {

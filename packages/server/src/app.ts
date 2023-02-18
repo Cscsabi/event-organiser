@@ -47,10 +47,13 @@ import {
   updateGuestInput,
   guestEventInput,
   addGuestAndConnectToEventInput,
+  getGuestsInput,
+  connectGuestToEventInput,
 } from "./guest/guest.schema";
 import {
   addGuestAndConnectToEventController,
   addGuestController,
+  connectGuestToEventController,
   deleteEventGuestController,
   deleteGuestController,
   getGuestController,
@@ -99,8 +102,8 @@ const appRouter = t.router({
     .input(byIdInput)
     .query(({ input }) => getEventController({ getByIdInput: input })),
   getGuests: t.procedure
-    .input(getByEmailInput)
-    .query(({ input }) => getGuestsController({ getByEmailInput: input })),
+    .input(getGuestsInput)
+    .query(({ input }) => getGuestsController({ getGuestsInput: input })),
   getGuest: t.procedure
     .input(getGuestInput)
     .query(({ input }) => getGuestController({ getGuestInput: input })),
@@ -113,6 +116,11 @@ const appRouter = t.router({
       addGuestAndConnectToEventController({
         addGuestAndConnectToEventInput: input,
       })
+    ),
+  connectGuestToEvent: t.procedure
+    .input(connectGuestToEventInput)
+    .mutation(({ input }) =>
+      connectGuestToEventController({ connectGuestToEventInput: input })
     ),
   updateGuest: t.procedure
     .input(updateGuestInput)

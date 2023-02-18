@@ -40,7 +40,7 @@ model Role {
 model Event {
   id         String       @id @default(uuid())
   name       String       
-  user       User         @relation(fields: [email], references: [email])
+  user       User         @relation(fields: [email], references: [email], onDelete: Cascade)
   email      String
   type       EventType
   date       DateTime
@@ -56,7 +56,7 @@ model Event {
 
 model Location {
   id          String  @id @default(uuid())
-  user        User    @relation(fields: [email], references: [email])
+  user        User    @relation(fields: [email], references: [email], onDelete: Cascade)
   email       String
   name        String  @unique
   events      Event[]
@@ -96,9 +96,9 @@ model Country {
 
 model EventGuest {
   id      Int    @id @default(autoincrement())
-  event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId String
-  guest   Guest  @relation(fields: [guestId], references: [id])
+  guest   Guest  @relation(fields: [guestId], references: [id], onDelete: Cascade)
   guestId String
 
   @@unique([eventId, guestId])

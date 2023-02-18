@@ -7,12 +7,13 @@ import {
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
-import type { EventInterface, TableGuestType } from "~/types";
+import type { EventInterface } from "~/types";
 import { getUser } from "~/utils/supabase.client";
 import { paths } from "~/utils/paths";
 import type { EventType } from "@prisma/client";
 import { QwikModal } from "~/integrations/react/modal";
 import styles from "~/table.css?inline";
+import { GuestList } from "~/components/guestlist/guestlist";
 
 export default component$(() => {
   useStyles$(styles);
@@ -20,16 +21,6 @@ export default component$(() => {
   const newEventStore = useSignal<EventInterface>();
   const navigate = useNavigate();
   const modalOpen = useSignal<boolean>(false);
-  const tableRows = useSignal<TableGuestType[]>([
-    {
-      id: "",
-      email: "",
-      firstname: "",
-      lastname: "",
-      special_needs: "",
-      index: 0,
-    },
-  ]);
   const userEmail = useSignal<string>("");
 
   useClientEffect$(async ({ track }) => {
@@ -61,38 +52,6 @@ export default component$(() => {
       console.log(
         newEventStore.value?.date.toISOString().replace(":00.000Z", "")
       );
-      const result = await client.getGuests.query({
-        email: userEmail.value,
-      });
-
-      console.log(result.guests);
-      result.guests.map((guest) => {
-        tableRows.value = [];
-        console.log(guest);
-        let newIndex = 0;
-        if (tableRows.value.at(-1)?.index != undefined) {
-          newIndex = tableRows.value.at(-1)!.index + 1 ?? 0;
-        }
-
-        const tableGuest: TableGuestType = {
-          email: guest.email,
-          firstname: guest.firstname,
-          id: guest.id,
-          lastname: guest.lastname,
-          special_needs: guest.special_needs,
-          index: newIndex,
-        };
-        tableRows.value.push(tableGuest);
-        // tableRows.value = [...tableRows.value];
-      });
-      tableRows.value.push({
-        id: "",
-        email: "",
-        firstname: "",
-        lastname: "",
-        special_needs: "",
-        index: 0,
-      });
     }
   });
 
@@ -155,188 +114,20 @@ export default component$(() => {
         <option value="CUSTOM">CUSTOM</option>
       </select>
       <button onClick$={() => (modalOpen.value = true)}>Guestlist</button>
-      <QwikModal client:load isOpen={modalOpen.value} ariaHideApp={false}>
+      <QwikModal
+        client:load
+        // @ts-ignore: Type is not assignable to type
+        isOpen={modalOpen.value}
+        ariaHideApp={false}
+      >
         <button onClick$={() => (modalOpen.value = false)}>
           Close Guestlist
         </button>
-        <div class="table-wrapper">
-          <table class="fl-table">
-            <thead>
-              <tr>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Special Needs</th>
-                <th>Delete Row</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableRows.value
-                .sort(
-                  (guest1, guest2) =>
-                    +!guest1.firstname - +!guest2.firstname ||
-                    guest1.firstname.localeCompare(guest2.firstname)
-                )
-                .map((guest) => {
-                  console.log(guest);
-                  return (
-                    <tr key={guest.index}>
-                      <td>
-                        <input
-                          onChange$={(event) =>
-                            tableRows.value.map((row) => {
-                              console.log(row.index);
-                              if (row.index === guest.index) {
-                                console.log(guest.index);
-                                row.firstname = (
-                                  event.target as HTMLInputElement
-                                ).value;
-                                console.log(row);
-                              }
-                            })
-                          }
-                          value={guest.firstname}
-                        ></input>
-                      </td>
-                      <td>
-                        <input
-                          onChange$={(event) =>
-                            tableRows.value.map((row) => {
-                              if (row.index === guest.index) {
-                                row.lastname = (
-                                  event.target as HTMLInputElement
-                                ).value;
-                              }
-                            })
-                          }
-                          value={guest.lastname}
-                        ></input>
-                      </td>
-                      <td>
-                        <input
-                          onChange$={(event) =>
-                            tableRows.value.map((row) => {
-                              if (row.index === guest.index) {
-                                row.email = (
-                                  event.target as HTMLInputElement
-                                ).value;
-                              }
-                            })
-                          }
-                          value={guest.email}
-                        ></input>
-                      </td>
-                      <td>
-                        <input
-                          onChange$={(event) =>
-                            tableRows.value.map((row) => {
-                              if (row.index === guest.index) {
-                                row.special_needs = (
-                                  event.target as HTMLInputElement
-                                ).value;
-                              }
-                            })
-                          }
-                          value={guest.special_needs}
-                        ></input>
-                      </td>
-                      <td>
-                        <button
-                          disabled={tableRows.value.length === 1}
-                          onClick$={async () => {
-                            const isNewRow = await client.getGuest.query({
-                              guestId: guest.id,
-                            });
-
-                            if (isNewRow.status !== "NOT FOUND") {
-                              await client.deleteGuest.mutate({
-                                guestId: guest.id,
-                              });
-                            }
-
-                            tableRows.value.forEach((row, index) => {
-                              if (row.index === guest.index)
-                                tableRows.value.splice(index, 1);
-                            });
-                            tableRows.value = [...tableRows.value];
-                          }}
-                        >
-                          Delete row
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
-        <button
-          onClick$={() => {
-            tableRows.value = [
-              ...tableRows.value,
-              {
-                id: "",
-                email: "",
-                firstname: "",
-                lastname: "",
-                special_needs: "",
-                index: tableRows.value.at(-1)!.index + 1,
-              },
-            ];
-            console.log(tableRows.value);
-          }}
-        >
-          Add Row
-        </button>
-        <button
-          onClick$={async () => {
-            console.log(tableRows.value);
-            tableRows.value
-              .filter((guest) => {
-                return guest.firstname && guest.lastname;
-              })
-              .forEach(async (guest) => {
-                console.log(guest);
-                const result = await client.getGuest.query({
-                  guestId: guest.id,
-                });
-                console.log(result.guest);
-                const existingGuest = result.guest;
-                if (result.status === "success") {
-                  if (
-                    existingGuest?.firstname !== guest.firstname ||
-                    existingGuest?.lastname !== guest.lastname ||
-                    existingGuest?.email !== guest.email ||
-                    existingGuest?.special_needs !== guest.special_needs
-                  ) {
-                    // TODO: Check all update operations
-                    await client.updateGuest.mutate({
-                      guestId: guest.id,
-                      email: guest.email,
-                      firstname: guest.firstname,
-                      lastname: guest.lastname,
-                      specialNeeds: guest.special_needs,
-                      userEmail: userEmail.value,
-                    });
-                    window.location.reload();
-                  }
-                } else {
-                  await client.createGuestAndConnectToEvent.mutate({
-                    guestId: guest.id,
-                    email: guest.email,
-                    firstname: guest.firstname,
-                    lastname: guest.lastname,
-                    specialNeeds: guest.special_needs,
-                    userEmail: userEmail.value,
-                    eventId: params.eventId,
-                  });
-                  window.location.reload();
-                }
-              });
-          }}
-        >
-          Save Guestlist
-        </button>
+        <GuestList
+          userEmail={userEmail.value}
+          openedFromEvent={true}
+          eventId={params.eventId}
+        />
       </QwikModal>
       <input
         preventdefault:click

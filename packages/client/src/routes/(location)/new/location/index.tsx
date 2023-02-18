@@ -12,6 +12,7 @@ import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import { getUser } from "~/utils/supabase.client";
 import styles from "~/routes/index.scss?inline";
+import { Status } from "event-organiser-api-server/src/status.enum";
 
 export default component$(() => {
   useStyles$(styles);
@@ -77,7 +78,7 @@ export default component$(() => {
                   },
                 });
 
-                if (result.status === "success") {
+                if (result.status === Status.SUCCESS) {
                   navigate.path = paths.location + result.location.id;
                 }
               }}

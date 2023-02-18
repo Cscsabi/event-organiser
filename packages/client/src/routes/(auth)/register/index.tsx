@@ -6,6 +6,7 @@ import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import type { CreateUserInput } from "event-organiser-api-server/src/user/user.schema";
 import styles from "~/routes/index.scss?inline";
+import { Status } from "event-organiser-api-server/src/status.enum";
 
 export default component$(() => {
   useStyles$(styles);
@@ -123,7 +124,7 @@ export async function handleRegister(
   // TODO: Check the values, send feedback according to the input
   const result = await client.getUser.query({ email: email });
   console.log(result.status);
-  if (result.status === "success") {
+  if (result.status === Status.SUCCESS) {
     return false;
   }
   const credentials: SignUpWithPasswordCredentials = {
@@ -133,7 +134,7 @@ export async function handleRegister(
 
   const customStatus = await registerUser(credentials);
   console.log(customStatus);
-  if (customStatus.result === "success") {
+  if (customStatus.result === Status.SUCCESS) {
     const detailedCredentials: CreateUserInput = {
       email: email.toLowerCase(),
       firstname: capitalize(firstname),

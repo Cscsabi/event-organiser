@@ -8,6 +8,7 @@ import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import { CTX } from "../../layout";
 import styles from "~/routes/index.scss?inline";
+import { Status } from "event-organiser-api-server/src/status.enum";
 
 export default component$(() => {
   useStyles$(styles);
@@ -36,7 +37,7 @@ export default component$(() => {
                   password: store.password,
                 };
                 const login = await loginUserWithPassword(credentials);
-                if (login?.result === "success") {
+                if (login?.result === Status.SUCCESS) {
                   navigate.path = paths.index;
                   user.value = login.data?.session?.access_token ?? "";
                 }
@@ -82,7 +83,7 @@ export default component$(() => {
                   const login = await loginUserWithProvider({
                     provider: "google",
                   });
-                  if (login.result === "success") {
+                  if (login.result === Status.SUCCESS) {
                     navigate.path = paths.index;
                   }
                 }}
@@ -95,7 +96,7 @@ export default component$(() => {
                   const login = await loginUserWithProvider({
                     provider: "facebook",
                   });
-                  if (login.result === "success") {
+                  if (login.result === Status.SUCCESS) {
                     navigate.path = paths.index;
                   }
                 }}

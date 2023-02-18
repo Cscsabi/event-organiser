@@ -1,28 +1,4 @@
-import type { JSX } from "@builder.io/qwik/jsx-runtime";
-import type { EventType, Location, Event, Guest } from "@prisma/client";
-
-export interface BadgeInterface {
-  text: string;
-  filled?: boolean;
-}
-
-export interface ButtonInterface {
-  text: string;
-  type: string;
-  href: string;
-  filled?: boolean;
-  icon?: JSX.Element;
-}
-
-export interface CardInterface {
-  indicator?: string;
-  badge?: BadgeInterface;
-  image?: string;
-  title: string;
-  subtitle?: string;
-  body: string;
-  btn: ButtonInterface;
-}
+import type { EventType, Location, Event } from "@prisma/client";
 
 export interface EventInterface {
   name: string;
@@ -62,21 +38,29 @@ export interface GetEventsReturnType {
   events: Event[];
 }
 
-export interface GetGuestListReturnType {
-  status: string;
-  guests: Guest[];
-}
-
 export interface CalendarEvent {
   name: string;
   date: Date;
 }
 
-export interface TableGuestType {
+export interface GuestListProps {
+  userEmail: string;
+  openedFromEvent: boolean;
+  eventId?: string;
+}
+
+export interface GuestType {
   id: string;
   firstname: string;
   lastname: string;
   email: string;
   special_needs: string;
-  index: number;
+}
+
+export interface GuestListStore {
+  modalOpen: boolean;
+  tableRows: GuestType[];
+  connectableGuests: GuestType[];
+  selectedGuests: GuestType[];
+  useClientEffectHook: number;
 }

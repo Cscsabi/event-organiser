@@ -5,6 +5,7 @@ import { paths } from "~/utils/paths";
 import { logoutUser } from "~/utils/supabase.client";
 import { CTX } from "~/routes/layout";
 import styles from "./header.css?inline";
+import { Status } from "event-organiser-api-server/src/status.enum";
 
 export const ProtectedHeader = component$(() => {
   useStyles$(styles);
@@ -19,13 +20,13 @@ export const ProtectedHeader = component$(() => {
       </div>
       <div class="topnav-right">
         <Link href={paths.previousEvents}>
-        <i class="fa-regular fa-calendar-xmark"></i> Previous Events
+          <i class="fa-regular fa-calendar-xmark"></i> Previous Events
         </Link>
         <Link href={paths.events}>
           <i class="fa-solid fa-calendar-days"></i> Active Events
         </Link>
         <Link href={paths.guests}>
-        <i class="fa-solid fa-person"></i> Guests
+          <i class="fa-solid fa-person"></i> Guests
         </Link>
         <Link href={paths.locations}>
           <i class="fa-solid fa-location-pin"></i> My Locations
@@ -37,7 +38,7 @@ export const ProtectedHeader = component$(() => {
           onClick$={async () => {
             console.log("Clicked!");
             const logout = await logoutUser();
-            if (logout.result === "success") {
+            if (logout.result === Status.SUCCESS) {
               navigate.path = paths.logout;
               user.value = "";
             }

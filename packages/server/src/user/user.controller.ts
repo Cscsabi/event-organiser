@@ -7,6 +7,7 @@ import {
   ParamsInput,
   UpdateUserInput,
 } from "./user.schema";
+import { Status } from "../status.enum";
 
 export const createUserController = async ({
   input,
@@ -26,7 +27,7 @@ export const createUserController = async ({
     console.log(user);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       data: {
         user,
       },
@@ -58,7 +59,7 @@ export const updateUserController = async ({
     });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       user: updatedUser,
     };
   } catch (error) {
@@ -86,12 +87,12 @@ export const findUserController = async ({
 
     if (!user) {
       return {
-        status: "NOT FOUND",
+        status: Status.NOT_FOUND,
       };
     }
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       user,
     };
   } catch (error) {
@@ -113,7 +114,7 @@ export const findAllUsersController = async ({
     const users = await prisma.user.findMany({ skip, take: limit });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       results: users.length,
       users,
     };
@@ -131,7 +132,7 @@ export const deleteUserController = async ({
     await prisma.user.delete({ where: { email: paramsInput.email } });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
     };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

@@ -10,7 +10,6 @@ export const guestEventInput = z.object({
 });
 
 export const addGuestInput = z.object({
-  guestId: z.string(),
   firstname: z.string(),
   lastname: z.string(),
   email: z.string(),
@@ -28,7 +27,6 @@ export const addGuestAndConnectToEventInput = z.object({
   userEmail: z.string(),
 });
 
-
 export const updateGuestInput = z.object({
   guestId: z.string(),
   userEmail: z.string(),
@@ -42,9 +40,27 @@ export const deleteGuestInput = z.object({
   guestId: z.string(),
 });
 
+export const getGuestsInput = z.object({
+  userEmail: z.string(),
+  filteredByEvent: z.boolean().optional(),
+  connectingOnly: z.boolean().optional(),
+  eventId: z.string().optional(),
+});
+
+export const connectGuestToEventInput = z.object({
+  guestId: z.string(),
+  eventId: z.string(),
+});
+
 export type GetGuestInput = z.TypeOf<typeof getGuestInput>;
 export type AddGuestInput = z.TypeOf<typeof addGuestInput>;
-export type AddGuestAndConnectToEventInput = z.TypeOf<typeof addGuestAndConnectToEventInput>;
+export type AddGuestAndConnectToEventInput = z.TypeOf<
+  typeof addGuestAndConnectToEventInput
+>;
 export type UpdateGuestInput = z.TypeOf<typeof updateGuestInput>;
 export type DeleteGuestInput = z.TypeOf<typeof deleteGuestInput>;
 export type GuestEventInput = z.TypeOf<typeof guestEventInput>;
+export type GetGuestsInput = z.TypeOf<typeof getGuestsInput>;
+export type ConnectGuestToEventInput = z.TypeOf<
+  typeof connectGuestToEventInput
+>;

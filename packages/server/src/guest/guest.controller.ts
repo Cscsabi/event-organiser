@@ -1,33 +1,64 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../app";
-import { ByIdInput, GetByEmailInput } from "../general/general.schema";
+import { Status } from "../status.enum";
 import {
   AddGuestAndConnectToEventInput,
   AddGuestInput,
+  ConnectGuestToEventInput,
   DeleteGuestInput,
   GetGuestInput,
+  GetGuestsInput,
   GuestEventInput,
   UpdateGuestInput,
 } from "./guest.schema";
 
 export const getGuestsController = async ({
-  getByEmailInput,
+  getGuestsInput,
 }: {
-  getByEmailInput: GetByEmailInput;
+  getGuestsInput: GetGuestsInput;
 }) => {
   try {
-    const guests = await prisma.guest.findMany({
-      where: {
-        userEmail: getByEmailInput.email,
-      },
-    });
+    let guests;
+    if (getGuestsInput.filteredByEvent) {
+      // Selecting guests that are assigned to the event
+      guests = await prisma.guest.findMany({
+        where: {
+          userEmail: getGuestsInput.userEmail,
+          EventGuest: {
+            some: {
+              eventId: getGuestsInput.eventId,
+            },
+          },
+        },
+      });
+    } else if (getGuestsInput.connectingOnly) {
+      // Selecting existing guests, that are not assigned to the event
+      guests = await prisma.guest.findMany({
+        where: {
+          userEmail: getGuestsInput.userEmail,
+          EventGuest: {
+            none: {
+              eventId: getGuestsInput.eventId,
+            },
+          },
+        },
+      });
+    } else {
+      // Selecting all guests
+      guests = await prisma.guest.findMany({
+        where: {
+          userEmail: getGuestsInput.userEmail,
+        },
+      });
+    }
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       guests,
     };
   } catch (error) {
+    console.error("Invalid input!");
     throw error;
   }
 };
@@ -46,15 +77,16 @@ export const getGuestController = async ({
 
     if (!guest) {
       return {
-        status: "NOT FOUND",
+        status: Status.NOT_FOUND,
       };
     }
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       guest,
     };
   } catch (error) {
+    console.error("Invalid input!");
     throw error;
   }
 };
@@ -78,7 +110,7 @@ export const addGuestController = async ({
     console.log(guest);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       guest,
     };
   } catch (error) {
@@ -118,7 +150,7 @@ export const addGuestAndConnectToEventController = async ({
     console.log(guest);
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       guest,
     };
   } catch (error) {
@@ -127,6 +159,38 @@ export const addGuestAndConnectToEventController = async ({
         throw new TRPCError({
           code: "CONFLICT",
           message: "Guest already exists",
+        });
+      }
+    }
+    throw error;
+  }
+};
+
+export const connectGuestToEventController = async ({
+  connectGuestToEventInput,
+}: {
+  connectGuestToEventInput: ConnectGuestToEventInput;
+}) => {
+  try {
+    const guest = await prisma.eventGuest.create({
+      data: {
+        eventId: connectGuestToEventInput.eventId,
+        guestId: connectGuestToEventInput.guestId,
+      },
+    });
+
+    console.log(guest);
+
+    return {
+      status: Status.SUCCESS,
+      guest,
+    };
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Guest is already assigned to this event.",
         });
       }
     }
@@ -153,7 +217,7 @@ export const updateGuestController = async ({
     });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
       guest,
     };
   } catch (error) {
@@ -188,7 +252,7 @@ export const deleteGuestController = async ({
     });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
     };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -218,7 +282,7 @@ export const deleteEventGuestController = async ({
     });
 
     return {
-      status: "success",
+      status: Status.SUCCESS,
     };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
