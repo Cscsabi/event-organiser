@@ -3,6 +3,7 @@ import type { GuestListProps, GuestListStore } from "~/types";
 import { client } from "~/utils/trpc";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { QwikModal } from "~/integrations/react/modal";
+import { capitalize } from "~/utils/common.functions";
 
 export const EMPTY_ROW = {
   id: "",
@@ -42,7 +43,7 @@ export const GuestList = component$((props: GuestListProps) => {
 
     if (props.openedFromEvent) {
       result = await client.getGuests.query({
-        userEmail: props.userEmail,
+        userEmail: props.userEmail.toLowerCase(),
         filteredByEvent: true,
         eventId: props.eventId ?? "",
       });
@@ -94,6 +95,7 @@ export const GuestList = component$((props: GuestListProps) => {
                   <tr>
                     <td>
                       <input
+                        type="text"
                         onChange$={(event) =>
                           store.tableRows.map((row) => {
                             if (row.id === guest.id) {
@@ -109,6 +111,7 @@ export const GuestList = component$((props: GuestListProps) => {
                     </td>
                     <td>
                       <input
+                        type="text"
                         onChange$={(event) =>
                           store.tableRows.map((row) => {
                             if (row.id === guest.id) {
@@ -123,6 +126,8 @@ export const GuestList = component$((props: GuestListProps) => {
                     </td>
                     <td>
                       <input
+                        type="email"
+                        pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
                         onChange$={(event) =>
                           store.tableRows.map((row) => {
                             if (row.id === guest.id) {
@@ -137,6 +142,7 @@ export const GuestList = component$((props: GuestListProps) => {
                     </td>
                     <td>
                       <input
+                        type="text"
                         onChange$={(event) =>
                           store.tableRows.map((row) => {
                             if (row.id === guest.id) {
@@ -150,7 +156,10 @@ export const GuestList = component$((props: GuestListProps) => {
                       ></input>
                     </td>
                     <td>
-                      <button
+                      <input
+                        preventdefault:click
+                        type="button"
+                        value="Delete row"
                         onClick$={async () => {
                           let rowFound = false;
                           const isNewRow = await client.getGuest.query({
@@ -181,9 +190,7 @@ export const GuestList = component$((props: GuestListProps) => {
 
                           store.tableRows = [...store.tableRows];
                         }}
-                      >
-                        Delete row
-                      </button>
+                      ></input>
                     </td>
                   </tr>
                 );
@@ -262,10 +269,12 @@ export const GuestList = component$((props: GuestListProps) => {
               });
             });
 
-            store.tableRows = [...store.selectedGuests];
+            console.log(store.useClientEffectHook);
+            // store.useClientEffectHook =
+            //   ExecuteUseClientEffect.OPEN_EXISTING_GUESTS;
+            store.tableRows = [...store.tableRows, ...store.selectedGuests];
             store.modalOpen = false;
-            store.useClientEffectHook =
-              ExecuteUseClientEffect.OPEN_EXISTING_GUESTS;
+
             console.log(store.tableRows);
           }}
         >
@@ -281,7 +290,9 @@ export const GuestList = component$((props: GuestListProps) => {
       >
         Add Row
       </button>
-      <button
+      <input
+        type="submit"
+        value="Save Guestlist"
         preventdefault:click
         onClick$={async () => {
           console.log(store.tableRows);
@@ -298,17 +309,19 @@ export const GuestList = component$((props: GuestListProps) => {
               const existingGuest = result.guest;
               if (result.status === Status.SUCCESS) {
                 if (
-                  existingGuest?.firstname !== guest.firstname ||
-                  existingGuest?.lastname !== guest.lastname ||
-                  existingGuest?.email !== guest.email ||
-                  existingGuest?.special_needs !== guest.special_needs
+                  existingGuest?.firstname.toLowerCase() !==
+                    guest.firstname.toLowerCase() ||
+                  existingGuest?.lastname.toLowerCase() !==
+                    guest.lastname.toLowerCase() ||
+                  existingGuest?.email.toLowerCase() !== guest.email ||
+                  existingGuest?.special_needs.toLowerCase() !==
+                    guest.special_needs.toLowerCase()
                 ) {
-                  // TODO: Check all update operations
                   await client.updateGuest.mutate({
                     guestId: guest.id,
-                    email: guest.email,
-                    firstname: guest.firstname,
-                    lastname: guest.lastname,
+                    email: guest.email.toLowerCase(),
+                    firstname: capitalize(guest.firstname),
+                    lastname: capitalize(guest.lastname),
                     specialNeeds: guest.special_needs,
                     userEmail: props.userEmail,
                   });
@@ -317,28 +330,27 @@ export const GuestList = component$((props: GuestListProps) => {
               } else if (props.openedFromEvent) {
                 await client.createGuestAndConnectToEvent.mutate({
                   guestId: guest.id,
-                  email: guest.email,
-                  firstname: guest.firstname,
-                  lastname: guest.lastname,
+                  email: guest.email.toLowerCase(),
+                  firstname: capitalize(guest.firstname),
+                  lastname: capitalize(guest.lastname),
                   specialNeeds: guest.special_needs,
-                  userEmail: props.userEmail,
+                  userEmail: props.userEmail.toLowerCase(),
                   eventId: props.eventId ?? "",
                 });
                 window.location.reload();
               } else if (!props.openedFromEvent) {
                 await client.createGuest.mutate({
-                  firstname: guest.firstname,
-                  lastname: guest.lastname,
-                  email: guest.email,
+                  firstname: capitalize(guest.firstname),
+                  lastname: capitalize(guest.lastname),
+                  email: guest.email.toLowerCase(),
                   specialNeeds: guest.special_needs,
-                  userEmail: props.userEmail,
+                  userEmail: props.userEmail.toLowerCase(),
                 });
+                window.location.reload();
               }
             });
         }}
-      >
-        Save Guestlist
-      </button>
+      ></input>
       <button
         preventdefault:click
         onClick$={() => {

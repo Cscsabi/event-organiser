@@ -24,8 +24,8 @@ export default component$(() => {
   });
 
   return (
-    <div>
+    <>
       <GuestList userEmail={userEmail.value} openedFromEvent={false} />
-    </div>
+    </>
   );
 });

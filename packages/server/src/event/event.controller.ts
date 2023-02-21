@@ -15,7 +15,8 @@ export const addEventController = async ({
       data: {
         name: addEventInput.name,
         type: addEventInput.type,
-        date: addEventInput.date,
+        startDate: addEventInput.startDate,
+        endDate: addEventInput.endDate,
         budget: addEventInput.budget,
         headcount: addEventInput.headcount,
         email: addEventInput.userEmail,
@@ -55,7 +56,8 @@ export const updateEventController = async ({
       data: {
         name: updateEventInput.name,
         type: updateEventInput.type,
-        date: updateEventInput.date,
+        startDate: updateEventInput.startDate,
+        endDate: updateEventInput.endDate,
         budget: updateEventInput.budget,
         headcount: updateEventInput.headcount,
         locationId: updateEventInput.locationId,
@@ -91,7 +93,6 @@ export const deleteEventController = async ({
       where: {
         id: deleteInput.id,
       },
-      include: { EventGuest: { where: { eventId: deleteInput.id } } },
     });
 
     console.log(event);
@@ -165,6 +166,13 @@ export const getEventController = async ({
     const event = await prisma.event.findFirst({
       where: {
         id: getByIdInput.id,
+      },
+      include: {
+        location: { 
+          include: {
+            address: true,
+          },
+        },
       },
     });
 

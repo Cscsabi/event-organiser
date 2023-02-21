@@ -25,22 +25,93 @@ export default component$(() => {
 
   return (
     <div>
-      <input value={params.locationId}></input>
-      <input value={locationStore.value?.city}></input>
-      <input value={locationStore.value?.description}></input>
-      <input value={locationStore.value?.email}></input>
-      <input value={locationStore.value?.link}></input>
-      <input value={locationStore.value?.name}></input>
-      <input value={locationStore.value?.phone}></input>
-      <input value={locationStore.value?.price}></input>
-      <input value={locationStore.value?.state}></input>
-      <input value={locationStore.value?.street}></input>
-      <input value={locationStore.value?.zipCode}></input>
-      <input value={locationStore.value?.type}></input>
+      <label for="city">City:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.city = (event.target as HTMLInputElement).value;
+        }}
+        value={locationStore.value?.city}
+      ></input>
+      <label for="description">Description:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.description = (
+            event.target as HTMLInputElement
+          ).value;
+        }}
+        value={locationStore.value?.description}
+      ></input>
+      <label for="email">Email:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.email = (event.target as HTMLInputElement).value;
+        }}
+        value={locationStore.value?.email}
+      ></input>
+      <label for="link">Link:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.link = (event.target as HTMLInputElement).value;
+        }}
+        value={locationStore.value?.link}
+      ></input>
+      <label for="name">Name:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.name = (event.target as HTMLInputElement).value;
+        }}
+        value={locationStore.value?.name}
+      ></input>
+      <label for="phone">Phone:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.phone = (event.target as HTMLInputElement).value;
+        }}
+        value={locationStore.value?.phone}
+      ></input>
+      <label for="price">Price:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.price = +(event.target as HTMLInputElement)
+            .value;
+        }}
+        value={locationStore.value?.price}
+      ></input>
+      <label for="state">State:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.state = (event.target as HTMLInputElement).value;
+        }}
+        value={locationStore.value?.state}
+      ></input>
+      <label for="street">Street:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.street = (
+            event.target as HTMLInputElement
+          ).value;
+        }}
+        value={locationStore.value?.street}
+      ></input>
+      <label for="zipCode">Zip Code:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.zipCode = +(event.target as HTMLInputElement)
+            .value;
+        }}
+        value={locationStore.value?.zipCode}
+      ></input>
+      <label for="type">Type:</label>
+      <input
+        onChange$={(event) => {
+          locationStore.value!.type = (event.target as HTMLInputElement).value;
+        }}
+        value={locationStore.value?.type}
+      ></input>
       <input
         preventdefault:click
         type="button"
-        value="save"
+        value="Save"
         onClick$={async () => {
           if (locationStore.value) {
             client.updateLocation.mutate({
@@ -62,8 +133,9 @@ export default component$(() => {
               phone: locationStore.value.phone,
               price: +locationStore.value.price,
               type: locationStore.value.type,
-              id: params.locationId
+              id: params.locationId,
             });
+            window.location.reload();
           }
         }}
       ></input>

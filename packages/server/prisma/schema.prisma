@@ -11,30 +11,11 @@ model User {
   email         String      @id
   firstname     String
   lastname      String
-  role          UserRoles[]
   events        Event[]
   locations     Location[]
   notifications Boolean
 
   @@map("users")
-}
-
-model UserRoles {
-  id     Int    @id @default(autoincrement())
-  user   User   @relation(fields: [email], references: [email])
-  email  String
-  role   Role   @relation(fields: [roleId], references: [id])
-  roleId Int
-
-  @@map("user_roles")
-}
-
-model Role {
-  id        Int         @id @default(autoincrement())
-  userRoles UserRoles[]
-  name      Roles       @unique
-
-  @@map("roles")
 }
 
 model Event {
@@ -43,7 +24,8 @@ model Event {
   user       User         @relation(fields: [email], references: [email], onDelete: Cascade)
   email      String
   type       EventType
-  date       DateTime
+  startDate  DateTime
+  endDate    DateTime
   budget     Decimal
   location   Location     @relation(fields: [locationId], references: [id])
   locationId String
@@ -116,11 +98,6 @@ model Guest {
 
   @@unique([userEmail, firstname, lastname, email, special_needs])
   @@map("guests")
-}
-
-enum Roles {
-  USER
-  ADMIN
 }
 
 enum EventType {

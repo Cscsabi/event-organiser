@@ -7,6 +7,7 @@ import { client } from "~/utils/trpc";
 import type { CreateUserInput } from "event-organiser-api-server/src/user/user.schema";
 import styles from "~/routes/index.scss?inline";
 import { Status } from "event-organiser-api-server/src/status.enum";
+import { capitalize } from "~/utils/common.functions";
 
 export default component$(() => {
   useStyles$(styles);
@@ -147,8 +148,4 @@ export async function handleRegister(
     }
   }
   return false;
-}
-
-export function capitalize(input: string) {
-  return input.charAt(0).toUpperCase() + input.toLowerCase().slice(1);
 }

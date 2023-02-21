@@ -14,6 +14,7 @@ import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import styles from "~/routes/index.scss?inline";
 import { Status } from "event-organiser-api-server/src/status.enum";
+import { getProperDateFormat } from "~/utils/common.functions";
 
 export default component$(() => {
   useStyles$(styles);
@@ -21,7 +22,8 @@ export default component$(() => {
   const store = useStore<EventInterface>({
     name: "",
     type: EventType.CUSTOM,
-    date: new Date(),
+    startDate: new Date(),
+    endDate: new Date(),
     budget: 0,
     locationId: "",
     email: "",
@@ -33,8 +35,7 @@ export default component$(() => {
       track(() => store.email);
       const controller = new AbortController();
       cleanup(() => controller.abort());
-      const result = client.getLocations.query({ email: store.email });
-      return result;
+      return client.getLocations.query({ email: store.email });
     }
   );
 
@@ -45,7 +46,12 @@ export default component$(() => {
     } else {
       store.email = userDetails.data.user.email ?? "";
     }
-    console.log(new Date().toISOString().replace(/:\d{2}\.\d{3}Z$/, ""))
+    console.log(
+      new Date()
+        .toISOString()
+        .replace(/:\d{2}\.\d{3}Z$/, "")
+        .substring(11)
+    );
   });
 
   return (
@@ -61,7 +67,8 @@ export default component$(() => {
               onSubmit$={async () => {
                 const result = await client.addEvent.mutate({
                   budget: store.budget,
-                  date: new Date(store.date),
+                  startDate: new Date(store.startDate),
+                  endDate: new Date(store.endDate),
                   headcount: store.headcount,
                   name: store.name,
                   type: store.type,
@@ -105,18 +112,86 @@ export default component$(() => {
                   <option value="CUSTOM">CUSTOM</option>
                 </select>
               </div>
-              <label for="date">Date:</label>
+              <label for="startDate">Start Date:</label>
               <div class="input_field">
                 <input
                   pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
-                  onInput$={(event) =>
-                    (store.date = new Date(
-                      (event.target as HTMLInputElement).value
-                    ))
-                  }
-                  type="datetime-local"
-                  name="email"
-                  min={new Date().toISOString().replace(/:\d{2}\.\d{3}Z$/, "")}
+                  onChange$={(event) => {
+                    const inputs = (
+                      event.target as HTMLInputElement
+                    ).value.split("-");
+                    store.startDate = new Date(
+                      +inputs[0],
+                      +inputs[1] - 1, // Starts from zero
+                      +inputs[2],
+                      store.startDate.getHours(),
+                      store.startDate.getMinutes()
+                    );
+                  }}
+                  type="date"
+                  name="startDate"
+                  min={getProperDateFormat()}
+                ></input>
+              </div>
+              <label for="startTime">Start Time:</label>
+              <div class="input_field">
+                <input
+                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
+                  onChange$={(event) => {
+                    const inputs = (
+                      event.target as HTMLInputElement
+                    ).value.split(":");
+                    store.startDate = new Date(
+                      store.startDate.getFullYear(),
+                      store.startDate.getMonth(),
+                      store.startDate.getDate(),
+                      +inputs[0],
+                      +inputs[1]
+                    );
+                  }}
+                  type="time"
+                  name="startTime"
+                ></input>
+              </div>
+              <label for="endDate">End Date:</label>
+              <div class="input_field">
+                <input
+                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
+                  onChange$={(event) => {
+                    const inputs = (
+                      event.target as HTMLInputElement
+                    ).value.split("-");
+                    store.endDate = new Date(
+                      +inputs[0],
+                      +inputs[1] - 1, // Starts from zero
+                      +inputs[2],
+                      store.endDate.getHours(),
+                      store.endDate.getMinutes()
+                    );
+                  }}
+                  type="date"
+                  name="endDate"
+                  min={getProperDateFormat()}
+                ></input>
+              </div>
+              <label for="endTime">End Time:</label>
+              <div class="input_field">
+                <input
+                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
+                  onChange$={(event) => {
+                    const inputs = (
+                      event.target as HTMLInputElement
+                    ).value.split(":");
+                    store.endDate = new Date(
+                      store.endDate.getFullYear(),
+                      store.endDate.getMonth(),
+                      store.endDate.getDate(),
+                      +inputs[0],
+                      +inputs[1]
+                    );
+                  }}
+                  type="time"
+                  name="endTime"
                 ></input>
               </div>
               <label for="budget">Event budget:</label>
@@ -126,7 +201,7 @@ export default component$(() => {
                     (store.budget = +(event.target as HTMLInputElement).value)
                   }
                   type="number"
-                  name="email"
+                  name="budget"
                 ></input>
               </div>
               <label for="headcount">Headcount:</label>
@@ -137,7 +212,7 @@ export default component$(() => {
                       .value)
                   }
                   type="number"
-                  name="email"
+                  name="headcount"
                 ></input>
               </div>
               <label for="location">Location:</label>

@@ -1,10 +1,12 @@
 import type { EventType, Location, Event } from "@prisma/client";
+import type { Status } from "event-organiser-api-server/src/status.enum";
 
 export interface EventInterface {
   name: string;
   email: string;
   type: EventType;
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   budget: number;
   locationId: string;
   headcount: number;
@@ -27,15 +29,19 @@ export interface LocationInterface {
 }
 
 export interface GetLocationsReturnType {
-  status: string;
+  status: Status;
   results: number;
   locations: Location[];
 }
 
 export interface GetEventsReturnType {
-  status: string;
+  status: Status;
   results: number;
-  events: Event[];
+  events: (Event & {
+    location: {
+      name: string;
+    };
+  })[];
 }
 
 export interface CalendarEvent {
@@ -47,6 +53,7 @@ export interface GuestListProps {
   userEmail: string;
   openedFromEvent: boolean;
   eventId?: string;
+  historic?: boolean;
 }
 
 export interface GuestType {
@@ -63,4 +70,21 @@ export interface GuestListStore {
   connectableGuests: GuestType[];
   selectedGuests: GuestType[];
   useClientEffectHook: number;
+}
+
+export interface GetGuestReturnType {
+  status: Status;
+  guests: GuestType[];
+}
+
+export interface EventStore {
+  event?: EventInterface;
+  location?: LocationInterface;
+  modalOpen: boolean;
+  userEmail: string;
+}
+
+export interface ListProps {
+  isActive?: boolean;
+  isEvent: boolean;
 }

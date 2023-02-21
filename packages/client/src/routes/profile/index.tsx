@@ -45,7 +45,7 @@ export default component$(() => {
       <button onClick$={() => resetPassword(email.value)}>
         Change Password
       </button>
-      // TODO: check calendar
+      {/* TODO: check calendar */}
       <QwikCalendar
         client:load
         onChange$={(event: Date) => {
@@ -82,7 +82,7 @@ export async function getEvents(email: string) {
   return result.events.map((event) => {
     const calendarEvent: CalendarEvent = {
       name: event.name,
-      date: event.date,
+      date: event.startDate,
     };
 
     return calendarEvent;

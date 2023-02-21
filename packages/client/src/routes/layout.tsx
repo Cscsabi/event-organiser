@@ -29,7 +29,7 @@ export default component$(() => {
     <>
       <main>
         <section>
-          {userEmail.value ? <ProtectedHeader /> : <PublicHeader />}
+          {userEmail.value.length > 0 ? <ProtectedHeader /> : <PublicHeader />}
           <Slot />
           <script
             src="https://kit.fontawesome.com/bb097e18f6.js"
