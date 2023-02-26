@@ -8,11 +8,12 @@ import type { CreateUserInput } from "event-organiser-api-server/src/user/user.s
 import styles from "~/routes/index.scss?inline";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { capitalize } from "~/utils/common.functions";
+import type { RegisterStore } from "~/utils/types";
 
 export default component$(() => {
   useStyles$(styles);
   const navigate = useNavigate();
-  const store = useStore({
+  const store = useStore<RegisterStore>({
     firstname: "",
     lastname: "",
     email: "",

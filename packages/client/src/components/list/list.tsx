@@ -5,12 +5,13 @@ import {
   useResource$,
   useSignal,
 } from "@builder.io/qwik";
+import type { ResourceReturn, Signal } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import type {
   GetEventsReturnType,
   GetLocationsReturnType,
   ListProps,
-} from "~/types";
+} from "~/utils/types";
 import { paths } from "~/utils/paths";
 import { getUser } from "~/utils/supabase.client";
 import { client } from "~/utils/trpc";
@@ -65,6 +66,19 @@ export const List = component$((props: ListProps) => {
         type="text"
         placeholder="Search.."
       />
+      {generateList(props, eventResource, searchInput, locationResource)}
+    </div>
+  );
+});
+
+export const generateList = (
+  props: ListProps,
+  eventResource: ResourceReturn<GetEventsReturnType>,
+  searchInput: Signal<string>,
+  locationResource: ResourceReturn<GetLocationsReturnType>
+) => {
+  return (
+    <div>
       {props.isEvent ? (
         <Resource
           value={eventResource}
@@ -95,7 +109,7 @@ export const List = component$((props: ListProps) => {
                         name={event.name}
                         color={props.isActive ? "card-2" : "card-3"}
                         goTo={
-                          props
+                          props.isActive
                             ? paths.event + event.id
                             : paths.previousEvent + event.id
                         }
@@ -134,4 +148,4 @@ export const List = component$((props: ListProps) => {
       )}
     </div>
   );
-});
+};

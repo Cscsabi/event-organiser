@@ -1,7 +1,7 @@
 import type { EventType, Location, Event } from "@prisma/client";
 import type { Status } from "event-organiser-api-server/src/status.enum";
 
-export interface EventInterface {
+export interface NewEventStore {
   name: string;
   email: string;
   type: EventType;
@@ -12,7 +12,7 @@ export interface EventInterface {
   headcount: number;
 }
 
-export interface LocationInterface {
+export interface LocationStore {
   email: string;
   name: string;
   description: string;
@@ -69,6 +69,7 @@ export interface GuestListStore {
   tableRows: GuestType[];
   connectableGuests: GuestType[];
   selectedGuests: GuestType[];
+  unselectedGuests: GuestType[];
   useClientEffectHook: number;
 }
 
@@ -78,8 +79,8 @@ export interface GetGuestReturnType {
 }
 
 export interface EventStore {
-  event?: EventInterface;
-  location?: LocationInterface;
+  event?: NewEventStore;
+  location?: LocationStore;
   modalOpen: boolean;
   userEmail: string;
 }
@@ -87,4 +88,34 @@ export interface EventStore {
 export interface ListProps {
   isActive?: boolean;
   isEvent: boolean;
+}
+
+export interface ProfilStore {
+  checkbox: boolean;
+  email: string;
+  date: Date;
+  events: CalendarEvent[];
+}
+
+export interface RegisterStore {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  message: string;
+}
+
+export interface LoginStore {
+  email: string;
+  password: string;
+}
+
+export interface CardProps {
+  id: string;
+  name: string;
+  description: string;
+  location?: string;
+  color: string;
+  goTo: string;
+  icon: string;
 }

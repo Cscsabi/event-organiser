@@ -9,17 +9,20 @@ import {
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
-import type { EventInterface, GetGuestReturnType } from "~/types";
+import type { NewEventStore, GetGuestReturnType } from "~/utils/types";
 import { getUser } from "~/utils/supabase.client";
 import { paths } from "~/utils/paths";
 import styles from "~/table.css?inline";
-import { getProperDateFormat, getProperTimeFormat } from "~/utils/common.functions";
+import {
+  getProperDateFormat,
+  getProperTimeFormat,
+} from "~/utils/common.functions";
 
 export default component$(() => {
   useStyles$(styles);
 
   const { params } = useLocation();
-  const newEventStore = useSignal<EventInterface>();
+  const newEventStore = useSignal<NewEventStore>();
   const navigate = useNavigate();
   const userEmail = useSignal<string>("");
 
@@ -36,7 +39,7 @@ export default component$(() => {
         navigate.path = paths.event + params.eventId;
       }
 
-      const currentLocation: EventInterface = {
+      const currentLocation: NewEventStore = {
         budget: +event.budget,
         startDate: event.startDate,
         endDate: event.endDate,
@@ -156,7 +159,14 @@ export default component$(() => {
           }
         }}
       />
-      <button preventdefault:click onClick$={() => {navigate.path = paths.location + newEventStore.value?.locationId}} >Go to Location</button>
+      <button
+        preventdefault:click
+        onClick$={() => {
+          navigate.path = paths.location + newEventStore.value?.locationId;
+        }}
+      >
+        Go to Location
+      </button>
     </div>
   );
 });

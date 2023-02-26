@@ -1,17 +1,10 @@
 import { component$, useStyles$ } from "@builder.io/qwik";
 import styles from "./card.css?inline";
 import { Link } from "@builder.io/qwik-city";
+import type { CardProps } from "~/utils/types";
 
 export default component$(
-  (card: {
-    id: string;
-    name: string;
-    description: string;
-    location?: string;
-    color: string;
-    goTo: string;
-    icon: string;
-  }) => {
+  (card: CardProps) => {
     useStyles$(styles);
     return (
       <div class="main-container">

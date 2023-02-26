@@ -9,13 +9,14 @@ import { paths } from "~/utils/paths";
 import { CTX } from "../../layout";
 import styles from "~/routes/index.scss?inline";
 import { Status } from "event-organiser-api-server/src/status.enum";
+import type { LoginStore } from "~/utils/types";
 
 export default component$(() => {
   useStyles$(styles);
   const user = useContext(CTX);
   const navigate = useNavigate();
 
-  const store = useStore({
+  const store = useStore<LoginStore>({
     email: "",
     password: "",
   });

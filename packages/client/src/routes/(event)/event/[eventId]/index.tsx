@@ -7,7 +7,7 @@ import {
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
-import type { EventInterface, EventStore, LocationInterface } from "~/types";
+import type { EventStore, LocationStore, NewEventStore } from "~/utils/types";
 import { getUser } from "~/utils/supabase.client";
 import { paths } from "~/utils/paths";
 import type { EventType } from "@prisma/client";
@@ -46,7 +46,7 @@ export default component$(() => {
         navigate.path = paths.previousEvent + params.eventId;
       }
 
-      const currentEvent: EventInterface = {
+      const currentEvent: NewEventStore = {
         budget: +event.budget,
         startDate: event.startDate,
         endDate: event.endDate,
@@ -57,7 +57,7 @@ export default component$(() => {
         type: event.type,
       };
 
-      const currentLocation: LocationInterface = {
+      const currentLocation: LocationStore = {
         addressId: event.location.addressId,
         city: event.location.address.city,
         countryId: event.location.address.countryId,
@@ -91,7 +91,6 @@ export default component$(() => {
       <label for="startDate">Start Date:</label>
       <input
         type="date"
-        pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split("-");
           store.event!.startDate = new Date(
@@ -108,7 +107,6 @@ export default component$(() => {
       <label for="startTime">Start Time:</label>
       <input
         type="time"
-        pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split(":");
           store.event!.startDate = new Date(
@@ -116,7 +114,7 @@ export default component$(() => {
             store.event!.startDate.getMonth(),
             store.event!.startDate.getDate(),
             +inputs[0],
-            +inputs[1]
+            +inputs[1] - store.event!.startDate.getTimezoneOffset()
           );
           console.log(store.event!.startDate);
         }}
@@ -125,7 +123,6 @@ export default component$(() => {
       <label for="endDate">End Date:</label>
       <input
         type="date"
-        pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split("-");
           store.event!.endDate = new Date(
@@ -141,7 +138,6 @@ export default component$(() => {
       <label for="time">End Time:</label>
       <input
         type="time"
-        pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split(":");
           store.event!.endDate = new Date(
@@ -149,7 +145,7 @@ export default component$(() => {
             store.event!.endDate.getMonth(),
             store.event!.endDate.getDate(),
             +inputs[0],
-            +inputs[1]
+            +inputs[1] - store.event!.endDate.getTimezoneOffset()
           );
         }}
         value={getProperTimeFormat(store.event?.endDate)}
@@ -224,7 +220,7 @@ export default component$(() => {
               name: store.event.name,
               type: store.event.type,
             });
-            //window.location.reload();
+            window.location.reload();
           }
         }}
       />
@@ -247,45 +243,7 @@ export default component$(() => {
       <button
         preventdefault:click
         onClick$={async () => {
-          if (!store.event?.startDate || !store.event?.endDate) {
-            // TODO: tell the user to fill date field
-            return;
-          }
-          const user = await client.getUser.query({
-            email: store.userEmail,
-          });
-          const event: ics.EventAttributes = {
-            start: [
-              store.event?.startDate.getFullYear(),
-              store.event?.startDate.getMonth(),
-              store.event?.startDate.getDate(),
-              store.event?.startDate.getHours(),
-              store.event?.startDate.getMinutes(),
-            ],
-            end: [
-              store.event?.endDate.getFullYear(),
-              store.event?.endDate.getMonth(),
-              store.event?.endDate.getDate(),
-              store.event?.endDate.getHours(),
-              store.event?.endDate.getMinutes(),
-            ],
-            title: store.event?.name,
-            description: store.event?.type,
-            location: store.location?.name,
-            url: store.location?.link.startsWith("http")
-              ? store.location?.link
-              : "http://" + store.location?.link,
-            // geo: { lat: 40.0095, lon: 105.2669 },
-            status: "CONFIRMED",
-            busyStatus: "BUSY",
-            organizer: {
-              name: user.user!.lastname + " " + user.user!.firstname,
-              email: store.userEmail,
-            },
-            productId: store.event.name + "/ics",
-          };
-
-          handleDownload(event, store.event?.name ?? "");
+          exportToCalendar(store);
         }}
       >
         Export to Calendar
@@ -323,6 +281,48 @@ export async function getCurrentEvent(eventId: string) {
   const result = await client.getEvent.query({ id: eventId });
   return result.event;
 }
+
+export const exportToCalendar = async (store: EventStore) => {
+  if (!store.event?.startDate || !store.event?.endDate) {
+    // TODO: tell the user to fill date field
+    return;
+  }
+  const user = await client.getUser.query({
+    email: store.userEmail,
+  });
+  const event: ics.EventAttributes = {
+    start: [
+      store.event?.startDate.getFullYear(),
+      store.event?.startDate.getMonth(),
+      store.event?.startDate.getDate(),
+      store.event?.startDate.getHours(),
+      store.event?.startDate.getMinutes(),
+    ],
+    end: [
+      store.event?.endDate.getFullYear(),
+      store.event?.endDate.getMonth(),
+      store.event?.endDate.getDate(),
+      store.event?.endDate.getHours(),
+      store.event?.endDate.getMinutes(),
+    ],
+    title: store.event?.name,
+    description: store.event?.type,
+    location: store.location?.name,
+    url: store.location?.link.startsWith("http")
+      ? store.location?.link
+      : "http://" + store.location?.link,
+    // geo: { lat: 40.0095, lon: 105.2669 },
+    status: "CONFIRMED",
+    busyStatus: "BUSY",
+    organizer: {
+      name: user.user!.lastname + " " + user.user!.firstname,
+      email: store.userEmail,
+    },
+    productId: store.event.name + "/ics",
+  };
+
+  await handleDownload(event, store.event?.name ?? "");
+};
 
 export async function handleDownload(
   event: ics.EventAttributes,

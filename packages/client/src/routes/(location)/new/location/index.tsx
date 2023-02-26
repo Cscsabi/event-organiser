@@ -6,7 +6,7 @@ import {
   useStore,
   useStyles$,
 } from "@builder.io/qwik";
-import type { LocationInterface } from "~/types";
+import type { LocationStore } from "~/utils/types";
 import { client } from "~/utils/trpc";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
@@ -21,7 +21,7 @@ export default component$(() => {
     return client.getCountries.query();
   });
 
-  const store = useStore<LocationInterface>({
+  const store = useStore<LocationStore>({
     email: "",
     name: "",
     description: "",

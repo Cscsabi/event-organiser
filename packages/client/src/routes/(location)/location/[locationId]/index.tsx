@@ -3,13 +3,13 @@ import { useLocation } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { useNavigate } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
-import type { LocationInterface } from "~/types";
+import type { LocationStore } from "~/utils/types";
 import { getUser } from "~/utils/supabase.client";
 import { paths } from "~/utils/paths";
 
 export default component$(() => {
   const { params } = useLocation();
-  const locationStore = useSignal<LocationInterface>();
+  const locationStore = useSignal<LocationStore>();
   const navigate = useNavigate();
 
   useClientEffect$(async () => {
@@ -177,6 +177,6 @@ export async function getCurrentLocation(locationId: string) {
       street: result.location.address.street,
       type: result.location.type,
       zipCode: +result.location.address.zip_code,
-    } as LocationInterface;
+    } as LocationStore;
   }
 }

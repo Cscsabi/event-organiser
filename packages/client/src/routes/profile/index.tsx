@@ -1,4 +1,8 @@
-import { component$, useSignal, useClientEffect$ } from "@builder.io/qwik";
+import {
+  component$,
+  useClientEffect$,
+  useStore,
+} from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import {
@@ -9,18 +13,20 @@ import {
 } from "~/utils/supabase.client";
 import { QwikCalendar } from "~/integrations/react/calendar";
 import { client } from "~/utils/trpc";
-import type { CalendarEvent } from "~/types";
+import type { CalendarEvent, ProfilStore } from "~/utils/types";
+
 export default component$(() => {
-  const checkbox = useSignal(false);
-  const email = useSignal("Loading...");
-  const input = useSignal<EventTarget & HTMLInputElement>();
-  const date = useSignal<Date>(new Date());
+  const store = useStore<ProfilStore>({
+    checkbox: false,
+    email: "Loading...",
+    date: new Date(),
+    events: [],
+  });
+
   const navigate = useNavigate();
-  const events = useSignal<CalendarEvent[]>([]);
 
   useClientEffect$(async ({ track }) => {
-    track(() => email.value);
-    track(() => input.value);
+    track(() => store.email);
 
     const userResponse = await getUser();
     if (!userResponse.data.user) {
@@ -28,33 +34,33 @@ export default component$(() => {
     }
 
     if (userResponse.data.user?.email) {
-      email.value = userResponse.data.user.email;
-      const userData = await getUserData(email.value);
+      store.email = userResponse.data.user.email;
+      const userData = await getUserData(store.email);
 
       if (userData.user?.notifications) {
-        checkbox.value = userData.user?.notifications;
+        store.checkbox = userData.user?.notifications;
       }
     }
 
-    events.value = await getEvents(email.value);
+    store.events = await getEvents(store.email);
   });
 
   return (
     <div>
-      <p>Email: {email.value}</p>
-      <button onClick$={() => resetPassword(email.value)}>
+      <p>Email: {store.email}</p>
+      <button onClick$={() => resetPassword(store.email)}>
         Change Password
       </button>
       {/* TODO: check calendar */}
       <QwikCalendar
         client:load
         onChange$={(event: Date) => {
-          date.value = event;
+          store.date = event;
         }}
-        value={date.value}
+        value={store.date}
         defaultView="year"
         view="month"
-        events={events.value}
+        events={store.events}
         onClickDay$={() => {
           console.log("clicked");
         }}
@@ -62,10 +68,10 @@ export default component$(() => {
       <label for="emailCheckbox">Enable email reminders:</label>
       <input
         type="checkbox"
-        checked={checkbox.value}
+        checked={store.checkbox}
         onChange$={(event) => {
           updateUserNotifications(
-            email.value,
+            store.email,
             (event.target as HTMLInputElement).checked
           );
         }}

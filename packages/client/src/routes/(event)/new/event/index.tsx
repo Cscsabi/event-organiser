@@ -6,7 +6,7 @@ import {
   useStore,
   useStyles$,
 } from "@builder.io/qwik";
-import type { EventInterface, GetLocationsReturnType } from "~/types";
+import type { NewEventStore, GetLocationsReturnType } from "~/utils/types";
 import { EventType } from "@prisma/client";
 import { client } from "~/utils/trpc";
 import { getUser } from "~/utils/supabase.client";
@@ -14,12 +14,17 @@ import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import styles from "~/routes/index.scss?inline";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import { getProperDateFormat } from "~/utils/common.functions";
+import {
+  getMaxTimeFormat,
+  getMinTimeFormat,
+  getProperDateFormat,
+  getProperTimeFormat,
+} from "~/utils/common.functions";
 
 export default component$(() => {
   useStyles$(styles);
   const navigate = useNavigate();
-  const store = useStore<EventInterface>({
+  const store = useStore<NewEventStore>({
     name: "",
     type: EventType.CUSTOM,
     startDate: new Date(),
@@ -46,12 +51,6 @@ export default component$(() => {
     } else {
       store.email = userDetails.data.user.email ?? "";
     }
-    console.log(
-      new Date()
-        .toISOString()
-        .replace(/:\d{2}\.\d{3}Z$/, "")
-        .substring(11)
-    );
   });
 
   return (
@@ -115,7 +114,6 @@ export default component$(() => {
               <label for="startDate">Start Date:</label>
               <div class="input_field">
                 <input
-                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
                   onChange$={(event) => {
                     const inputs = (
                       event.target as HTMLInputElement
@@ -127,16 +125,17 @@ export default component$(() => {
                       store.startDate.getHours(),
                       store.startDate.getMinutes()
                     );
+                    console.log("start", store.startDate);
                   }}
                   type="date"
                   name="startDate"
                   min={getProperDateFormat()}
+                  // max={getProperDateFormat(store.endDate)}
                 ></input>
               </div>
               <label for="startTime">Start Time:</label>
               <div class="input_field">
                 <input
-                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
                   onChange$={(event) => {
                     const inputs = (
                       event.target as HTMLInputElement
@@ -146,17 +145,17 @@ export default component$(() => {
                       store.startDate.getMonth(),
                       store.startDate.getDate(),
                       +inputs[0],
-                      +inputs[1]
+                      +inputs[1] - store.endDate.getTimezoneOffset()
                     );
                   }}
                   type="time"
                   name="startTime"
+                  max={getMaxTimeFormat(store.startDate, store.endDate)}
                 ></input>
               </div>
               <label for="endDate">End Date:</label>
               <div class="input_field">
                 <input
-                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
                   onChange$={(event) => {
                     const inputs = (
                       event.target as HTMLInputElement
@@ -171,14 +170,15 @@ export default component$(() => {
                   }}
                   type="date"
                   name="endDate"
-                  min={getProperDateFormat()}
+                  min={getProperDateFormat(store.startDate)}
                 ></input>
               </div>
               <label for="endTime">End Time:</label>
               <div class="input_field">
                 <input
-                  pattern="\d{4}-\d{2}-\d{2}T\d{2}\d{2}"
                   onChange$={(event) => {
+                    console.log(getProperTimeFormat(store.endDate));
+                    console.log(store.endDate.getTimezoneOffset());
                     const inputs = (
                       event.target as HTMLInputElement
                     ).value.split(":");
@@ -187,11 +187,12 @@ export default component$(() => {
                       store.endDate.getMonth(),
                       store.endDate.getDate(),
                       +inputs[0],
-                      +inputs[1]
+                      +inputs[1] - store.endDate.getTimezoneOffset()
                     );
                   }}
                   type="time"
                   name="endTime"
+                  min={getMinTimeFormat(store.startDate, store.endDate)}
                 ></input>
               </div>
               <label for="budget">Event budget:</label>
