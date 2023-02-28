@@ -1,5 +1,5 @@
 import { EventType } from "@prisma/client";
-import { z } from "zod";
+import { boolean, z } from "zod";
 
 export const addEventInput = z.object({
   name: z.string(),
@@ -10,6 +10,9 @@ export const addEventInput = z.object({
   headcount: z.number(),
   userEmail: z.string(),
   locationId: z.string(),
+  decorNeeded: z.boolean(),
+  menuNeeded: z.boolean(),
+  performerNeeded: z.boolean(),
 });
 
 export const updateEventInput = z.object({
@@ -22,6 +25,9 @@ export const updateEventInput = z.object({
   headcount: z.number(),
   userEmail: z.string(),
   locationId: z.string(),
+  decorNeeded: z.boolean(),
+  menuNeeded: z.boolean(),
+  performerNeeded: z.boolean(),
 });
 
 export type AddEventInput = z.TypeOf<typeof addEventInput>;

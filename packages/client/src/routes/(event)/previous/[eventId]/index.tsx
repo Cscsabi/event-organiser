@@ -39,7 +39,7 @@ export default component$(() => {
         navigate.path = paths.event + params.eventId;
       }
 
-      const currentLocation: NewEventStore = {
+      const currentEvent: NewEventStore = {
         budget: +event.budget,
         startDate: event.startDate,
         endDate: event.endDate,
@@ -48,10 +48,13 @@ export default component$(() => {
         locationId: event.locationId,
         name: event.name,
         type: event.type,
+        decorNeeded: event.decorNeeded,
+        menuNeeded: event.menuNeeded,
+        performerNeeded: event.performerNeeded,
       };
       console.log(params);
 
-      newEventStore.value = currentLocation;
+      newEventStore.value = currentEvent;
     }
   });
 

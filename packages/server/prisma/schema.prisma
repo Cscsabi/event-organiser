@@ -8,29 +8,34 @@ datasource db {
 }
 
 model User {
-  email         String      @id
+  email         String     @id
   firstname     String
   lastname      String
   events        Event[]
   locations     Location[]
   notifications Boolean
+  contacts      Contact[]
 
   @@map("users")
 }
 
 model Event {
-  id         String       @id @default(uuid())
-  name       String       
-  user       User         @relation(fields: [email], references: [email], onDelete: Cascade)
-  email      String
-  type       EventType
-  startDate  DateTime
-  endDate    DateTime
-  budget     Decimal
-  location   Location     @relation(fields: [locationId], references: [id])
-  locationId String
-  headcount  Int
-  EventGuest EventGuest[]
+  id               String           @id @default(uuid())
+  name             String       
+  user             User             @relation(fields: [email], references: [email], onDelete: Cascade)
+  email            String
+  type             EventType
+  startDate        DateTime
+  endDate          DateTime
+  budget           Decimal
+  location         Location         @relation(fields: [locationId], references: [id])
+  locationId       String
+  headcount        Int
+  menuNeeded       Boolean
+  decorNeeded      Boolean
+  performerNeeded  Boolean
+  eventGuest       EventGuest[]
+  budgetPlanning   BudgetPlanning[]
 
   @@unique([name, email])
   @@map("events")
@@ -98,6 +103,34 @@ model Guest {
 
   @@unique([userEmail, firstname, lastname, email, special_needs])
   @@map("guests")
+}
+
+model BudgetPlanning {
+  id          Int       @id @default(autoincrement())
+  contactName String
+  contactId   String
+  contact     Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  amount      Decimal
+  isPaid      Boolean
+  description String
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId     String  
+
+  @@unique([contactId, eventId])
+  @@map("budget_planning")
+}
+
+model Contact {
+  id               String           @id @default(uuid())
+  name             String
+  phone            String
+  email            String
+  description      String
+  budgetPlanning   BudgetPlanning[]
+  user             User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  userEmail        String
+
+  @@map("contacts")
 }
 
 enum EventType {

@@ -29,7 +29,10 @@ export const ProtectedHeader = component$(() => {
           <i class="fa-solid fa-person"></i> Guests
         </Link>
         <Link href={paths.locations}>
-          <i class="fa-solid fa-location-pin"></i> My Locations
+          <i class="fa-solid fa-location-pin"></i> Locations
+        </Link>
+        <Link href={paths.contacts}>
+          <i class="fa-solid fa-address-card"></i> Contacts
         </Link>
         <Link href={paths.profile}>
           <i class="fa-regular fa-user"></i> Profile

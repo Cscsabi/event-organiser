@@ -32,7 +32,11 @@ import {
   addLocationInput,
   updateLocationInput,
 } from "./location/location.schema";
-import { byIdInput, getByEmailInput } from "./general/general.schema";
+import {
+  byIdInput,
+  byNoInput,
+  getByEmailInput,
+} from "./general/general.schema";
 import {
   addLocationController,
   deleteLocationController,
@@ -60,6 +64,24 @@ import {
   getGuestsController,
   updateGuestController,
 } from "./guest/guest.controller";
+import {
+  addBudgetPlanningController,
+  addContactController,
+  deleteBudgetPlanningController,
+  deleteContactController,
+  getBudgetPlanningController,
+  getBudgetPlanningsController,
+  getContactController,
+  getContactsController,
+  updateBudgetPlanningController,
+  updateContactController,
+} from "./contact/contact.controller";
+import {
+  budgetPlanningInput,
+  contactInput,
+  getBudgetPlanningInput,
+  updateContactInput,
+} from "./contact/contact.schema";
 
 export const prisma = new PrismaClient();
 const t = initTRPC.create({
@@ -101,6 +123,48 @@ const appRouter = t.router({
   getEvent: t.procedure
     .input(byIdInput)
     .query(({ input }) => getEventController({ getByIdInput: input })),
+  getBudgetPlanning: t.procedure
+    .input(getBudgetPlanningInput)
+    .query(({ input }) =>
+      getBudgetPlanningController({ getBudgetPlanningInput: input })
+    ),
+  getBudgetPlannings: t.procedure
+    .input(byIdInput)
+    .query(({ input }) =>
+      getBudgetPlanningsController({ getByIdInput: input })
+    ),
+  addBudgetPlanning: t.procedure
+    .input(budgetPlanningInput)
+    .mutation(({ input }) =>
+      addBudgetPlanningController({ budgetPlanningInput: input })
+    ),
+  updateBudgetPlanning: t.procedure
+    .input(budgetPlanningInput)
+    .mutation(({ input }) =>
+      updateBudgetPlanningController({ budgetPlanningInput: input })
+    ),
+  deleteBudgetPlanning: t.procedure
+    .input(byNoInput)
+    .mutation(({ input }) =>
+      deleteBudgetPlanningController({ byNoInput: input })
+    ),
+  getContact: t.procedure
+    .input(byIdInput)
+    .query(({ input }) => getContactController({ byIdInput: input })),
+  getContacts: t.procedure
+    .input(getByEmailInput)
+    .query(({ input }) => getContactsController({ getByEmailInput: input })),
+  addContact: t.procedure
+    .input(contactInput)
+    .mutation(({ input }) => addContactController({ contactInput: input })),
+  updateContact: t.procedure
+    .input(updateContactInput)
+    .mutation(({ input }) =>
+      updateContactController({ updateContactInput: input })
+    ),
+  deleteContact: t.procedure
+    .input(byIdInput)
+    .mutation(({ input }) => deleteContactController({ byIdInput: input })),
   getGuests: t.procedure
     .input(getGuestsInput)
     .query(({ input }) => getGuestsController({ getGuestsInput: input })),

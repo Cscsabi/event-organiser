@@ -1,9 +1,4 @@
-import {
-  component$,
-  useClientEffect$,
-  useStore,
-  useStyles$,
-} from "@builder.io/qwik";
+import { component$, useTask$, useStore, useStyles$ } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
@@ -19,6 +14,7 @@ import {
   getProperDateFormat,
   getProperTimeFormat,
 } from "~/utils/common.functions";
+import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
 
 export default component$(() => {
   useStyles$(styles);
@@ -31,7 +27,7 @@ export default component$(() => {
     userEmail: "",
   });
 
-  useClientEffect$(async ({ track }) => {
+  useTask$(async ({ track }) => {
     track(() => store.userEmail);
     const userDetails = await getUser();
     if (!userDetails.data.user) {
@@ -55,6 +51,9 @@ export default component$(() => {
         locationId: event.locationId,
         name: event.name,
         type: event.type,
+        decorNeeded: event.decorNeeded,
+        menuNeeded: event.menuNeeded,
+        performerNeeded: event.performerNeeded,
       };
 
       const currentLocation: LocationStore = {
@@ -219,6 +218,9 @@ export default component$(() => {
               locationId: store.event.locationId,
               name: store.event.name,
               type: store.event.type,
+              decorNeeded: store.event.decorNeeded,
+              menuNeeded: store.event.menuNeeded,
+              performerNeeded: store.event.performerNeeded,
             });
             window.location.reload();
           }
@@ -256,6 +258,15 @@ export default component$(() => {
       >
         Go to Location
       </button>
+      <div class="wrapper">
+        {/* Budget planning */}
+        <BudgetPlanning
+          eventId={params.eventId}
+          budget={store.event?.budget ?? 0}
+        />
+        {/* Menu */}
+        {/* Decoration */}
+      </div>
     </div>
   );
 });

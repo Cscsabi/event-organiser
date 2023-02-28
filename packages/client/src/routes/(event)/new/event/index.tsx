@@ -33,6 +33,9 @@ export default component$(() => {
     locationId: "",
     email: "",
     headcount: 0,
+    decorNeeded: false,
+    menuNeeded: false,
+    performerNeeded: false,
   });
 
   const resource = useResource$<GetLocationsReturnType>(
@@ -73,6 +76,9 @@ export default component$(() => {
                   type: store.type,
                   userEmail: store.email,
                   locationId: store.locationId,
+                  decorNeeded: store.decorNeeded,
+                  menuNeeded: store.menuNeeded,
+                  performerNeeded: store.performerNeeded,
                 });
 
                 if (result.status === Status.SUCCESS) {
@@ -110,6 +116,42 @@ export default component$(() => {
                   <option value="EXHIBITION">EXHIBITION</option>
                   <option value="CUSTOM">CUSTOM</option>
                 </select>
+              </div>
+              <label for="menu">Menu:</label>
+              <div class="input_field">
+                <input
+                  onInput$={(event) =>
+                    (store.menuNeeded = (
+                      event.target as HTMLInputElement
+                    ).checked)
+                  }
+                  type="checkbox"
+                  name="menu"
+                ></input>
+              </div>
+              <label for="decor">Decor:</label>
+              <div class="input_field">
+                <input
+                  onInput$={(event) =>
+                    (store.decorNeeded = (
+                      event.target as HTMLInputElement
+                    ).checked)
+                  }
+                  type="checkbox"
+                  name="decor"
+                ></input>
+              </div>
+              <label for="perfomer">Performer:</label>
+              <div class="input_field">
+                <input
+                  onInput$={(event) =>
+                    (store.performerNeeded = (
+                      event.target as HTMLInputElement
+                    ).checked)
+                  }
+                  type="checkbox"
+                  name="perfomer"
+                ></input>
               </div>
               <label for="startDate">Start Date:</label>
               <div class="input_field">

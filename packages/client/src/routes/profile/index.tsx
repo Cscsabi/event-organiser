@@ -1,8 +1,4 @@
-import {
-  component$,
-  useClientEffect$,
-  useStore,
-} from "@builder.io/qwik";
+import { component$, useClientEffect$, useStore } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import {

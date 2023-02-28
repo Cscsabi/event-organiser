@@ -21,6 +21,9 @@ export const addEventController = async ({
         headcount: addEventInput.headcount,
         email: addEventInput.userEmail,
         locationId: addEventInput.locationId,
+        decorNeeded: addEventInput.decorNeeded,
+        menuNeeded: addEventInput.menuNeeded,
+        performerNeeded: addEventInput.performerNeeded,
       },
     });
 
@@ -62,6 +65,9 @@ export const updateEventController = async ({
         headcount: updateEventInput.headcount,
         locationId: updateEventInput.locationId,
         email: updateEventInput.userEmail,
+        decorNeeded: updateEventInput.decorNeeded,
+        menuNeeded: updateEventInput.menuNeeded,
+        performerNeeded: updateEventInput.performerNeeded,
       },
     });
 
@@ -168,7 +174,7 @@ export const getEventController = async ({
         id: getByIdInput.id,
       },
       include: {
-        location: { 
+        location: {
           include: {
             address: true,
           },

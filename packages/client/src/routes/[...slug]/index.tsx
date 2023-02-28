@@ -1,8 +1,13 @@
 import { component$, Resource, useResource$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { getContent, RenderContent, getBuilderSearchParams } from "@builder.io/sdk-qwik";
+import {
+  getContent,
+  RenderContent,
+  getBuilderSearchParams,
+} from "@builder.io/sdk-qwik";
 
-export const BUILDER_PUBLIC_API_KEY = import.meta.env.VITE_BUILDER_PUBLIC_API_KEY; // <-- Add your Public API KEY here
+export const BUILDER_PUBLIC_API_KEY = import.meta.env
+  .VITE_BUILDER_PUBLIC_API_KEY; // <-- Add your Public API KEY here
 export const BUILDER_MODEL = "page";
 
 export default component$(() => {

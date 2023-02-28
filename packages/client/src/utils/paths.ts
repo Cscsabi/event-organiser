@@ -13,4 +13,7 @@ export const paths = {
   location: "/location/",
   newLocation: "/new/location",
   guests: "/guests",
+  contact: "/contact/",
+  contacts: "/contacts",
+  newContact: "/new/contact",
 };

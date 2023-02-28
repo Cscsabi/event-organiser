@@ -1,5 +1,5 @@
 export enum Status {
-    NOT_FOUND,
-    SUCCESS,
-    FAILED
+  NOT_FOUND,
+  SUCCESS,
+  FAILED,
 }

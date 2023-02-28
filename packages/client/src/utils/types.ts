@@ -1,4 +1,4 @@
-import type { EventType, Location, Event } from "@prisma/client";
+import type { EventType, Location, Event, Contact } from "@prisma/client";
 import type { Status } from "event-organiser-api-server/src/status.enum";
 
 export interface NewEventStore {
@@ -10,6 +10,9 @@ export interface NewEventStore {
   budget: number;
   locationId: string;
   headcount: number;
+  menuNeeded: boolean;
+  decorNeeded: boolean;
+  performerNeeded: boolean;
 }
 
 export interface LocationStore {
@@ -118,4 +121,77 @@ export interface CardProps {
   color: string;
   goTo: string;
   icon: string;
+}
+
+export interface BudgetPlanningProps {
+  eventId: string;
+  budget: number;
+}
+
+export interface BudgetPlanningType {
+  contactName: string;
+  amount: number;
+  isPaid: boolean;
+  eventId: string;
+  description: string;
+  contactId: string;
+}
+
+export interface BudgetPlanningStore {
+  budgetPlanning: BudgetPlanningType[];
+  amountAltogether: number;
+  percentAltogether: number;
+  userEmail: string;
+  contactId?: string;
+  contact?: {
+    id: string;
+    name: string;
+    phone: string;
+    email: string;
+    description: string;
+    userEmail: string;
+  };
+}
+
+export interface ContactProps {
+  userEmail: string;
+}
+
+export interface ContactType {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  description: string;
+}
+
+export interface ContactStore {
+  contacts: ContactType[];
+  modalOpen: boolean;
+  modalContactId: string;
+  userEmail: string;
+}
+
+export interface ContactCard {
+  status: Status;
+  contact?: Contact;
+}
+
+export interface NewContact {
+  name: string;
+  cost: number;
+  phone: string;
+  email: string;
+  description: string;
+  userEmail: string;
+}
+
+export interface ContactReturnType {
+  status: Status;
+  contacts?: Contact;
+}
+
+export interface ContactsReturnType {
+  status: Status;
+  contacts?: Contact[];
 }
