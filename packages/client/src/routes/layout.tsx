@@ -2,7 +2,7 @@ import {
   component$,
   Slot,
   useSignal,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   createContext,
   useContextProvider,
 } from "@builder.io/qwik";
@@ -19,7 +19,7 @@ export default component$(() => {
 
   useContextProvider<Signal<string>>(CTX, userEmail);
 
-  useClientEffect$(async ({ track }) => {
+  useBrowserVisibleTask$(async ({ track }) => {
     track(() => userEmail.value);
     const userResponse = await getUser();
     userEmail.value = userResponse.data.user?.email ?? "";

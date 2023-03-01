@@ -10,20 +10,20 @@ export const guestEventInput = z.object({
 });
 
 export const addGuestInput = z.object({
-  firstname: z.string(),
-  lastname: z.string(),
-  email: z.string(),
-  specialNeeds: z.string(),
+  firstname: z.string().optional(),
+  lastname: z.string().optional(),
+  email: z.string().optional(),
+  description: z.string().optional(),
   userEmail: z.string(),
 });
 
 export const addGuestAndConnectToEventInput = z.object({
   eventId: z.string(),
   guestId: z.string(),
-  firstname: z.string(),
-  lastname: z.string(),
-  email: z.string(),
-  specialNeeds: z.string(),
+  firstname: z.string().optional(),
+  lastname: z.string().optional(),
+  email: z.string().optional(),
+  description: z.string().optional(),
   userEmail: z.string(),
 });
 
@@ -33,7 +33,7 @@ export const updateGuestInput = z.object({
   firstname: z.string().optional(),
   lastname: z.string().optional(),
   email: z.string().optional(),
-  specialNeeds: z.string().optional(),
+  description: z.string().optional(),
 });
 
 export const deleteGuestInput = z.object({

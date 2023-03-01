@@ -1,6 +1,6 @@
 import {
   component$,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useContext,
   useSignal,
 } from "@builder.io/qwik";
@@ -12,7 +12,7 @@ export default component$(() => {
 
   const authTokenValue = useSignal("");
   const authToken: string = import.meta.env.VITE_AUTH_TOKEN;
-  useClientEffect$(async () => {
+  useBrowserVisibleTask$(async () => {
     authTokenValue.value = window.location.hash.slice(1);
     if (
       localStorage.getItem(authToken) === null &&

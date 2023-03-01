@@ -1,6 +1,6 @@
 import {
   component$,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useSignal,
   useStyles$,
 } from "@builder.io/qwik";
@@ -15,11 +15,11 @@ export default component$(() => {
   const userEmail = useSignal<string>("");
   const navigate = useNavigate();
 
-  useClientEffect$(async ({ track }) => {
+  useBrowserVisibleTask$(async ({ track }) => {
     track(() => userEmail.value);
     userEmail.value = (await getUser()).data.user?.email ?? "";
     if (userEmail.value === "") {
-      navigate.path = paths.login;
+      navigate(paths.login);
     }
   });
 

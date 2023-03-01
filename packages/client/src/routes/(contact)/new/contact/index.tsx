@@ -1,6 +1,6 @@
 import {
   component$,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useStore,
   useStyles$,
 } from "@builder.io/qwik";
@@ -24,10 +24,10 @@ export default component$(() => {
   });
   const navigate = useNavigate();
 
-  useClientEffect$(async () => {
+  useBrowserVisibleTask$(async () => {
     const userDetails = await getUser();
     if (!userDetails.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     } else {
       store.userEmail = userDetails.data.user.email ?? "";
     }
@@ -55,7 +55,7 @@ export default component$(() => {
                 });
 
                 if (result.status === Status.SUCCESS) {
-                  navigate.path = paths.contacts;
+                  navigate(paths.contacts);
                 }
               }}
             >

@@ -39,7 +39,7 @@ export default component$(() => {
                 };
                 const login = await loginUserWithPassword(credentials);
                 if (login?.result === Status.SUCCESS) {
-                  navigate.path = paths.index;
+                  navigate(paths.index);
                   user.value = login.data?.session?.access_token ?? "";
                 }
               }}
@@ -85,7 +85,7 @@ export default component$(() => {
                     provider: "google",
                   });
                   if (login.result === Status.SUCCESS) {
-                    navigate.path = paths.index;
+                    navigate(paths.index);
                   }
                 }}
               >
@@ -98,7 +98,7 @@ export default component$(() => {
                     provider: "facebook",
                   });
                   if (login.result === Status.SUCCESS) {
-                    navigate.path = paths.index;
+                    navigate(paths.index);
                   }
                 }}
               >

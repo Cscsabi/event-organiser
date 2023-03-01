@@ -7,33 +7,33 @@ export const addAddressInput = z.object({
   }),
   street: z.string(),
   city: z.string(),
-  state: z.string(),
-  zipCode: z.number(),
+  state: z.string().optional(),
+  zipCode: z.number().optional(),
 });
 
 export const addLocationInput = z.object({
   userEmail: z.string(),
   name: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   addressId: z.string(),
   address: addAddressInput,
-  type: z.string(),
-  price: z.number(),
-  phone: z.string(),
-  link: z.string(),
+  type: z.string().optional(),
+  price: z.number().optional(),
+  phone: z.string().optional(),
+  link: z.string().optional(),
 });
 
 export const updateLocationInput = z.object({
   id: z.string(),
-  userEmail: z.string(),
-  name: z.string(),
-  description: z.string(),
-  addressId: z.string(),
+  userEmail: z.string().optional(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  addressId: z.string().optional(),
   address: addAddressInput,
-  type: z.string(),
-  price: z.number(),
-  phone: z.string(),
-  link: z.string(),
+  type: z.string().optional(),
+  price: z.number().optional(),
+  phone: z.string().optional(),
+  link: z.string().optional(),
 });
 
 export type AddLocationInput = z.TypeOf<typeof addLocationInput>;

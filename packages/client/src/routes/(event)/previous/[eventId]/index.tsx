@@ -1,7 +1,7 @@
 import {
   component$,
   Resource,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useResource$,
   useSignal,
   useStyles$,
@@ -17,6 +17,7 @@ import {
   getProperDateFormat,
   getProperTimeFormat,
 } from "~/utils/common.functions";
+import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
 
 export default component$(() => {
   useStyles$(styles);
@@ -26,28 +27,28 @@ export default component$(() => {
   const navigate = useNavigate();
   const userEmail = useSignal<string>("");
 
-  useClientEffect$(async () => {
+  useBrowserVisibleTask$(async () => {
     const userDetails = await getUser();
     if (!userDetails.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     }
 
     userEmail.value = userDetails.data.user?.email ?? "";
     const event = await getCurrentEvent(params.eventId);
     if (event) {
-      if (event.startDate >= new Date()) {
-        navigate.path = paths.event + params.eventId;
+      if (event.endDate != null && event.endDate >= new Date()) {
+        navigate(paths.event + params.eventId);
       }
 
       const currentEvent: NewEventStore = {
         budget: +event.budget,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        email: event.email,
-        headcount: event.headcount,
+        startDate: event.startDate ?? undefined,
+        endDate: event.endDate ?? undefined,
+        userEmail: event.userEmail,
+        headcount: event.headcount ?? undefined,
         locationId: event.locationId,
         name: event.name,
-        type: event.type,
+        type: event.type ?? undefined,
         decorNeeded: event.decorNeeded,
         menuNeeded: event.menuNeeded,
         performerNeeded: event.performerNeeded,
@@ -118,6 +119,7 @@ export default component$(() => {
                 ""
               ) : (
                 <div class="table-wrapper">
+                  Guestlist:
                   <table class="fl-table">
                     <thead>
                       <tr>
@@ -134,7 +136,7 @@ export default component$(() => {
                             <td>{guest.firstname}</td>
                             <td>{guest.lastname}</td>
                             <td>{guest.email}</td>
-                            <td>{guest.special_needs}</td>
+                            <td>{guest.description}</td>
                           </tr>
                         );
                       })}
@@ -145,6 +147,11 @@ export default component$(() => {
             </div>
           );
         }}
+      />
+      <BudgetPlanning
+        active={false}
+        budget={newEventStore.value?.budget ?? 0}
+        eventId={params.eventId}
       />
       <input
         preventdefault:click
@@ -158,14 +165,14 @@ export default component$(() => {
             client.deleteEvent.mutate({
               id: params.eventId,
             });
-            navigate.path = paths.events;
+            navigate(paths.events);
           }
         }}
       />
       <button
         preventdefault:click
         onClick$={() => {
-          navigate.path = paths.location + newEventStore.value?.locationId;
+          navigate(paths.location + newEventStore.value?.locationId);
         }}
       >
         Go to Location
@@ -181,7 +188,9 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
 
   return {
     params: result.events
-      .filter((event) => event.startDate < new Date())
+      .filter(
+        (event) => event.startDate != null && event.startDate < new Date()
+      )
       .map((event) => {
         const id = event.id;
         return {

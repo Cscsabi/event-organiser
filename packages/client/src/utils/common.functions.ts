@@ -21,7 +21,11 @@ export const getProperTimeFormat = (time?: Date) => {
     .substring(11);
 };
 
-export function isSameDay(date1: Date, date2: Date) {
+export function isSameDay(date1?: Date, date2?: Date) {
+  if (!date1 || !date2) {
+    return false;
+  }
+
   if (
     date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
@@ -36,7 +40,11 @@ export function capitalize(input: string) {
   return input.charAt(0).toUpperCase() + input.toLowerCase().slice(1);
 }
 
-export const getMinTimeFormat = (startDate: Date, endDate: Date) => {
+export const getMinTimeFormat = (startDate?: Date, endDate?: Date) => {
+  if (!startDate || !endDate) {
+    return "";
+  }
+
   if (isSameDay(startDate, endDate)) {
     // Set minimum for end time
     return getProperTimeFormat(startDate);
@@ -44,10 +52,21 @@ export const getMinTimeFormat = (startDate: Date, endDate: Date) => {
   return "";
 };
 
-export const getMaxTimeFormat = (startDate: Date, endDate: Date) => {
+export const getMaxTimeFormat = (startDate?: Date, endDate?: Date) => {
+  if (!startDate || !endDate) {
+    return "";
+  }
+
   if (isSameDay(startDate, endDate)) {
     // Set maximum for start time
     return getProperTimeFormat(endDate);
   }
   return "";
+};
+
+export const getDateOrUndefined = (date?: Date) => {
+  if (!date) {
+    return undefined;
+  }
+  return new Date(date);
 };

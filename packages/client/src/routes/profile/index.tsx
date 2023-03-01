@@ -1,4 +1,4 @@
-import { component$, useClientEffect$, useStore } from "@builder.io/qwik";
+import { component$, useBrowserVisibleTask$, useStore } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import {
@@ -21,12 +21,12 @@ export default component$(() => {
 
   const navigate = useNavigate();
 
-  useClientEffect$(async ({ track }) => {
+  useBrowserVisibleTask$(async ({ track }) => {
     track(() => store.email);
 
     const userResponse = await getUser();
     if (!userResponse.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     }
 
     if (userResponse.data.user?.email) {
@@ -47,7 +47,6 @@ export default component$(() => {
       <button onClick$={() => resetPassword(store.email)}>
         Change Password
       </button>
-      {/* TODO: check calendar */}
       <QwikCalendar
         client:load
         onChange$={(event: Date) => {
@@ -84,7 +83,7 @@ export async function getEvents(email: string) {
   return result.events.map((event) => {
     const calendarEvent: CalendarEvent = {
       name: event.name,
-      date: event.startDate,
+      date: event.startDate ?? undefined,
     };
 
     return calendarEvent;

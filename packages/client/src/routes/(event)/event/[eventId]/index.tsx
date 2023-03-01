@@ -1,16 +1,22 @@
-import { component$, useTask$, useStore, useStyles$ } from "@builder.io/qwik";
+import {
+  component$,
+  useStore,
+  useStyles$,
+  useBrowserVisibleTask$,
+} from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import type { EventStore, LocationStore, NewEventStore } from "~/utils/types";
 import { getUser } from "~/utils/supabase.client";
 import { paths } from "~/utils/paths";
-import type { EventType } from "@prisma/client";
+import { EventType } from "@prisma/client";
 import { QwikModal } from "~/integrations/react/modal";
 import styles from "~/table.css?inline";
 import { GuestList } from "~/components/guestlist/guestlist";
 import * as ics from "ics";
 import {
+  getDateOrUndefined,
   getProperDateFormat,
   getProperTimeFormat,
 } from "~/utils/common.functions";
@@ -19,38 +25,67 @@ import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
 export default component$(() => {
   useStyles$(styles);
 
-  const { params } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const store = useStore<EventStore>({
+    event: {
+      budget: 0,
+      decorNeeded: false,
+      userEmail: "",
+      endDate: new Date(),
+      headcount: 0,
+      locationId: location.params.eventId,
+      menuNeeded: false,
+      name: "",
+      performerNeeded: false,
+      startDate: new Date(),
+      type: EventType.CUSTOM,
+    },
+    location: {
+      addressId: "",
+      city: "",
+      countryId: 0,
+      description: "",
+      userEmail: "",
+      link: "",
+      name: "",
+      phone: "",
+      price: 0,
+      state: "",
+      street: "",
+      type: "",
+      zipCode: 0,
+    },
     modalOpen: false,
     userEmail: "",
   });
 
-  useTask$(async ({ track }) => {
+  useBrowserVisibleTask$(async ({ track }) => {
     track(() => store.userEmail);
     const userDetails = await getUser();
     if (!userDetails.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     }
 
     store.userEmail = userDetails.data.user?.email ?? "";
+    console.log(store.userEmail);
 
-    const event = await getCurrentEvent(params.eventId);
+    const event = await getCurrentEvent(location.params.eventId);
     if (event) {
-      if (event.startDate < new Date()) {
-        navigate.path = paths.previousEvent + params.eventId;
+      if (event.endDate && event.endDate < new Date()) {
+        navigate(paths.previousEvent + location.params.eventId);
       }
 
       const currentEvent: NewEventStore = {
         budget: +event.budget,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        email: event.email,
-        headcount: event.headcount,
+        startDate: event.startDate ?? undefined,
+        endDate: event.endDate ?? undefined,
+        userEmail: event.userEmail,
+        headcount: event.headcount ?? undefined,
         locationId: event.locationId,
         name: event.name,
-        type: event.type,
+        type: event.type ?? undefined,
         decorNeeded: event.decorNeeded,
         menuNeeded: event.menuNeeded,
         performerNeeded: event.performerNeeded,
@@ -60,16 +95,16 @@ export default component$(() => {
         addressId: event.location.addressId,
         city: event.location.address.city,
         countryId: event.location.address.countryId,
-        description: event.location.description,
-        email: event.location.email,
-        link: event.location.link,
+        description: event.location.description ?? undefined,
+        userEmail: event.location.userEmail,
+        link: event.location.link ?? undefined,
         name: event.location.name,
-        phone: event.location.phone,
-        price: +event.location.price,
-        state: event.location.address.state,
+        phone: event.location.phone ?? undefined,
+        price: event.location.price as unknown as number,
+        state: event.location.address.state ?? undefined,
         street: event.location.address.street,
-        type: event.location.type,
-        zipCode: +event.location.address.zip_code,
+        type: event.location.type ?? undefined,
+        zipCode: event.location.address.zip_code as unknown as number,
       };
 
       store.event = currentEvent;
@@ -83,23 +118,23 @@ export default component$(() => {
       <input
         type="number"
         onChange$={(event) =>
-          (store.event!.budget = +(event.target as HTMLInputElement).value)
+          (store.event.budget = +(event.target as HTMLInputElement).value)
         }
-        value={store.event?.budget}
+        value={store.event.budget}
       ></input>
       <label for="startDate">Start Date:</label>
       <input
         type="date"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split("-");
-          store.event!.startDate = new Date(
+          store.event.startDate = new Date(
             +inputs[0],
             +inputs[1] - 1, // Starts from zero
             +inputs[2],
-            store.event!.startDate.getHours(),
-            store.event!.startDate.getMinutes()
+            store.event.startDate?.getHours(),
+            store.event.startDate?.getMinutes()
           );
-          console.log(store.event!.startDate);
+          console.log(store.event.startDate);
         }}
         value={getProperDateFormat(store.event?.startDate)}
       ></input>
@@ -108,14 +143,14 @@ export default component$(() => {
         type="time"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split(":");
-          store.event!.startDate = new Date(
-            store.event!.startDate.getFullYear(),
-            store.event!.startDate.getMonth(),
-            store.event!.startDate.getDate(),
+          store.event.startDate = new Date(
+            store.event.startDate?.getFullYear() ?? 0,
+            store.event.startDate?.getMonth() ?? 0,
+            store.event.startDate?.getDate(),
             +inputs[0],
-            +inputs[1] - store.event!.startDate.getTimezoneOffset()
+            +inputs[1] - (store.event.startDate?.getTimezoneOffset() ?? 0)
           );
-          console.log(store.event!.startDate);
+          console.log(store.event.startDate);
         }}
         value={getProperTimeFormat(store.event?.startDate)}
       ></input>
@@ -124,12 +159,12 @@ export default component$(() => {
         type="date"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split("-");
-          store.event!.endDate = new Date(
+          store.event.endDate = new Date(
             +inputs[0],
             +inputs[1] - 1, // Starts from zero
             +inputs[2],
-            store.event!.endDate.getHours(),
-            store.event!.endDate.getMinutes()
+            store.event.endDate?.getHours(),
+            store.event.endDate?.getMinutes()
           );
         }}
         value={getProperDateFormat(store.event?.endDate)}
@@ -139,12 +174,12 @@ export default component$(() => {
         type="time"
         onChange$={(event) => {
           const inputs = (event.target as HTMLInputElement).value.split(":");
-          store.event!.endDate = new Date(
-            store.event!.endDate.getFullYear(),
-            store.event!.endDate.getMonth(),
-            store.event!.endDate.getDate(),
+          store.event.endDate = new Date(
+            store.event.endDate?.getFullYear() ?? 0,
+            store.event.endDate?.getMonth() ?? 0,
+            store.event.endDate?.getDate(),
             +inputs[0],
-            +inputs[1] - store.event!.endDate.getTimezoneOffset()
+            +inputs[1] - (store.event.endDate?.getTimezoneOffset() ?? 0)
           );
         }}
         value={getProperTimeFormat(store.event?.endDate)}
@@ -153,7 +188,7 @@ export default component$(() => {
       <input
         type="number"
         onChange$={(event) =>
-          (store.event!.headcount = +(event.target as HTMLInputElement).value)
+          (store.event.headcount = +(event.target as HTMLInputElement).value)
         }
         value={store.event?.headcount}
       ></input>
@@ -161,7 +196,7 @@ export default component$(() => {
       <input
         type="text"
         onChange$={(event) =>
-          (store.event!.name = (event.target as HTMLInputElement).value)
+          (store.event.name = (event.target as HTMLInputElement).value)
         }
         value={store.event?.name}
       ></input>
@@ -170,12 +205,12 @@ export default component$(() => {
         id="eventType"
         name="eventType"
         onClick$={(event) =>
-          (store.event!.type = (event.target as HTMLInputElement)
+          (store.event.type = (event.target as HTMLInputElement)
             .value as EventType)
         }
       >
         <option value="" selected disabled hidden>
-          {store.event!.type}
+          {store.event.type}
         </option>
         <option value="WEDDING">WEDDING</option>
         <option value="GRADUATION">GRADUATION</option>
@@ -184,6 +219,32 @@ export default component$(() => {
         <option value="EXHIBITION">EXHIBITION</option>
         <option value="CUSTOM">CUSTOM</option>
       </select>
+      <label for="Menu">Menu:</label>
+      <input
+        type="checkbox"
+        onChange$={(event) =>
+          (store.event.menuNeeded = (event.target as HTMLInputElement).checked)
+        }
+        checked={store.event?.menuNeeded}
+      ></input>
+      <label for="decor">Decor:</label>
+      <input
+        type="checkbox"
+        onChange$={(event) =>
+          (store.event.decorNeeded = (event.target as HTMLInputElement).checked)
+        }
+        checked={store.event?.decorNeeded}
+      ></input>
+      <label for="performer">Performer:</label>
+      <input
+        type="checkbox"
+        onChange$={(event) =>
+          (store.event.performerNeeded = (
+            event.target as HTMLInputElement
+          ).checked)
+        }
+        checked={store.event?.performerNeeded}
+      ></input>
       <button onClick$={() => (store.modalOpen = true)}>Open Guestlist</button>
       <QwikModal
         client:load
@@ -197,7 +258,7 @@ export default component$(() => {
         <GuestList
           userEmail={store.userEmail}
           openedFromEvent={true}
-          eventId={params.eventId}
+          eventId={location.params.eventId}
         />
       </QwikModal>
       <input
@@ -208,13 +269,28 @@ export default component$(() => {
           if (store.event) {
             console.log(store.event.startDate);
             console.log(store.event.endDate);
+            const x = {
+              id: location.params.eventId,
+              userEmail: store.event.userEmail,
+              budget: store.event.budget,
+              startDate: getDateOrUndefined(store.event.startDate),
+              endDate: getDateOrUndefined(store.event.endDate),
+              headcount: store.event.headcount ?? undefined,
+              locationId: store.event.locationId,
+              name: store.event.name,
+              type: store.event.type,
+              decorNeeded: store.event.decorNeeded,
+              menuNeeded: store.event.menuNeeded,
+              performerNeeded: store.event.performerNeeded,
+            };
+            console.log(x);
             client.updateEvent.mutate({
-              id: params.eventId,
-              userEmail: store.event.email,
-              budget: +store.event.budget,
-              startDate: store.event.startDate,
-              endDate: store.event.endDate,
-              headcount: store.event.headcount,
+              id: location.params.eventId,
+              userEmail: store.event.userEmail,
+              budget: store.event.budget,
+              startDate: getDateOrUndefined(store.event.startDate),
+              endDate: getDateOrUndefined(store.event.endDate),
+              headcount: store.event.headcount ?? undefined,
               locationId: store.event.locationId,
               name: store.event.name,
               type: store.event.type,
@@ -236,9 +312,9 @@ export default component$(() => {
           );
           if (result?.toLowerCase() === "yes") {
             client.deleteEvent.mutate({
-              id: params.eventId,
+              id: location.params.eventId,
             });
-            navigate.path = paths.events;
+            navigate(paths.events);
           }
         }}
       />
@@ -250,19 +326,14 @@ export default component$(() => {
       >
         Export to Calendar
       </button>
-      <button
-        preventdefault:click
-        onClick$={() => {
-          navigate.path = paths.location + store.event?.locationId;
-        }}
-      >
-        Go to Location
-      </button>
+      <a href={paths.location + store.event?.locationId}>
+        <button>Go to Location</button>
+      </a>
       <div class="wrapper">
-        {/* Budget planning */}
         <BudgetPlanning
-          eventId={params.eventId}
-          budget={store.event?.budget ?? 0}
+          eventId={location.params.eventId}
+          budget={store.event.budget}
+          active={true}
         />
         {/* Menu */}
         {/* Decoration */}
@@ -278,7 +349,7 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
 
   return {
     params: result.events
-      .filter((event) => event.startDate >= new Date())
+      .filter((event) => event.startDate && event.startDate >= new Date())
       .map((event) => {
         const id = event.id;
         return {
@@ -319,14 +390,14 @@ export const exportToCalendar = async (store: EventStore) => {
     title: store.event?.name,
     description: store.event?.type,
     location: store.location?.name,
-    url: store.location?.link.startsWith("http")
+    url: store.location.link?.startsWith("http")
       ? store.location?.link
       : "http://" + store.location?.link,
     // geo: { lat: 40.0095, lon: 105.2669 },
     status: "CONFIRMED",
     busyStatus: "BUSY",
     organizer: {
-      name: user.user!.lastname + " " + user.user!.firstname,
+      name: user.user?.lastname + " " + user.user?.firstname,
       email: store.userEmail,
     },
     productId: store.event.name + "/ics",

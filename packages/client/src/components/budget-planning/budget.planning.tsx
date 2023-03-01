@@ -1,7 +1,7 @@
 import {
   component$,
   Resource,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useResource$,
   useStore,
 } from "@builder.io/qwik";
@@ -12,10 +12,10 @@ import { client } from "~/utils/trpc";
 import type {
   BudgetPlanningProps,
   BudgetPlanningStore,
+  ContactCard,
   ContactsReturnType,
 } from "~/utils/types";
-import { paths } from "~/utils/paths";
-import { useNavigate } from "@builder.io/qwik-city";
+import { QwikModal } from "~/integrations/react/modal";
 
 export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
   const EMPTY_ROW = {
@@ -25,6 +25,14 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
     eventId: props.eventId,
     description: "",
     contactId: "",
+    contact: {
+      id: "",
+      name: "",
+      phone: "",
+      email: "",
+      description: "",
+      userEmail: "",
+    },
   };
 
   const store = useStore<BudgetPlanningStore>({
@@ -32,32 +40,46 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
     amountAltogether: 0,
     percentAltogether: 0,
     userEmail: "",
+    modalContactId: "",
+    modalOpen: false,
   });
 
-  const navigate = useNavigate();
-
-  useClientEffect$(async () => {
-    store.userEmail = (await getUser()).data.user?.email ?? "";
-    const result = await client.getBudgetPlannings.query({
-      id: props.eventId,
-    });
-
-    if (result.status === Status.SUCCESS) {
-      result.budgetPlanning?.forEach((row) => {
-        store.budgetPlanning.push({
-          amount: +row.amount,
-          contactName: row.contactName,
-          isPaid: row.isPaid,
-          eventId: row.eventId,
-          contactId: row.contactId,
-          description: row.description,
-        });
-        store.amountAltogether += +row.amount;
-      });
+  useBrowserVisibleTask$(async ({ track }) => {
+    track(() => props.budget);
+    if (store.userEmail === "") {
+      store.userEmail = (await getUser()).data.user?.email ?? "";
     }
 
-    store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW];
-    console.log(props.budget);
+    if (store.budgetPlanning.length === 0) {
+      const result = await client.getBudgetPlannings.query({
+        id: props.eventId,
+      });
+
+      if (result.status === Status.SUCCESS) {
+        result.budgetPlanning?.forEach((row) => {
+          store.budgetPlanning.push({
+            amount: row?.amount ? +row.amount : 0,
+            isPaid: row.isPaid,
+            eventId: row.eventId,
+            contactId: row.contactId,
+            description: row.description ?? undefined,
+            contact: {
+              description: row.contact.description,
+              email: row.contact.email,
+              id: row.contact.id,
+              name: row.contact.name,
+              phone: row.contact.phone,
+              userEmail: row.contact.userEmail,
+            },
+          });
+          store.amountAltogether += row?.amount ? +row.amount : 0;
+        });
+        if (props.active) {
+          store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW];
+        }
+      }
+    }
+
     store.percentAltogether = (store.amountAltogether / props.budget) * 100;
   });
 
@@ -69,6 +91,13 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       return client.getContacts.query({ email: store.userEmail });
     }
   );
+
+  const contactCard = useResource$<ContactCard>(({ track, cleanup }) => {
+    track(() => store.modalContactId);
+    const controller = new AbortController();
+    cleanup(() => controller.abort());
+    return client.getContact.query({ id: store.modalContactId });
+  });
 
   return (
     <div>
@@ -85,6 +114,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
               <th>%</th>
               <th>Description</th>
               <th>Paid</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -99,16 +129,58 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           </tbody>
         </table>
       </div>
+      <QwikModal
+        client:hover
+        // @ts-ignore: Type is not assignable to type
+        isOpen={store.modalOpen}
+        ariaHideApp={false}
+      >
+        <button onClick$={() => (store.modalOpen = false)}>Close</button>
+        <Resource
+          value={contactCard}
+          onPending={() => <div>Loading...</div>}
+          onResolved={(result) => {
+            return (
+              <div>
+                <label for="name">Name:</label>
+                <input
+                  readOnly={!props.active}
+                  type="text"
+                  value={result.contact?.name}
+                ></input>{" "}
+                <label for="description">Description:</label>
+                <input
+                  type="text"
+                  readOnly={!props.active}
+                  value={result.contact?.description}
+                ></input>{" "}
+                <label for="phone">Phone:</label>
+                <input
+                  type="text"
+                  readOnly={!props.active}
+                  value={result.contact?.phone}
+                ></input>{" "}
+                <label for="email">E-mail:</label>
+                <input
+                  type="text"
+                  readOnly={!props.active}
+                  value={result.contact?.email}
+                ></input>
+              </div>
+            );
+          }}
+        />
+      </QwikModal>
       <button
+        hidden={!props.active}
         onClick$={() =>
           (store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW])
         }
       >
         Add Row
       </button>
-      <button onClick$={() => saveRows(store)}>Save</button>
-      <button onClick$={() => (navigate.path = paths.newContact)}>
-        Add Contact
+      <button hidden={!props.active} onClick$={() => saveRows(store)}>
+        Save
       </button>
     </div>
   );
@@ -131,7 +203,7 @@ export const generateBudgetPlanningBody = async (
                 onResolved={(result) => {
                   return (
                     <select
-                      disabled={row.isPaid}
+                      disabled={!props.active ? true : row.isPaid}
                       name="contact"
                       onChange$={async (event) => {
                         store.contactId = (
@@ -152,11 +224,11 @@ export const generateBudgetPlanningBody = async (
                             phone: selectedContact.contact.phone,
                             userEmail: selectedContact.contact.userEmail,
                           };
-                          row.contactName = store.contact.name;
+                          row.contact.name = store.contact.name;
                         }
                         console.log(store.contact?.description);
                         row.description =
-                          store.contact?.description + ", " + row.description ??
+                          store.contact?.description + " " + row.description ??
                           row.description;
 
                         store.budgetPlanning = [...store.budgetPlanning];
@@ -168,7 +240,7 @@ export const generateBudgetPlanningBody = async (
                         disabled
                         hidden
                       >
-                        {row.contactName ? row.contactName : "Choose here"}
+                        {row.contact.name ? row.contact.name : "Choose here"}
                       </option>
                       {result.contacts?.map((contact) => {
                         return (
@@ -183,14 +255,15 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
-                disabled={row.isPaid}
+                disabled={!props.active ? true : row.isPaid}
                 type="number"
                 value={row.amount}
                 onChange$={(event) => {
                   console.log(store.budgetPlanning);
 
                   store.amountAltogether +=
-                    +(event.target as HTMLInputElement).value - row.amount;
+                    +(event.target as HTMLInputElement).value -
+                    (row.amount ?? 0);
                   store.percentAltogether =
                     (store.amountAltogether / props.budget) * 100;
                   row.amount = +(event.target as HTMLInputElement).value;
@@ -204,14 +277,14 @@ export const generateBudgetPlanningBody = async (
               <input
                 type="number"
                 readOnly
-                disabled={row.isPaid}
-                value={(row.amount / props.budget) * 100}
+                disabled={!props.active ? true : row.isPaid}
+                value={((row.amount ?? 0) / props.budget) * 100}
               ></input>
             </td>
             <td>
               <input
                 type="text"
-                disabled={row.isPaid}
+                disabled={!props.active ? true : row.isPaid}
                 value={row.description}
                 onChange$={(event) =>
                   (row.description = (event.target as HTMLInputElement).value)
@@ -222,11 +295,23 @@ export const generateBudgetPlanningBody = async (
               <input
                 type="checkbox"
                 checked={row.isPaid}
+                disabled={!props.active}
                 onChange$={(event) => {
                   row.isPaid = (event.target as HTMLInputElement).checked;
                   store.budgetPlanning = [...store.budgetPlanning];
                 }}
               ></input>
+            </td>
+            <td>
+              <button
+                disabled={row.contact.name === ""}
+                onClick$={() => {
+                  store.modalOpen = true;
+                  store.modalContactId = row.contactId;
+                }}
+              >
+                Contact Card
+              </button>
             </td>
           </tr>
         );
@@ -253,15 +338,14 @@ export const saveRows = async (store: BudgetPlanningStore) => {
       if (result.status === Status.SUCCESS) {
         if (
           existingRow?.contactId.toLowerCase() !==
-            row.contactName.toLowerCase() ||
-          +existingRow?.amount !== row.amount ||
+            row.contact.name.toLowerCase() ||
+          (existingRow?.amount as unknown as number) !== row.amount ||
           existingRow?.isPaid !== row.isPaid
         ) {
           await client.updateBudgetPlanning.mutate({
             description: row.description,
             amount: row.amount,
             eventId: row.eventId,
-            contactName: row.contactName,
             isPaid: row.isPaid,
             contactId: row.contactId,
           });
@@ -269,10 +353,9 @@ export const saveRows = async (store: BudgetPlanningStore) => {
         }
       } else {
         await client.addBudgetPlanning.mutate({
-          description: row.description,
-          amount: row.amount,
+          description: row.description ?? undefined,
+          amount: row?.amount as unknown as number,
           eventId: row.eventId,
-          contactName: row.contactName,
           isPaid: row.isPaid,
           contactId: row.contactId,
         });

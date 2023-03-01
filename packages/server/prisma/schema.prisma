@@ -15,6 +15,7 @@ model User {
   locations     Location[]
   notifications Boolean
   contacts      Contact[]
+  guests        Guest[]
 
   @@map("users")
 }
@@ -22,40 +23,41 @@ model User {
 model Event {
   id               String           @id @default(uuid())
   name             String       
-  user             User             @relation(fields: [email], references: [email], onDelete: Cascade)
-  email            String
-  type             EventType
-  startDate        DateTime
-  endDate          DateTime
+  user             User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  userEmail        String
+  type             EventType?
+  startDate        DateTime?
+  endDate          DateTime?
   budget           Decimal
   location         Location         @relation(fields: [locationId], references: [id])
   locationId       String
-  headcount        Int
+  headcount        Int?
+  description      String?
   menuNeeded       Boolean
   decorNeeded      Boolean
   performerNeeded  Boolean
   eventGuest       EventGuest[]
   budgetPlanning   BudgetPlanning[]
 
-  @@unique([name, email])
+  @@unique([name, userEmail])
   @@map("events")
 }
 
 model Location {
   id          String  @id @default(uuid())
-  user        User    @relation(fields: [email], references: [email], onDelete: Cascade)
-  email       String
-  name        String  @unique
+  user        User    @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  userEmail   String
+  name        String 
   events      Event[]
-  description String
+  description String?
   address     Address @relation(fields: [addressId], references: [id])
   addressId   String  @unique
-  type        String
-  price       Decimal
-  phone       String
-  link        String
+  type        String?
+  price       Decimal?
+  phone       String?
+  link        String?
 
-  @@unique([name, email])
+  @@unique([name, userEmail])
   @@map("locations")
 }
 
@@ -65,8 +67,8 @@ model Address {
   countryId Int
   street    String
   city      String
-  state     String
-  zip_code  Decimal
+  state     String?
+  zip_code  Decimal?
   Location  Location?
 
   @@map("addresses")
@@ -82,9 +84,8 @@ model Country {
 }
 
 model EventGuest {
-  id      Int    @id @default(autoincrement())
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  eventId String
+  eventId String 
   guest   Guest  @relation(fields: [guestId], references: [id], onDelete: Cascade)
   guestId String
 
@@ -94,25 +95,24 @@ model EventGuest {
 
 model Guest {
   id            String       @id @default(uuid())
-  userEmail     String       
-  firstname     String
-  lastname      String
-  email         String
-  special_needs String
+  user          User         @relation(fields: [userEmail], references: [email], onDelete: Cascade)   
+  userEmail     String           
+  firstname     String?
+  lastname      String?
+  email         String?
+  description   String?
   EventGuest    EventGuest[] 
 
-  @@unique([userEmail, firstname, lastname, email, special_needs])
+  @@unique([userEmail, firstname, lastname, email, description])
   @@map("guests")
 }
 
 model BudgetPlanning {
-  id          Int       @id @default(autoincrement())
-  contactName String
-  contactId   String
   contact     Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  amount      Decimal
+  contactId   String
+  amount      Decimal?
   isPaid      Boolean
-  description String
+  description String?
   event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId     String  
 
@@ -123,9 +123,9 @@ model BudgetPlanning {
 model Contact {
   id               String           @id @default(uuid())
   name             String
-  phone            String
-  email            String
-  description      String
+  phone            String?
+  email            String?
+  description      String?
   budgetPlanning   BudgetPlanning[]
   user             User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   userEmail        String

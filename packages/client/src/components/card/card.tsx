@@ -1,13 +1,12 @@
 import { component$, useStyles$ } from "@builder.io/qwik";
 import styles from "./card.css?inline";
-import { Link } from "@builder.io/qwik-city";
 import type { CardProps } from "~/utils/types";
 
 export default component$((card: CardProps) => {
   useStyles$(styles);
   return (
     <div class="main-container">
-      <Link class="card__link" href={card.goTo}>
+      <a class="card__link" href={card.goTo}>
         <div class="cards">
           <div class={`card ${card.color}`}>
             <div class="card__icon">
@@ -23,7 +22,7 @@ export default component$((card: CardProps) => {
             <p class="card__apply"></p>
           </div>
         </div>
-      </Link>
+      </a>
     </div>
   );
 });

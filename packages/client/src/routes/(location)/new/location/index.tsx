@@ -1,7 +1,7 @@
 import {
   component$,
   Resource,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useResource$,
   useStore,
   useStyles$,
@@ -22,7 +22,7 @@ export default component$(() => {
   });
 
   const store = useStore<LocationStore>({
-    email: "",
+    userEmail: "",
     name: "",
     description: "",
     addressId: "",
@@ -37,12 +37,12 @@ export default component$(() => {
     link: "",
   });
 
-  useClientEffect$(async () => {
+  useBrowserVisibleTask$(async () => {
     const userResponse = await getUser();
     if (!userResponse.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     }
-    store.email = userResponse.data.user?.email ?? "";
+    store.userEmail = userResponse.data.user?.email ?? "";
   });
 
   return (
@@ -64,7 +64,7 @@ export default component$(() => {
                   price: store.price,
                   phone: store.phone,
                   link: store.link,
-                  userEmail: store.email,
+                  userEmail: store.userEmail,
                   addressId: store.addressId,
                   address: {
                     city: store.city,
@@ -79,7 +79,7 @@ export default component$(() => {
                 });
 
                 if (result.status === Status.SUCCESS) {
-                  navigate.path = paths.location + result.location.id;
+                  navigate(paths.location + result.location.id);
                 }
               }}
             >

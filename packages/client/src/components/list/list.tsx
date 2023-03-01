@@ -1,7 +1,7 @@
 import {
   component$,
   Resource,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useResource$,
   useSignal,
 } from "@builder.io/qwik";
@@ -22,18 +22,20 @@ export const List = component$((props: ListProps) => {
   const searchInput = useSignal<string>("");
   const navigate = useNavigate();
 
-  useClientEffect$(async ({ track }) => {
+  useBrowserVisibleTask$(async ({ track }) => {
     track(() => email.value);
     const userResponse = await getUser();
     if (!userResponse.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     }
     if (userResponse.data.user?.email) {
       email.value = userResponse.data.user.email;
     }
   });
 
+  
   const eventResource = useResource$<GetEventsReturnType>(
+    // @ts-ignore
     ({ track, cleanup }) => {
       track(() => email.value);
       const controller = new AbortController();
@@ -89,8 +91,8 @@ export const generateList = (
                 {result.events
                   .filter((event) =>
                     props.isActive
-                      ? event.endDate >= new Date()
-                      : event.endDate < new Date()
+                      ? event.endDate && event?.endDate >= new Date()
+                      : event.endDate && event?.endDate < new Date()
                   )
                   .filter((event) => {
                     if (searchInput.value.length > 0) {
@@ -105,7 +107,7 @@ export const generateList = (
                     return (
                       <Card
                         id={event.id}
-                        description={event.type}
+                        description={event.type ?? ""}
                         name={event.name}
                         color={props.isActive ? "card-2" : "card-3"}
                         goTo={
@@ -133,7 +135,7 @@ export const generateList = (
                   return (
                     <Card
                       id={location.id}
-                      description={location.price.toString() + " Ft"}
+                      description={location.price?.toString() + " Ft"}
                       name={location.name}
                       color="card-1"
                       goTo={paths.location + location.id}

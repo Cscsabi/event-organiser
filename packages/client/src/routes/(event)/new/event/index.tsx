@@ -1,7 +1,7 @@
 import {
   component$,
   Resource,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useResource$,
   useStore,
   useStyles$,
@@ -31,7 +31,7 @@ export default component$(() => {
     endDate: new Date(),
     budget: 0,
     locationId: "",
-    email: "",
+    userEmail: "",
     headcount: 0,
     decorNeeded: false,
     menuNeeded: false,
@@ -40,19 +40,19 @@ export default component$(() => {
 
   const resource = useResource$<GetLocationsReturnType>(
     ({ track, cleanup }) => {
-      track(() => store.email);
+      track(() => store.userEmail);
       const controller = new AbortController();
       cleanup(() => controller.abort());
-      return client.getLocations.query({ email: store.email });
+      return client.getLocations.query({ email: store.userEmail });
     }
   );
 
-  useClientEffect$(async () => {
+  useBrowserVisibleTask$(async () => {
     const userDetails = await getUser();
     if (!userDetails.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     } else {
-      store.email = userDetails.data.user.email ?? "";
+      store.userEmail = userDetails.data.user.email ?? "";
     }
   });
 
@@ -69,12 +69,12 @@ export default component$(() => {
               onSubmit$={async () => {
                 const result = await client.addEvent.mutate({
                   budget: store.budget,
-                  startDate: new Date(store.startDate),
-                  endDate: new Date(store.endDate),
-                  headcount: store.headcount,
+                  startDate: store.startDate,
+                  endDate: store.endDate,
+                  headcount: store.headcount ?? undefined,
                   name: store.name,
                   type: store.type,
-                  userEmail: store.email,
+                  userEmail: store.userEmail,
                   locationId: store.locationId,
                   decorNeeded: store.decorNeeded,
                   menuNeeded: store.menuNeeded,
@@ -82,7 +82,7 @@ export default component$(() => {
                 });
 
                 if (result.status === Status.SUCCESS) {
-                  navigate.path = paths.event + result.event.id;
+                  navigate(paths.event + result.event.id);
                 }
               }}
             >
@@ -164,8 +164,8 @@ export default component$(() => {
                       +inputs[0],
                       +inputs[1] - 1, // Starts from zero
                       +inputs[2],
-                      store.startDate.getHours(),
-                      store.startDate.getMinutes()
+                      store.startDate?.getHours(),
+                      store.startDate?.getMinutes()
                     );
                     console.log("start", store.startDate);
                   }}
@@ -183,16 +183,16 @@ export default component$(() => {
                       event.target as HTMLInputElement
                     ).value.split(":");
                     store.startDate = new Date(
-                      store.startDate.getFullYear(),
-                      store.startDate.getMonth(),
-                      store.startDate.getDate(),
+                      store.startDate?.getFullYear() ?? 0,
+                      store.startDate?.getMonth() ?? 0,
+                      store.startDate?.getDate(),
                       +inputs[0],
-                      +inputs[1] - store.endDate.getTimezoneOffset()
+                      +inputs[1] - (store.endDate?.getTimezoneOffset() ?? 0)
                     );
                   }}
                   type="time"
                   name="startTime"
-                  max={getMaxTimeFormat(store.startDate, store.endDate)}
+                  max={getMaxTimeFormat(store?.startDate, store?.endDate)}
                 ></input>
               </div>
               <label for="endDate">End Date:</label>
@@ -206,8 +206,8 @@ export default component$(() => {
                       +inputs[0],
                       +inputs[1] - 1, // Starts from zero
                       +inputs[2],
-                      store.endDate.getHours(),
-                      store.endDate.getMinutes()
+                      store.endDate?.getHours(),
+                      store.endDate?.getMinutes()
                     );
                   }}
                   type="date"
@@ -220,21 +220,21 @@ export default component$(() => {
                 <input
                   onChange$={(event) => {
                     console.log(getProperTimeFormat(store.endDate));
-                    console.log(store.endDate.getTimezoneOffset());
+                    console.log(store.endDate?.getTimezoneOffset());
                     const inputs = (
                       event.target as HTMLInputElement
                     ).value.split(":");
                     store.endDate = new Date(
-                      store.endDate.getFullYear(),
-                      store.endDate.getMonth(),
-                      store.endDate.getDate(),
+                      store.endDate?.getFullYear() ?? 0,
+                      store.endDate?.getMonth() ?? 0,
+                      store.endDate?.getDate(),
                       +inputs[0],
-                      +inputs[1] - store.endDate.getTimezoneOffset()
+                      +inputs[1] - (store.endDate?.getTimezoneOffset() ?? 0)
                     );
                   }}
                   type="time"
                   name="endTime"
-                  min={getMinTimeFormat(store.startDate, store.endDate)}
+                  min={getMinTimeFormat(store?.startDate, store?.endDate)}
                 ></input>
               </div>
               <label for="budget">Event budget:</label>

@@ -39,7 +39,7 @@ export default component$(() => {
                   store.lastname
                 );
                 if (result) {
-                  navigate.path = paths.index;
+                  navigate(paths.index);
                 }
               }}
             >

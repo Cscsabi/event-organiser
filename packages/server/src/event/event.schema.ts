@@ -1,13 +1,14 @@
 import { EventType } from "@prisma/client";
-import { boolean, z } from "zod";
+import { z } from "zod";
 
 export const addEventInput = z.object({
   name: z.string(),
-  type: z.nativeEnum(EventType),
-  startDate: z.date(),
-  endDate: z.date(),
-  budget: z.number(),
-  headcount: z.number(),
+  type: z.nativeEnum(EventType).optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  budget: z.number().optional(),
+  headcount: z.number().optional(),
+  description: z.string().optional(),
   userEmail: z.string(),
   locationId: z.string(),
   decorNeeded: z.boolean(),
@@ -18,11 +19,11 @@ export const addEventInput = z.object({
 export const updateEventInput = z.object({
   id: z.string(),
   name: z.string(),
-  type: z.nativeEnum(EventType),
-  startDate: z.date(),
-  endDate: z.date(),
-  budget: z.number(),
-  headcount: z.number(),
+  type: z.nativeEnum(EventType).optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  budget: z.number().optional(),
+  headcount: z.number().optional(),
   userEmail: z.string(),
   locationId: z.string(),
   decorNeeded: z.boolean(),

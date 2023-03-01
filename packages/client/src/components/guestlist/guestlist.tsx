@@ -1,5 +1,5 @@
-import { component$, useClientEffect$, useStore } from "@builder.io/qwik";
-import type { GuestListProps, GuestListStore } from "~/utils/types";
+import { component$, useBrowserVisibleTask$, useStore } from "@builder.io/qwik";
+import type { GuestListProps, GuestListStore, GuestType } from "~/utils/types";
 import { client } from "~/utils/trpc";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { QwikModal } from "~/integrations/react/modal";
@@ -7,11 +7,11 @@ import { capitalize } from "~/utils/common.functions";
 
 export const EMPTY_ROW = {
   id: "",
-  email: "",
+  userEmail: "",
   firstname: "",
   lastname: "",
-  special_needs: "",
-};
+  description: "",
+} as GuestType;
 
 export enum ExecuteUseClientEffect {
   INITIAL,
@@ -38,8 +38,9 @@ export const GuestList = component$((props: GuestListProps) => {
     },
   };
 
-  useClientEffect$(async ({ track }) => {
+  useBrowserVisibleTask$(async ({ track }) => {
     track(() => store.useClientEffectHook);
+    console.log(props);
     let result;
 
     if (props.openedFromEvent) {
@@ -56,6 +57,7 @@ export const GuestList = component$((props: GuestListProps) => {
     }
 
     store.connectableGuests = [];
+
     store.connectableGuests = (
       await client.getGuests.query({
         userEmail: props.userEmail,
@@ -153,153 +155,143 @@ export const GuestList = component$((props: GuestListProps) => {
 });
 
 export const generateSelectableGuestTable = (store: GuestListStore) => {
-  return store.connectableGuests
-    .sort((guest1, guest2) => guest1.firstname.localeCompare(guest2.firstname))
-    .map((guest) => {
-      console.log(guest);
-      return (
-        <tr>
-          <td>{guest.firstname}</td>
-          <td>{guest.lastname}</td>
-          <td>{guest.email}</td>
-          <td>{guest.special_needs}</td>
-          <td>
-            <input
-              type="checkbox"
-              onChange$={(event) => {
-                const checkbox = event.target as HTMLInputElement;
-                if (checkbox.checked) {
-                  store.selectedGuests = [...store.selectedGuests, guest];
-                  store.unselectedGuests.forEach((row, index) => {
-                    if (row.id === guest.id)
-                      store.unselectedGuests.splice(index, 1);
-                  });
+  return store.connectableGuests.map((guest) => {
+    console.log(guest);
+    return (
+      <tr>
+        <td>{guest.firstname}</td>
+        <td>{guest.lastname}</td>
+        <td>{guest.email}</td>
+        <td>{guest.description}</td>
+        <td>
+          <input
+            type="checkbox"
+            onChange$={(event) => {
+              const checkbox = event.target as HTMLInputElement;
+              if (checkbox.checked) {
+                store.selectedGuests = [...store.selectedGuests, guest];
+                store.unselectedGuests.forEach((row, index) => {
+                  if (row.id === guest.id)
+                    store.unselectedGuests.splice(index, 1);
+                });
+                console.log(store.selectedGuests);
+              } else {
+                store.selectedGuests.forEach((row, index) => {
+                  if (row.id === guest.id)
+                    store.selectedGuests.splice(index, 1);
                   console.log(store.selectedGuests);
-                } else {
-                  store.selectedGuests.forEach((row, index) => {
-                    if (row.id === guest.id)
-                      store.selectedGuests.splice(index, 1);
-                    console.log(store.selectedGuests);
-                  });
-                  store.unselectedGuests = [...store.unselectedGuests, guest];
-                }
-              }}
-            />
-          </td>
-        </tr>
-      );
-    });
+                });
+                store.unselectedGuests = [...store.unselectedGuests, guest];
+              }
+            }}
+          />
+        </td>
+      </tr>
+    );
+  });
 };
 
 export const generateEventGuestTable = (
   store: GuestListStore,
   props: GuestListProps
 ) => {
-  return store.tableRows
-    .sort(
-      (guest1, guest2) =>
-        +!guest1.firstname - +!guest2.firstname ||
-        guest1.firstname.localeCompare(guest2.firstname)
-    )
-    .map((guest) => {
-      console.log(guest);
-      return (
-        <tr>
-          <td>
-            <input
-              type="text"
-              onChange$={(event) =>
-                store.tableRows.map((row) => {
-                  if (row.id === guest.id) {
-                    row.firstname = (event.target as HTMLInputElement).value;
-                    console.log(row);
-                  }
-                })
-              }
-              value={guest.firstname}
-            ></input>
-          </td>
-          <td>
-            <input
-              type="text"
-              onChange$={(event) =>
-                store.tableRows.map((row) => {
-                  if (row.id === guest.id) {
-                    row.lastname = (event.target as HTMLInputElement).value;
-                  }
-                })
-              }
-              value={guest.lastname}
-            ></input>
-          </td>
-          <td>
-            <input
-              type="email"
-              pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-              onChange$={(event) =>
-                store.tableRows.map((row) => {
-                  if (row.id === guest.id) {
-                    row.email = (event.target as HTMLInputElement).value;
-                  }
-                })
-              }
-              value={guest.email}
-            ></input>
-          </td>
-          <td>
-            <input
-              type="text"
-              onChange$={(event) =>
-                store.tableRows.map((row) => {
-                  if (row.id === guest.id) {
-                    row.special_needs = (
-                      event.target as HTMLInputElement
-                    ).value;
-                  }
-                })
-              }
-              value={guest.special_needs}
-            ></input>
-          </td>
-          <td>
-            <input
-              preventdefault:click
-              type="button"
-              value="Delete row"
-              onClick$={async () => {
-                let rowFound = false;
-                const isNewRow = await client.getGuest.query({
-                  guestId: guest.id,
-                });
-
-                if (isNewRow.status === Status.SUCCESS) {
-                  if (props.openedFromEvent) {
-                    await client.deleteEventGuest.mutate({
-                      eventId: props.eventId ?? "",
-                      guestId: guest.id,
-                    });
-                  } else {
-                    await client.deleteGuest.mutate({
-                      guestId: guest.id,
-                    });
-                  }
-                  store.useClientEffectHook = ExecuteUseClientEffect.DELETE_ROW;
+  return store.tableRows.map((guest) => {
+    console.log(guest);
+    return (
+      <tr>
+        <td>
+          <input
+            type="text"
+            onChange$={(event) =>
+              store.tableRows.map((row) => {
+                if (row.id === guest.id) {
+                  row.firstname = (event.target as HTMLInputElement).value;
+                  console.log(row);
                 }
+              })
+            }
+            value={guest.firstname}
+          ></input>
+        </td>
+        <td>
+          <input
+            type="text"
+            onChange$={(event) =>
+              store.tableRows.map((row) => {
+                if (row.id === guest.id) {
+                  row.lastname = (event.target as HTMLInputElement).value;
+                }
+              })
+            }
+            value={guest.lastname}
+          ></input>
+        </td>
+        <td>
+          <input
+            type="email"
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            onChange$={(event) =>
+              store.tableRows.map((row) => {
+                if (row.id === guest.id) {
+                  row.email = (event.target as HTMLInputElement).value;
+                }
+              })
+            }
+            value={guest.email}
+          ></input>
+        </td>
+        <td>
+          <input
+            type="text"
+            onChange$={(event) =>
+              store.tableRows.map((row) => {
+                if (row.id === guest.id) {
+                  row.description = (event.target as HTMLInputElement).value;
+                }
+              })
+            }
+            value={guest.description}
+          ></input>
+        </td>
+        <td>
+          <input
+            preventdefault:click
+            type="button"
+            value="Delete row"
+            onClick$={async () => {
+              let rowFound = false;
+              const isNewRow = await client.getGuest.query({
+                guestId: guest.id,
+              });
 
-                store.tableRows.forEach((row, index) => {
-                  if (row.id === guest.id && !rowFound) {
-                    store.tableRows.splice(index, 1);
-                    rowFound = true;
-                  }
-                });
+              if (isNewRow.status === Status.SUCCESS) {
+                if (props.openedFromEvent) {
+                  await client.deleteEventGuest.mutate({
+                    eventId: props.eventId ?? "",
+                    guestId: guest.id,
+                  });
+                } else {
+                  await client.deleteGuest.mutate({
+                    guestId: guest.id,
+                  });
+                }
+                store.useClientEffectHook = ExecuteUseClientEffect.DELETE_ROW;
+              }
 
-                store.tableRows = [...store.tableRows];
-              }}
-            ></input>
-          </td>
-        </tr>
-      );
-    });
+              store.tableRows.forEach((row, index) => {
+                if (row.id === guest.id && !rowFound) {
+                  store.tableRows.splice(index, 1);
+                  rowFound = true;
+                }
+              });
+
+              store.tableRows = [...store.tableRows];
+            }}
+          ></input>
+        </td>
+      </tr>
+    );
+  });
 };
 
 export const addSelectedGuestsToEvent = (
@@ -341,20 +333,20 @@ export const saveGuestList = async (
       const existingGuest = result.guest;
       if (result.status === Status.SUCCESS) {
         if (
-          existingGuest?.firstname.toLowerCase() !==
-            guest.firstname.toLowerCase() ||
-          existingGuest?.lastname.toLowerCase() !==
-            guest.lastname.toLowerCase() ||
-          existingGuest?.email.toLowerCase() !== guest.email ||
-          existingGuest?.special_needs.toLowerCase() !==
-            guest.special_needs.toLowerCase()
+          existingGuest?.firstname?.toLowerCase() !==
+            guest.firstname?.toLowerCase() ||
+          existingGuest?.lastname?.toLowerCase() !==
+            guest.lastname?.toLowerCase() ||
+          existingGuest?.email?.toLowerCase() !== guest.email ||
+          existingGuest?.description?.toLowerCase() !==
+            guest.description?.toLowerCase()
         ) {
           await client.updateGuest.mutate({
             guestId: guest.id,
-            email: guest.email.toLowerCase(),
-            firstname: capitalize(guest.firstname),
-            lastname: capitalize(guest.lastname),
-            specialNeeds: guest.special_needs,
+            email: guest.email?.toLowerCase(),
+            firstname: capitalize(guest.firstname ?? ""),
+            lastname: capitalize(guest.lastname ?? ""),
+            description: guest.description ?? undefined,
             userEmail: props.userEmail,
           });
           window.location.reload();
@@ -362,20 +354,20 @@ export const saveGuestList = async (
       } else if (props.openedFromEvent) {
         await client.createGuestAndConnectToEvent.mutate({
           guestId: guest.id,
-          email: guest.email.toLowerCase(),
-          firstname: capitalize(guest.firstname),
-          lastname: capitalize(guest.lastname),
-          specialNeeds: guest.special_needs,
+          email: guest.email?.toLowerCase(),
+          firstname: capitalize(guest.firstname ?? ""),
+          lastname: capitalize(guest.lastname ?? ""),
+          description: guest.description ?? undefined,
           userEmail: props.userEmail.toLowerCase(),
           eventId: props.eventId ?? "",
         });
         window.location.reload();
       } else if (!props.openedFromEvent) {
         await client.createGuest.mutate({
-          firstname: capitalize(guest.firstname),
-          lastname: capitalize(guest.lastname),
-          email: guest.email.toLowerCase(),
-          specialNeeds: guest.special_needs,
+          firstname: capitalize(guest.firstname ?? ""),
+          lastname: capitalize(guest.lastname ?? ""),
+          email: guest.email?.toLowerCase(),
+          description: guest.description ?? undefined,
           userEmail: props.userEmail.toLowerCase(),
         });
         window.location.reload();

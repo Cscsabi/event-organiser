@@ -1,4 +1,8 @@
-import { component$, useClientEffect$, useSignal } from "@builder.io/qwik";
+import {
+  component$,
+  useBrowserVisibleTask$,
+  useSignal,
+} from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { useNavigate } from "@builder.io/qwik-city";
@@ -12,10 +16,10 @@ export default component$(() => {
   const locationStore = useSignal<LocationStore>();
   const navigate = useNavigate();
 
-  useClientEffect$(async () => {
+  useBrowserVisibleTask$(async () => {
     const result = await getUser();
     if (!result.data.user) {
-      navigate.path = paths.login;
+      navigate(paths.login);
     }
     const location = await getCurrentLocation(params.locationId);
     if (location) {
@@ -44,9 +48,9 @@ export default component$(() => {
       <label for="email">Email:</label>
       <input
         onChange$={(event) => {
-          locationStore.value!.email = (event.target as HTMLInputElement).value;
+          locationStore.value!.userEmail = (event.target as HTMLInputElement).value;
         }}
-        value={locationStore.value?.email}
+        value={locationStore.value?.userEmail}
       ></input>
       <label for="link">Link:</label>
       <input
@@ -127,11 +131,11 @@ export default component$(() => {
                 countryId: locationStore.value.countryId,
               },
               description: locationStore.value.description,
-              userEmail: locationStore.value.email,
+              userEmail: locationStore.value.userEmail,
               link: locationStore.value.link,
               name: locationStore.value.name,
               phone: locationStore.value.phone,
-              price: +locationStore.value.price,
+              price: locationStore.value.price,
               type: locationStore.value.type,
               id: params.locationId,
             });
@@ -168,15 +172,15 @@ export async function getCurrentLocation(locationId: string) {
       city: result.location.address.city,
       countryId: result.location.address.countryId,
       description: result.location.description,
-      email: result.location.email,
+      userEmail: result.location.userEmail,
       link: result.location.link,
       name: result.location.name,
       phone: result.location.phone,
-      price: +result.location.price,
+      price: result.location?.price as unknown as number,
       state: result.location.address.state,
       street: result.location.address.street,
       type: result.location.type,
-      zipCode: +result.location.address.zip_code,
+      zipCode: result.location.address?.zip_code as unknown as number,
     } as LocationStore;
   }
 }

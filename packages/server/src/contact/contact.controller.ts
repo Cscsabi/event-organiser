@@ -1,7 +1,6 @@
 import { prisma } from "../app";
 import {
   ByIdInput,
-  ByNoInput,
   GetByEmailInput,
 } from "../general/general.schema";
 import { Status } from "../status.enum";
@@ -22,6 +21,9 @@ export const getBudgetPlanningController = async ({
       where: {
         eventId: getBudgetPlanningInput.eventId,
         contactId: getBudgetPlanningInput.contactId,
+      },
+      include: {
+        contact: true,
       },
     });
 
@@ -50,6 +52,9 @@ export const getBudgetPlanningsController = async ({
     const budgetPlanning = await prisma.budgetPlanning.findMany({
       where: {
         eventId: getByIdInput.id,
+      },
+      include: {
+        contact: true,
       },
     });
 
@@ -80,7 +85,6 @@ export const addBudgetPlanningController = async ({
         description: budgetPlanningInput.description,
         eventId: budgetPlanningInput.eventId,
         amount: budgetPlanningInput.amount,
-        contactName: budgetPlanningInput.contactName,
         isPaid: budgetPlanningInput.isPaid,
         contactId: budgetPlanningInput.contactId,
       },
@@ -112,7 +116,6 @@ export const updateBudgetPlanningController = async ({
       data: {
         contactId: budgetPlanningInput.contactId,
         amount: budgetPlanningInput.amount,
-        contactName: budgetPlanningInput.contactName,
         isPaid: budgetPlanningInput.isPaid,
       },
     });
@@ -134,14 +137,17 @@ export const updateBudgetPlanningController = async ({
 };
 
 export const deleteBudgetPlanningController = async ({
-  byNoInput,
+  deleteBudgetPlanningInput,
 }: {
-  byNoInput: ByNoInput;
+  deleteBudgetPlanningInput: GetBudgetPlanningInput;
 }) => {
   try {
     await prisma.budgetPlanning.delete({
       where: {
-        id: byNoInput.id,
+        contactId_eventId: {
+          contactId: deleteBudgetPlanningInput.contactId,
+          eventId: deleteBudgetPlanningInput.eventId,
+        },
       },
     });
 

@@ -1,5 +1,5 @@
 import { component$, useContext, useStyles$ } from "@builder.io/qwik";
-import { Link, useNavigate } from "@builder.io/qwik-city";
+import { useNavigate } from "@builder.io/qwik-city";
 import { QwikLogo } from "~/components/icons/qwik";
 import { paths } from "~/utils/paths";
 import { logoutUser } from "~/utils/supabase.client";
@@ -14,35 +14,35 @@ export const ProtectedHeader = component$(() => {
   return (
     <header class="topnav">
       <div>
-        <Link href={paths.index}>
+        <a href={paths.index}>
           <QwikLogo />
-        </Link>
+        </a>
       </div>
       <div class="topnav-right">
-        <Link href={paths.previousEvents}>
+        <a href={paths.previousEvents}>
           <i class="fa-regular fa-calendar-xmark"></i> Previous Events
-        </Link>
-        <Link href={paths.events}>
+        </a>
+        <a href={paths.events}>
           <i class="fa-solid fa-calendar-days"></i> Active Events
-        </Link>
-        <Link href={paths.guests}>
+        </a>
+        <a href={paths.guests}>
           <i class="fa-solid fa-person"></i> Guests
-        </Link>
-        <Link href={paths.locations}>
+        </a>
+        <a href={paths.locations}>
           <i class="fa-solid fa-location-pin"></i> Locations
-        </Link>
-        <Link href={paths.contacts}>
+        </a>
+        <a href={paths.contacts}>
           <i class="fa-solid fa-address-card"></i> Contacts
-        </Link>
-        <Link href={paths.profile}>
+        </a>
+        <a href={paths.profile}>
           <i class="fa-regular fa-user"></i> Profile
-        </Link>
+        </a>
         <a
           onClick$={async () => {
             console.log("Clicked!");
             const logout = await logoutUser();
             if (logout.result === Status.SUCCESS) {
-              navigate.path = paths.logout;
+              navigate(paths.logout);
               user.value = "";
             }
           }}

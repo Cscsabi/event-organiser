@@ -21,8 +21,8 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "0.16.2",
-    "@builder.io/qwik-city": "0.0.128",
+    "@builder.io/qwik": "^0.20.1",
+    "@builder.io/qwik-city": "^0.5.2",
     "@builder.io/qwik-react": "0.2.1",
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
@@ -62,6 +62,7 @@
     "event-organiser-api-server": "^1.0.0",
     "ics": "^3.0.1",
     "ics-file-export": "^1.0.1",
+    "qwik": "^1.0.57",
     "react-modal": "^3.16.1",
     "sass": "^1.58.0",
     "trpc-qwik-city": "^0.0.1"

@@ -146,7 +146,7 @@ export const getLocationsController = async ({
   try {
     const locations = await prisma.location.findMany({
       where: {
-        email: getByEmailInput.email,
+        userEmail: getByEmailInput.email,
       },
     });
 

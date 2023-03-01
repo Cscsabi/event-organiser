@@ -19,7 +19,7 @@ export const addEventController = async ({
         endDate: addEventInput.endDate,
         budget: addEventInput.budget,
         headcount: addEventInput.headcount,
-        email: addEventInput.userEmail,
+        userEmail: addEventInput.userEmail,
         locationId: addEventInput.locationId,
         decorNeeded: addEventInput.decorNeeded,
         menuNeeded: addEventInput.menuNeeded,
@@ -64,7 +64,7 @@ export const updateEventController = async ({
         budget: updateEventInput.budget,
         headcount: updateEventInput.headcount,
         locationId: updateEventInput.locationId,
-        email: updateEventInput.userEmail,
+        userEmail: updateEventInput.userEmail,
         decorNeeded: updateEventInput.decorNeeded,
         menuNeeded: updateEventInput.menuNeeded,
         performerNeeded: updateEventInput.performerNeeded,
@@ -142,7 +142,7 @@ export const getEventsController = async ({
   try {
     const events = await prisma.event.findMany({
       where: {
-        email: getByEmailInput.email,
+        userEmail: getByEmailInput.email,
       },
       include: {
         location: {

@@ -1,40 +1,57 @@
-import type { EventType, Location, Event, Contact } from "@prisma/client";
+import type { EventType, Location, Contact } from "@prisma/client";
 import type { Status } from "event-organiser-api-server/src/status.enum";
 
 export interface NewEventStore {
   name: string;
-  email: string;
-  type: EventType;
-  startDate: Date;
-  endDate: Date;
+  userEmail: string;
+  type?: EventType;
+  startDate?: Date;
+  endDate?: Date;
   budget: number;
   locationId: string;
-  headcount: number;
+  headcount?: number;
+  description?: string;
   menuNeeded: boolean;
   decorNeeded: boolean;
   performerNeeded: boolean;
 }
 
 export interface LocationStore {
-  email: string;
+  userEmail: string;
   name: string;
-  description: string;
+  description?: string;
   addressId: string;
   city: string;
   countryId: number;
   street: string;
-  state: string;
-  zipCode: number;
-  type: string;
-  price: number;
-  phone: string;
-  link: string;
+  state?: string;
+  zipCode?: number;
+  type?: string;
+  price?: number;
+  phone?: string;
+  link?: string;
 }
 
 export interface GetLocationsReturnType {
   status: Status;
   results: number;
   locations: Location[];
+}
+
+export interface Event {
+  id: string;
+  name: string;
+  userEmail: string;
+  type: EventType | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  budget: number;
+  locationId: string;
+  headcount: number | null;
+  description: string | null;
+  menuNeeded: boolean;
+  decorNeeded: boolean;
+  performerNeeded: boolean;
 }
 
 export interface GetEventsReturnType {
@@ -49,7 +66,7 @@ export interface GetEventsReturnType {
 
 export interface CalendarEvent {
   name: string;
-  date: Date;
+  date?: Date;
 }
 
 export interface GuestListProps {
@@ -61,10 +78,11 @@ export interface GuestListProps {
 
 export interface GuestType {
   id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
-  special_needs: string;
+  userEmail: string;
+  firstname: string | null;
+  lastname: string | null;
+  email: string | null;
+  description: string | null;
 }
 
 export interface GuestListStore {
@@ -82,8 +100,8 @@ export interface GetGuestReturnType {
 }
 
 export interface EventStore {
-  event?: NewEventStore;
-  location?: LocationStore;
+  event: NewEventStore;
+  location: LocationStore;
   modalOpen: boolean;
   userEmail: string;
 }
@@ -126,31 +144,28 @@ export interface CardProps {
 export interface BudgetPlanningProps {
   eventId: string;
   budget: number;
+  active: boolean;
 }
 
 export interface BudgetPlanningType {
-  contactName: string;
-  amount: number;
+  amount?: number;
   isPaid: boolean;
   eventId: string;
-  description: string;
+  description?: string;
   contactId: string;
 }
 
 export interface BudgetPlanningStore {
-  budgetPlanning: BudgetPlanningType[];
+  budgetPlanning: (BudgetPlanningType & {
+    contact: Contact;
+  })[];
   amountAltogether: number;
   percentAltogether: number;
   userEmail: string;
+  modalOpen: boolean;
+  modalContactId: string;
   contactId?: string;
-  contact?: {
-    id: string;
-    name: string;
-    phone: string;
-    email: string;
-    description: string;
-    userEmail: string;
-  };
+  contact?: Contact;
 }
 
 export interface ContactProps {
@@ -160,15 +175,13 @@ export interface ContactProps {
 export interface ContactType {
   id: string;
   name: string;
-  phone: string;
-  email: string;
-  description: string;
+  phone?: string;
+  email?: string;
+  description?: string;
 }
 
 export interface ContactStore {
   contacts: ContactType[];
-  modalOpen: boolean;
-  modalContactId: string;
   userEmail: string;
 }
 
