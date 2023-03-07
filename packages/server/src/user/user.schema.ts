@@ -10,6 +10,7 @@ export const createUserSchema = z.object({
   lastname: z.string({
     required_error: "Lastname is required",
   }),
+  darkModeEnabled: z.boolean(),
 });
 
 export const params = z.object({
@@ -25,6 +26,7 @@ export const updateUserSchema = z.object({
       password: z.string(),
       email: z.string(),
       notifications: z.boolean(),
+      darkModeEnabled: z.boolean(),
     })
     .partial(),
 });

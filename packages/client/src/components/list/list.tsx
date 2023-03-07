@@ -33,7 +33,6 @@ export const List = component$((props: ListProps) => {
     }
   });
 
-  
   const eventResource = useResource$<GetEventsReturnType>(
     // @ts-ignore
     ({ track, cleanup }) => {
@@ -58,16 +57,19 @@ export const List = component$((props: ListProps) => {
   );
   return (
     <div>
-      <input
-        preventdefault:change
-        onInput$={(event) => {
-          searchInput.value = (
-            event.target as HTMLInputElement
-          ).value.toLowerCase();
-        }}
-        type="text"
-        placeholder="Search.."
-      />
+      <div class="m-auto w-1/2 p-2.5">
+        <input
+          preventdefault:change
+          onInput$={(event) => {
+            searchInput.value = (
+              event.target as HTMLInputElement
+            ).value.toLowerCase();
+          }}
+          type="search"
+          class="block w-full self-center p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Search.."
+        />
+      </div>
       {generateList(props, eventResource, searchInput, locationResource)}
     </div>
   );
@@ -109,7 +111,7 @@ export const generateList = (
                         id={event.id}
                         description={event.type ?? ""}
                         name={event.name}
-                        color={props.isActive ? "card-2" : "card-3"}
+                        type={props.isActive ? "event" : "previous"}
                         goTo={
                           props.isActive
                             ? paths.event + event.id
@@ -131,18 +133,28 @@ export const generateList = (
           onResolved={(result) => {
             return (
               <div>
-                {result.locations.map((location) => {
-                  return (
-                    <Card
-                      id={location.id}
-                      description={location.price?.toString() + " Ft"}
-                      name={location.name}
-                      color="card-1"
-                      goTo={paths.location + location.id}
-                      icon="location"
-                    />
-                  );
-                })}
+                {result.locations
+                  .filter((event) => {
+                    if (searchInput.value.length > 0) {
+                      return event.name
+                        .toLowerCase()
+                        .includes(searchInput.value);
+                    } else {
+                      return event;
+                    }
+                  })
+                  .map((location) => {
+                    return (
+                      <Card
+                        id={location.id}
+                        description={location.price?.toString() + " Ft"}
+                        name={location.name}
+                        type="location"
+                        goTo={paths.location + location.id}
+                        icon="location"
+                      />
+                    );
+                  })}
               </div>
             );
           }}

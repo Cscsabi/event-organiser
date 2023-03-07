@@ -102,76 +102,97 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
   return (
     <div>
       <div
-        class="table-wrapper"
+        class="relative overflow-x-auto shadow-md sm:rounded-lg"
         style={props.budget !== 0 ? "" : "display:none"}
       >
-        Budget Planning:
-        <table class="fl-table">
-          <thead>
-            <tr>
-              <th>Contact Name</th>
-              <th>Amount</th>
-              <th>%</th>
-              <th>Description</th>
-              <th>Paid</th>
-              <th></th>
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+              <th scope="col" class="px-6 py-4">
+                Contact Name
+              </th>
+              <th scope="col" class="px-6 py-4">
+                Amount
+              </th>
+              <th scope="col" class="px-6 py-4">
+                %
+              </th>
+              <th scope="col" class="px-6 py-4">
+                Description
+              </th>
+              <th scope="col" class="px-6 py-4">
+                Paid
+              </th>
+              <th scope="col" class="px-6 py-4"></th>
             </tr>
           </thead>
           <tbody>
             {generateBudgetPlanningBody(store, props, contactsResource)}
-            <tr>
-              <td>Summary:</td>
-              <td>{store.amountAltogether}</td>
-              <td>{store.percentAltogether}</td>
-              <td>Remaining:</td>
-              <td>{props.budget - store.amountAltogether}</td>
+            <tr class="font-semibold text-gray-900 dark:text-white dark:bg-slate-900">
+              <td scope="row" class="px-6 py-3 text-base">
+                Summary:
+              </td>
+              <td class="px-6 py-3">{store.amountAltogether}</td>
+              <td class="px-6 py-3">{store.percentAltogether}</td>
+              <td scope="row" class="px-6 py-3 text-base">
+                Remaining:
+              </td>
+              <td class="px-6 py-3">{props.budget - store.amountAltogether}</td>
+              <td class="px-6 py-3"></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <QwikModal
-        client:hover
-        // @ts-ignore: Type is not assignable to type
-        isOpen={store.modalOpen}
-        ariaHideApp={false}
-      >
-        <button onClick$={() => (store.modalOpen = false)}>Close</button>
-        <Resource
-          value={contactCard}
-          onPending={() => <div>Loading...</div>}
-          onResolved={(result) => {
-            return (
-              <div>
-                <label for="name">Name:</label>
-                <input
-                  readOnly={!props.active}
-                  type="text"
-                  value={result.contact?.name}
-                ></input>{" "}
-                <label for="description">Description:</label>
-                <input
-                  type="text"
-                  readOnly={!props.active}
-                  value={result.contact?.description}
-                ></input>{" "}
-                <label for="phone">Phone:</label>
-                <input
-                  type="text"
-                  readOnly={!props.active}
-                  value={result.contact?.phone}
-                ></input>{" "}
-                <label for="email">E-mail:</label>
-                <input
-                  type="text"
-                  readOnly={!props.active}
-                  value={result.contact?.email}
-                ></input>
-              </div>
-            );
-          }}
-        />
-      </QwikModal>
+        <QwikModal
+          client:hover
+          // @ts-ignore: Type is not assignable to type
+          isOpen={store.modalOpen}
+          className="bg-slate-300 dark:bg-gray-600 overflow-hidden absolute inset-10 rounded-2xl p-6"
+          >
+          <button
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            onClick$={() => (store.modalOpen = false)}
+          >
+            Close
+          </button>
+          <Resource
+            value={contactCard}
+            onPending={() => <div>Loading...</div>}
+            onResolved={(result) => {
+              return (
+                <div>
+                  <label for="name">Name:</label>
+                  <input
+                    readOnly={!props.active}
+                    type="text"
+                    value={result.contact?.name}
+                  ></input>
+                  <label for="description">Description:</label>
+                  <input
+                    type="text"
+                    readOnly={!props.active}
+                    value={result.contact?.description}
+                  ></input>
+                  <label for="phone">Phone:</label>
+                  <input
+                    type="text"
+                    readOnly={!props.active}
+                    value={result.contact?.phone}
+                  ></input>
+                  <label for="email">E-mail:</label>
+                  <input
+                    type="text"
+                    readOnly={!props.active}
+                    value={result.contact?.email}
+                  ></input>
+                </div>
+              );
+            }}
+          />
+        </QwikModal>
       <button
+        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+        type="button"
         hidden={!props.active}
         onClick$={() =>
           (store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW])
@@ -179,7 +200,12 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       >
         Add Row
       </button>
-      <button hidden={!props.active} onClick$={() => saveRows(store)}>
+      <button
+        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+        type="button"
+        hidden={!props.active}
+        onClick$={() => saveRows(store)}
+      >
         Save
       </button>
     </div>
@@ -195,7 +221,7 @@ export const generateBudgetPlanningBody = async (
     <>
       {store.budgetPlanning.map((row) => {
         return (
-          <tr>
+          <tr class="border-b dark:bg-gray-800 bg-slate-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             <td>
               <Resource
                 value={resource}
@@ -203,6 +229,7 @@ export const generateBudgetPlanningBody = async (
                 onResolved={(result) => {
                   return (
                     <select
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       disabled={!props.active ? true : row.isPaid}
                       name="contact"
                       onChange$={async (event) => {
@@ -255,6 +282,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
+                class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 disabled={!props.active ? true : row.isPaid}
                 type="number"
                 value={row.amount}
@@ -275,6 +303,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
+                class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 type="number"
                 readOnly
                 disabled={!props.active ? true : row.isPaid}
@@ -283,6 +312,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
+                class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 type="text"
                 disabled={!props.active ? true : row.isPaid}
                 value={row.description}
@@ -293,6 +323,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
+                class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 type="checkbox"
                 checked={row.isPaid}
                 disabled={!props.active}
@@ -304,6 +335,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <button
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                 disabled={row.contact.name === ""}
                 onClick$={() => {
                   store.modalOpen = true;
@@ -349,7 +381,6 @@ export const saveRows = async (store: BudgetPlanningStore) => {
             isPaid: row.isPaid,
             contactId: row.contactId,
           });
-          window.location.reload();
         }
       } else {
         await client.addBudgetPlanning.mutate({
@@ -359,7 +390,6 @@ export const saveRows = async (store: BudgetPlanningStore) => {
           isPaid: row.isPaid,
           contactId: row.contactId,
         });
-        window.location.reload();
       }
     });
 };

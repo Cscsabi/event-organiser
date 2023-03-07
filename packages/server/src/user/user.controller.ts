@@ -21,6 +21,7 @@ export const createUserController = async ({
         firstname: input.firstname,
         lastname: input.lastname,
         notifications: false,
+        darkModeEnabled: false,
       },
     });
 

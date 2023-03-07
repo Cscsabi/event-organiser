@@ -29,93 +29,183 @@ export default component$(() => {
 
   return (
     <div>
-      <label for="city">City:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.city = (event.target as HTMLInputElement).value;
-        }}
-        value={locationStore.value?.city}
-      ></input>
-      <label for="description">Description:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.description = (
-            event.target as HTMLInputElement
-          ).value;
-        }}
-        value={locationStore.value?.description}
-      ></input>
-      <label for="email">Email:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.userEmail = (event.target as HTMLInputElement).value;
-        }}
-        value={locationStore.value?.userEmail}
-      ></input>
-      <label for="link">Link:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.link = (event.target as HTMLInputElement).value;
-        }}
-        value={locationStore.value?.link}
-      ></input>
-      <label for="name">Name:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.name = (event.target as HTMLInputElement).value;
-        }}
-        value={locationStore.value?.name}
-      ></input>
-      <label for="phone">Phone:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.phone = (event.target as HTMLInputElement).value;
-        }}
-        value={locationStore.value?.phone}
-      ></input>
-      <label for="price">Price:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.price = +(event.target as HTMLInputElement)
-            .value;
-        }}
-        value={locationStore.value?.price}
-      ></input>
-      <label for="state">State:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.state = (event.target as HTMLInputElement).value;
-        }}
-        value={locationStore.value?.state}
-      ></input>
-      <label for="street">Street:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.street = (
-            event.target as HTMLInputElement
-          ).value;
-        }}
-        value={locationStore.value?.street}
-      ></input>
-      <label for="zipCode">Zip Code:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.zipCode = +(event.target as HTMLInputElement)
-            .value;
-        }}
-        value={locationStore.value?.zipCode}
-      ></input>
-      <label for="type">Type:</label>
-      <input
-        onChange$={(event) => {
-          locationStore.value!.type = (event.target as HTMLInputElement).value;
-        }}
-        value={locationStore.value?.type}
-      ></input>
-      <input
+      <div>
+        <label
+          class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+          for="name"
+        >
+          Name:
+        </label>
+        <input
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange$={(event) => {
+            locationStore.value!.name = (
+              event.target as HTMLInputElement
+            ).value;
+          }}
+          value={locationStore.value?.name}
+        ></input>
+      </div>
+      <div>
+        <label
+          class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+          for="description"
+        >
+          Description:
+        </label>
+        <input
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange$={(event) => {
+            locationStore.value!.description = (
+              event.target as HTMLInputElement
+            ).value;
+          }}
+          value={locationStore.value?.description}
+        ></input>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 w-1/2">
+        <div>
+          <label
+            class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+            for="type"
+          >
+            Type:
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange$={(event) => {
+              locationStore.value!.type = (
+                event.target as HTMLInputElement
+              ).value;
+            }}
+            value={locationStore.value?.type}
+          ></input>
+        </div>
+        <div>
+          <label
+            class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+            for="link"
+          >
+            Link:
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange$={(event) => {
+              locationStore.value!.link = (
+                event.target as HTMLInputElement
+              ).value;
+            }}
+            value={locationStore.value?.link}
+          ></input>
+        </div>
+      </div>
+      <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
+        <div>
+          <label
+            class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+            for="phone"
+          >
+            Phone:
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange$={(event) => {
+              locationStore.value!.phone = (
+                event.target as HTMLInputElement
+              ).value;
+            }}
+            value={locationStore.value?.phone}
+          ></input>
+        </div>
+        <div>
+          <label
+            class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+            for="price"
+          >
+            Price:
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange$={(event) => {
+              locationStore.value!.price = +(event.target as HTMLInputElement)
+                .value;
+            }}
+            value={locationStore.value?.price}
+          ></input>
+        </div>
+      </div>
+      <div>
+        <label
+          class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+          for="state"
+        >
+          State:
+        </label>
+        <input
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange$={(event) => {
+            locationStore.value!.state = (
+              event.target as HTMLInputElement
+            ).value;
+          }}
+          value={locationStore.value?.state}
+        ></input>
+      </div>
+      <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
+        <div>
+          <label
+            class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+            for="city"
+          >
+            City:
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange$={(event) => {
+              locationStore.value!.city = (
+                event.target as HTMLInputElement
+              ).value;
+            }}
+            value={locationStore.value?.city}
+          ></input>
+        </div>
+        <div>
+          <label
+            class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+            for="zipCode"
+          >
+            Zip Code:
+          </label>
+          <input
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange$={(event) => {
+              locationStore.value!.zipCode = +(event.target as HTMLInputElement)
+                .value;
+            }}
+            value={locationStore.value?.zipCode}
+          ></input>
+        </div>
+      </div>
+      <div>
+        <label
+          class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+          for="street"
+        >
+          Street:
+        </label>
+        <input
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange$={(event) => {
+            locationStore.value!.street = (
+              event.target as HTMLInputElement
+            ).value;
+          }}
+          value={locationStore.value?.street}
+        ></input>
+      </div>
+      <button
+        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
         preventdefault:click
-        type="button"
-        value="Save"
         onClick$={async () => {
           if (locationStore.value) {
             client.updateLocation.mutate({
@@ -139,10 +229,11 @@ export default component$(() => {
               type: locationStore.value.type,
               id: params.locationId,
             });
-            window.location.reload();
           }
         }}
-      ></input>
+      >
+        Save
+      </button>
     </div>
   );
 });

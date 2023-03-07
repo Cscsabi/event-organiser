@@ -6,7 +6,7 @@ export const addEventInput = z.object({
   type: z.nativeEnum(EventType).optional(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
-  budget: z.number().optional(),
+  budget: z.number(),
   headcount: z.number().optional(),
   description: z.string().optional(),
   userEmail: z.string(),

@@ -10,10 +10,9 @@ export const budgetPlanningInput = z.object({
 
 export const contactInput = z.object({
   name: z.string(),
-  cost: z.number(),
-  phone: z.string(),
-  email: z.string(),
-  description: z.string(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  description: z.string().optional(),
   userEmail: z.string(),
 });
 

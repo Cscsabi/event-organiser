@@ -6,7 +6,13 @@ import { qwikReact } from "@builder.io/qwik-react/vite";
 
 export default defineConfig(() => {
   return {
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths(), qwikReact()],
+    plugins: [
+      qwikCity(),
+      qwikVite(),
+      tsconfigPaths(),
+      qwikReact(),
+      qwikReact(),
+    ],
     preview: {
       headers: {
         "Cache-Control": "public, max-age=600",

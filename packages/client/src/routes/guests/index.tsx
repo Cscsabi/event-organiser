@@ -2,16 +2,13 @@ import {
   component$,
   useBrowserVisibleTask$,
   useSignal,
-  useStyles$,
 } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import { getUser } from "~/utils/supabase.client";
-import styles from "~/table.css?inline";
 import { GuestList } from "~/components/guestlist/guestlist";
 
 export default component$(() => {
-  useStyles$(styles);
   const userEmail = useSignal<string>("");
   const navigate = useNavigate();
 

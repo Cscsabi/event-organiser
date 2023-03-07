@@ -7,6 +7,7 @@ import { capitalize } from "~/utils/common.functions";
 
 export const EMPTY_ROW = {
   id: "",
+  email: "",
   userEmail: "",
   firstname: "",
   lastname: "",
@@ -67,7 +68,7 @@ export const GuestList = component$((props: GuestListProps) => {
     ).guests;
 
     store.tableRows = [];
-    store.tableRows = [...result.guests, EMPTY_ROW];
+    store.tableRows = [...result.guests];
     store.unselectedGuests = [...store.connectableGuests];
 
     console.log(store.connectableGuests);
@@ -75,15 +76,23 @@ export const GuestList = component$((props: GuestListProps) => {
 
   return (
     <div>
-      <div class="table-wrapper">
-        <table class="fl-table">
-          <thead>
-            <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
-              <th>Special Needs</th>
-              <th>Delete Row</th>
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+              <th scope="col" class="px-6 py-4">
+                Firstname
+              </th>
+              <th scope="col" class="px-6 py-4">
+                Lastname
+              </th>
+              <th scope="col" class="px-6 py-4">
+                Email
+              </th>
+              <th scope="col" class="px-6 py-4">
+                Description
+              </th>
+              <th scope="col" class="px-6 py-4"></th>
             </tr>
           </thead>
           <tbody>{generateEventGuestTable(store, props)}</tbody>
@@ -93,27 +102,41 @@ export const GuestList = component$((props: GuestListProps) => {
         client:load
         // @ts-ignore: Type is not assignable to type
         isOpen={store.modalOpen}
-        ariaHideApp={false}
+        className="bg-slate-300 dark:bg-gray-600 overflow-hidden absolute inset-10 rounded-2xl p-6"
         style={customStyles}
       >
-        <button onClick$={() => (store.modalOpen = false)}>
-          Close existing guestlist
+        <button
+          class="text-white mt-6 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+          onClick$={() => (store.modalOpen = false)}
+        >
+          Close
         </button>
-        <div class="table-wrapper">
-          <table class="fl-table">
-            <thead>
-              <tr>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Special Needs</th>
-                <th>Select</th>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+                <th scope="col" class="px-6 py-4">
+                  Firstname
+                </th>
+                <th scope="col" class="px-6 py-4">
+                  Lastname
+                </th>
+                <th scope="col" class="px-6 py-4">
+                  Email
+                </th>
+                <th scope="col" class="px-6 py-4">
+                  Description
+                </th>
+                <th scope="col" class="px-6 py-4">
+                  Select
+                </th>
               </tr>
             </thead>
             <tbody>{generateSelectableGuestTable(store)}</tbody>
           </table>
         </div>
         <button
+          class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
           preventdefault:click
           onClick$={() => {
             addSelectedGuestsToEvent(store, props.eventId ?? "");
@@ -124,21 +147,25 @@ export const GuestList = component$((props: GuestListProps) => {
       </QwikModal>
       <button
         preventdefault:click
+        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
         onClick$={() => {
           store.tableRows = [...store.tableRows, EMPTY_ROW];
         }}
       >
         Add Row
       </button>
-      <input
+      <button
+        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
         type="submit"
-        value="Save Guestlist"
         preventdefault:click
         onClick$={async () => {
           saveGuestList(store, props);
         }}
-      ></input>
+      >
+        Save Guestlist
+      </button>
       <button
+        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
         preventdefault:click
         onClick$={() => {
           store.modalOpen = true;
@@ -158,12 +185,35 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
   return store.connectableGuests.map((guest) => {
     console.log(guest);
     return (
-      <tr>
-        <td>{guest.firstname}</td>
-        <td>{guest.lastname}</td>
-        <td>{guest.email}</td>
-        <td>{guest.description}</td>
-        <td>
+      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <td
+          scope="row"
+          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.firstname}
+        </td>
+        <td
+          scope="row"
+          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.lastname}
+        </td>
+        <td
+          scope="row"
+          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.email}
+        </td>
+        <td
+          scope="row"
+          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.description}
+        </td>
+        <td
+          scope="row"
+          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           <input
             type="checkbox"
             onChange$={(event) => {
@@ -196,11 +246,11 @@ export const generateEventGuestTable = (
   props: GuestListProps
 ) => {
   return store.tableRows.map((guest) => {
-    console.log(guest);
     return (
-      <tr>
-        <td>
+      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
+        <td scope="row">
           <input
+            class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             type="text"
             onChange$={(event) =>
               store.tableRows.map((row) => {
@@ -213,9 +263,10 @@ export const generateEventGuestTable = (
             value={guest.firstname}
           ></input>
         </td>
-        <td>
+        <td scope="row">
           <input
             type="text"
+            class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             onChange$={(event) =>
               store.tableRows.map((row) => {
                 if (row.id === guest.id) {
@@ -226,9 +277,10 @@ export const generateEventGuestTable = (
             value={guest.lastname}
           ></input>
         </td>
-        <td>
+        <td scope="row">
           <input
             type="email"
+            class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
             onChange$={(event) =>
               store.tableRows.map((row) => {
@@ -240,8 +292,9 @@ export const generateEventGuestTable = (
             value={guest.email}
           ></input>
         </td>
-        <td>
+        <td scope="row">
           <input
+            class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             type="text"
             onChange$={(event) =>
               store.tableRows.map((row) => {
@@ -253,41 +306,58 @@ export const generateEventGuestTable = (
             value={guest.description}
           ></input>
         </td>
-        <td>
-          <input
+        <td scope="row" class="text-center">
+          <button
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             preventdefault:click
-            type="button"
-            value="Delete row"
             onClick$={async () => {
               let rowFound = false;
-              const isNewRow = await client.getGuest.query({
-                guestId: guest.id,
-              });
+              if (
+                guest.id === "" &&
+                guest.description === "" &&
+                guest.email === "" &&
+                guest.firstname === "" &&
+                guest.lastname === ""
+              ) {
+                store.tableRows.forEach((row, index) => {
+                  if (row.id === guest.id && !rowFound) {
+                    store.tableRows.splice(index, 1);
+                    rowFound = true;
+                    store.tableRows = [...store.tableRows];
+                  }
+                });
+              } else {
+                const isNewRow = await client.getGuest.query({
+                  guestId: guest.id,
+                });
 
-              if (isNewRow.status === Status.SUCCESS) {
-                if (props.openedFromEvent) {
-                  await client.deleteEventGuest.mutate({
-                    eventId: props.eventId ?? "",
-                    guestId: guest.id,
-                  });
-                } else {
-                  await client.deleteGuest.mutate({
-                    guestId: guest.id,
-                  });
+                if (isNewRow.status === Status.SUCCESS) {
+                  if (props.openedFromEvent) {
+                    await client.deleteEventGuest.mutate({
+                      eventId: props.eventId ?? "",
+                      guestId: guest.id,
+                    });
+                  } else {
+                    await client.deleteGuest.mutate({
+                      guestId: guest.id,
+                    });
+                  }
+                  store.useClientEffectHook = ExecuteUseClientEffect.DELETE_ROW;
                 }
-                store.useClientEffectHook = ExecuteUseClientEffect.DELETE_ROW;
+
+                store.tableRows.forEach((row, index) => {
+                  if (row.id === guest.id && !rowFound) {
+                    store.tableRows.splice(index, 1);
+                    rowFound = true;
+                  }
+                });
+
+                store.tableRows = [...store.tableRows];
               }
-
-              store.tableRows.forEach((row, index) => {
-                if (row.id === guest.id && !rowFound) {
-                  store.tableRows.splice(index, 1);
-                  rowFound = true;
-                }
-              });
-
-              store.tableRows = [...store.tableRows];
             }}
-          ></input>
+          >
+            Delete row
+          </button>
         </td>
       </tr>
     );
@@ -349,7 +419,6 @@ export const saveGuestList = async (
             description: guest.description ?? undefined,
             userEmail: props.userEmail,
           });
-          window.location.reload();
         }
       } else if (props.openedFromEvent) {
         await client.createGuestAndConnectToEvent.mutate({
@@ -361,7 +430,6 @@ export const saveGuestList = async (
           userEmail: props.userEmail.toLowerCase(),
           eventId: props.eventId ?? "",
         });
-        window.location.reload();
       } else if (!props.openedFromEvent) {
         await client.createGuest.mutate({
           firstname: capitalize(guest.firstname ?? ""),
@@ -370,7 +438,6 @@ export const saveGuestList = async (
           description: guest.description ?? undefined,
           userEmail: props.userEmail.toLowerCase(),
         });
-        window.location.reload();
       }
     });
 };

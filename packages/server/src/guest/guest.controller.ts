@@ -102,7 +102,7 @@ export const addGuestController = async ({
         email: addGuestInput.email,
         firstname: addGuestInput.firstname,
         lastname: addGuestInput.lastname,
-        special_needs: addGuestInput.specialNeeds,
+        description: addGuestInput.description,
         userEmail: addGuestInput.userEmail,
       },
     });
@@ -137,7 +137,7 @@ export const addGuestAndConnectToEventController = async ({
         email: addGuestAndConnectToEventInput.email,
         firstname: addGuestAndConnectToEventInput.firstname,
         lastname: addGuestAndConnectToEventInput.lastname,
-        special_needs: addGuestAndConnectToEventInput.specialNeeds,
+        description: addGuestAndConnectToEventInput.description,
         userEmail: addGuestAndConnectToEventInput.userEmail,
         EventGuest: {
           create: {
@@ -212,7 +212,7 @@ export const updateGuestController = async ({
         email: updateGuestInput.email,
         firstname: updateGuestInput.firstname,
         lastname: updateGuestInput.lastname,
-        special_needs: updateGuestInput.specialNeeds,
+        description: updateGuestInput.description,
       },
     });
 

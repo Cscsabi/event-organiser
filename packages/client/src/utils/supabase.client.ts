@@ -26,6 +26,7 @@ export async function getUser() {
         email: userResponse.data.user.email,
         firstname: firstName,
         lastname: lastName,
+        darkModeEnabled: false
       });
     }
   }
@@ -85,17 +86,3 @@ export async function logoutUser() {
   return { result: Status.SUCCESS };
 }
 
-export async function updateUserNotifications(
-  email: string,
-  checkbox: boolean
-) {
-  console.log(checkbox);
-  await client.updateUser.mutate({
-    params: {
-      email: email,
-    },
-    body: {
-      notifications: checkbox,
-    },
-  });
-}

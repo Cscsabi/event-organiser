@@ -26,7 +26,7 @@ export default component$(() => {
 
   return (
     <div>
-      <h1>
+      <h1 class="mt-16 mb-6 text-3xl font-semibold dark:text-white">
         Welcome to Event Organiser! <i class="fa-solid fa-calendar-days"></i>
       </h1>
     </div>

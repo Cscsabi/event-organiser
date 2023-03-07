@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  email         String     @id
-  firstname     String
-  lastname      String
-  events        Event[]
-  locations     Location[]
-  notifications Boolean
-  contacts      Contact[]
-  guests        Guest[]
+  email           String     @id
+  firstname       String
+  lastname        String
+  darkModeEnabled Boolean
+  events          Event[]
+  locations       Location[]
+  notifications   Boolean
+  contacts        Contact[]
+  guests          Guest[]
 
   @@map("users")
 }

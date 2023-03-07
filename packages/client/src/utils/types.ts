@@ -114,6 +114,8 @@ export interface ListProps {
 export interface ProfilStore {
   checkbox: boolean;
   email: string;
+  firstname: string;
+  lastname: string;
   date: Date;
   events: CalendarEvent[];
 }
@@ -124,11 +126,13 @@ export interface RegisterStore {
   email: string;
   password: string;
   message: string;
+  openToast: boolean;
 }
 
 export interface LoginStore {
   email: string;
   password: string;
+  invalidCredentials: boolean;
 }
 
 export interface CardProps {
@@ -136,7 +140,7 @@ export interface CardProps {
   name: string;
   description: string;
   location?: string;
-  color: string;
+  type: string;
   goTo: string;
   icon: string;
 }
@@ -192,10 +196,9 @@ export interface ContactCard {
 
 export interface NewContact {
   name: string;
-  cost: number;
-  phone: string;
-  email: string;
-  description: string;
+  phone?: string;
+  email?: string;
+  description?: string;
   userEmail: string;
 }
 
