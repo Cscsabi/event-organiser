@@ -25,6 +25,7 @@ import {
   getCountriesController,
   getEventController,
   getEventsController,
+  getFeedbackEventsController,
   updateEventController,
 } from "./event/event.controller";
 import { addEventInput, updateEventInput } from "./event/event.schema";
@@ -53,6 +54,7 @@ import {
   addGuestAndConnectToEventInput,
   getGuestsInput,
   connectGuestToEventInput,
+  getGuestByEmails,
 } from "./guest/guest.schema";
 import {
   addGuestAndConnectToEventController,
@@ -60,6 +62,8 @@ import {
   connectGuestToEventController,
   deleteEventGuestController,
   deleteGuestController,
+  getEventGuestController,
+  getGuestByEmailController,
   getGuestController,
   getGuestsController,
   updateGuestController,
@@ -82,6 +86,12 @@ import {
   getBudgetPlanningInput,
   updateContactInput,
 } from "./contact/contact.schema";
+import { addFeedbackInput, getFeedbackInput } from "./feedback/feedback.schema";
+import {
+  addFeedbackController,
+  getFeedbackController,
+  getFeedbacksController,
+} from "./feedback/feedback.controller";
 
 export const prisma = new PrismaClient();
 const t = initTRPC.create({
@@ -109,6 +119,28 @@ const appRouter = t.router({
   addEvent: t.procedure
     .input(addEventInput)
     .mutation(({ input }) => addEventController({ addEventInput: input })),
+  getFeedbackEvents: t.procedure.query(() => getFeedbackEventsController()),
+  getEventGuest: t.procedure
+    .input(connectGuestToEventInput)
+    .query(({ input }) =>
+      getEventGuestController({ getEventGuestInput: input })
+    ),
+  getGuestByEmails: t.procedure
+    .input(getGuestByEmails)
+    .query(({ input }) =>
+      getGuestByEmailController({ getGuestByEmailsInput: input })
+    ),
+  getFeedback: t.procedure
+    .input(getFeedbackInput)
+    .query(({ input }) => getFeedbackController({ getFeedbackInput: input })),
+  getFeedbacks: t.procedure
+    .input(byIdInput)
+    .query(({ input }) => getFeedbacksController({ getFeedbacksInput: input })),
+  addFeedback: t.procedure
+    .input(addFeedbackInput)
+    .mutation(({ input }) =>
+      addFeedbackController({ addFeedbackInput: input })
+    ),
   updateEvent: t.procedure
     .input(updateEventInput)
     .mutation(({ input }) =>

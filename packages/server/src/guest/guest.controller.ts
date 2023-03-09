@@ -1,12 +1,15 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../app";
+import { GetByEmailInput } from "../general/general.schema";
 import { Status } from "../status.enum";
 import {
   AddGuestAndConnectToEventInput,
   AddGuestInput,
+  connectGuestToEventInput,
   ConnectGuestToEventInput,
   DeleteGuestInput,
+  GetGuestByEmails,
   GetGuestInput,
   GetGuestsInput,
   GuestEventInput,
@@ -25,7 +28,7 @@ export const getGuestsController = async ({
       guests = await prisma.guest.findMany({
         where: {
           userEmail: getGuestsInput.userEmail,
-          EventGuest: {
+          eventGuest: {
             some: {
               eventId: getGuestsInput.eventId,
             },
@@ -37,7 +40,7 @@ export const getGuestsController = async ({
       guests = await prisma.guest.findMany({
         where: {
           userEmail: getGuestsInput.userEmail,
-          EventGuest: {
+          eventGuest: {
             none: {
               eventId: getGuestsInput.eventId,
             },
@@ -139,7 +142,7 @@ export const addGuestAndConnectToEventController = async ({
         lastname: addGuestAndConnectToEventInput.lastname,
         description: addGuestAndConnectToEventInput.description,
         userEmail: addGuestAndConnectToEventInput.userEmail,
-        EventGuest: {
+        eventGuest: {
           create: {
             eventId: addGuestAndConnectToEventInput.eventId,
           },
@@ -243,7 +246,7 @@ export const deleteGuestController = async ({
         id: deleteGuestInput.guestId,
       },
       include: {
-        EventGuest: {
+        eventGuest: {
           where: {
             guestId: deleteGuestInput.guestId,
           },
@@ -284,6 +287,73 @@ export const deleteEventGuestController = async ({
     return {
       status: Status.SUCCESS,
     };
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+        });
+      }
+    }
+    throw error;
+  }
+};
+
+export const getEventGuestController = async ({
+  getEventGuestInput,
+}: {
+  getEventGuestInput: ConnectGuestToEventInput;
+}) => {
+  try {
+    const eventGuest = await prisma.eventGuest.findFirst({
+      where: {
+        eventId: getEventGuestInput.eventId,
+        guestId: getEventGuestInput.guestId,
+      },
+    });
+
+    if (!eventGuest) {
+      return {
+        status: Status.NOT_FOUND,
+      };
+    }
+
+    return { status: Status.SUCCESS };
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        throw new TRPCError({
+          code: "CONFLICT",
+        });
+      }
+    }
+    throw error;
+  }
+};
+
+export const getGuestByEmailController = async ({
+  getGuestByEmailsInput,
+}: {
+  getGuestByEmailsInput: GetGuestByEmails;
+}) => {
+  try {
+    const guestId = await prisma.guest.findFirst({
+      where: {
+        email: getGuestByEmailsInput.guestEmail,
+        userEmail: getGuestByEmailsInput.userEmail,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!guestId) {
+      return {
+        status: Status.NOT_FOUND,
+      };
+    }
+
+    return { status: Status.SUCCESS, guestId };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {

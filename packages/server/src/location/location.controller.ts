@@ -70,7 +70,7 @@ export const updateLocationController = async ({
       data: {
         name: updateLocationInput.name,
         address: {
-          create: {
+          update: {
             city: updateLocationInput.address.city,
             street: updateLocationInput.address.street,
             state: updateLocationInput.address.state,

@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import type { CardProps } from "~/utils/types";
-import { Link } from "@builder.io/qwik-city";
+// import { Link } from "@builder.io/qwik-city";
 
 export default component$((card: CardProps) => {
   let color: string = "";
@@ -20,7 +20,7 @@ export default component$((card: CardProps) => {
   }
   return (
     <div class="m-0 inline-block p-7 box-border">
-      <Link
+      <a
         class="after:absolute after:top-6 after:left-0 after:content-none after:w-0 after:h-1 after:bg-slate-300 after:transition-all relative text-black"
         href={card.goTo}
       >
@@ -43,7 +43,7 @@ export default component$((card: CardProps) => {
             <p class="card__apply"></p>
           </div>
         </div>
-      </Link>
+      </a>
     </div>
   );
 });

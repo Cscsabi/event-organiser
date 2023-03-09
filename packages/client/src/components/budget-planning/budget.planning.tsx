@@ -12,10 +12,9 @@ import { client } from "~/utils/trpc";
 import type {
   BudgetPlanningProps,
   BudgetPlanningStore,
-  ContactCard,
   ContactsReturnType,
 } from "~/utils/types";
-import { QwikModal } from "~/integrations/react/modal";
+import Toast from "../toast/toast";
 
 export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
   const EMPTY_ROW = {
@@ -92,13 +91,6 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
     }
   );
 
-  const contactCard = useResource$<ContactCard>(({ track, cleanup }) => {
-    track(() => store.modalContactId);
-    const controller = new AbortController();
-    cleanup(() => controller.abort());
-    return client.getContact.query({ id: store.modalContactId });
-  });
-
   return (
     <div>
       <div
@@ -123,7 +115,6 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
               <th scope="col" class="px-6 py-4">
                 Paid
               </th>
-              <th scope="col" class="px-6 py-4"></th>
             </tr>
           </thead>
           <tbody>
@@ -138,58 +129,10 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
                 Remaining:
               </td>
               <td class="px-6 py-3">{props.budget - store.amountAltogether}</td>
-              <td class="px-6 py-3"></td>
             </tr>
           </tbody>
         </table>
       </div>
-        <QwikModal
-          client:hover
-          // @ts-ignore: Type is not assignable to type
-          isOpen={store.modalOpen}
-          className="bg-slate-300 dark:bg-gray-600 overflow-hidden absolute inset-10 rounded-2xl p-6"
-          >
-          <button
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            onClick$={() => (store.modalOpen = false)}
-          >
-            Close
-          </button>
-          <Resource
-            value={contactCard}
-            onPending={() => <div>Loading...</div>}
-            onResolved={(result) => {
-              return (
-                <div>
-                  <label for="name">Name:</label>
-                  <input
-                    readOnly={!props.active}
-                    type="text"
-                    value={result.contact?.name}
-                  ></input>
-                  <label for="description">Description:</label>
-                  <input
-                    type="text"
-                    readOnly={!props.active}
-                    value={result.contact?.description}
-                  ></input>
-                  <label for="phone">Phone:</label>
-                  <input
-                    type="text"
-                    readOnly={!props.active}
-                    value={result.contact?.phone}
-                  ></input>
-                  <label for="email">E-mail:</label>
-                  <input
-                    type="text"
-                    readOnly={!props.active}
-                    value={result.contact?.email}
-                  ></input>
-                </div>
-              );
-            }}
-          />
-        </QwikModal>
       <button
         class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
         type="button"
@@ -204,10 +147,22 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
         class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
         type="button"
         hidden={!props.active}
-        onClick$={() => saveRows(store)}
+        onClick$={() => {
+          saveRows(store);
+          const toast = document.getElementById("successToast2");
+          if (toast) {
+            toast.classList.remove("hidden");
+          }
+        }}
       >
         Save
       </button>
+      <Toast
+        id="successToast2"
+        text="Operation Successful!"
+        type="success"
+        position="bottom-right"
+      ></Toast>
     </div>
   );
 });
@@ -220,6 +175,8 @@ export const generateBudgetPlanningBody = async (
   return (
     <>
       {store.budgetPlanning.map((row) => {
+        console.log(((row.amount ?? 0) / props.budget) * 100);
+
         return (
           <tr class="border-b dark:bg-gray-800 bg-slate-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
             <td>
@@ -229,7 +186,7 @@ export const generateBudgetPlanningBody = async (
                 onResolved={(result) => {
                   return (
                     <select
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      class="mx-6 my-4 bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       disabled={!props.active ? true : row.isPaid}
                       name="contact"
                       onChange$={async (event) => {
@@ -253,7 +210,7 @@ export const generateBudgetPlanningBody = async (
                           };
                           row.contact.name = store.contact.name;
                         }
-                        console.log(store.contact?.description);
+                        console.log(store.contact);
                         row.description =
                           store.contact?.description + " " + row.description ??
                           row.description;
@@ -301,14 +258,8 @@ export const generateBudgetPlanningBody = async (
                 }}
               ></input>
             </td>
-            <td>
-              <input
-                class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                type="number"
-                readOnly
-                disabled={!props.active ? true : row.isPaid}
-                value={((row.amount ?? 0) / props.budget) * 100}
-              ></input>
+            <td class="w-fit bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              {((row.amount ?? 0) / props.budget) * 100}
             </td>
             <td>
               <input
@@ -323,7 +274,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
-                class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                class="mx-6 my-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 type="checkbox"
                 checked={row.isPaid}
                 disabled={!props.active}
@@ -332,18 +283,6 @@ export const generateBudgetPlanningBody = async (
                   store.budgetPlanning = [...store.budgetPlanning];
                 }}
               ></input>
-            </td>
-            <td>
-              <button
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                disabled={row.contact.name === ""}
-                onClick$={() => {
-                  store.modalOpen = true;
-                  store.modalContactId = row.contactId;
-                }}
-              >
-                Contact Card
-              </button>
             </td>
           </tr>
         );
@@ -368,22 +307,37 @@ export const saveRows = async (store: BudgetPlanningStore) => {
       const existingRow = result.budgetPlanning;
       console.log(existingRow?.isPaid);
       if (result.status === Status.SUCCESS) {
+        console.log("success");
         if (
-          existingRow?.contactId.toLowerCase() !==
+          store.budgetPlanning.filter(
+            (budgetPlanning) => budgetPlanning.contactId === row.contactId
+          ).length === 1 &&
+          (existingRow?.contactId.toLowerCase() !==
             row.contact.name.toLowerCase() ||
-          (existingRow?.amount as unknown as number) !== row.amount ||
-          existingRow?.isPaid !== row.isPaid
+            (existingRow?.amount as unknown as number) !== row.amount ||
+            existingRow?.isPaid !== row.isPaid)
         ) {
-          await client.updateBudgetPlanning.mutate({
+          console.log("update");
+          client.updateBudgetPlanning.mutate({
             description: row.description,
             amount: row.amount,
             eventId: row.eventId,
             isPaid: row.isPaid,
             contactId: row.contactId,
           });
+        } else {
+          console.log("add");
+          client.addBudgetPlanning.mutate({
+            description: row.description ?? undefined,
+            amount: row?.amount as unknown as number,
+            eventId: row.eventId,
+            isPaid: row.isPaid,
+            contactId: row.contactId,
+          });
         }
       } else {
-        await client.addBudgetPlanning.mutate({
+        console.log("add2");
+        client.addBudgetPlanning.mutate({
           description: row.description ?? undefined,
           amount: row?.amount as unknown as number,
           eventId: row.eventId,

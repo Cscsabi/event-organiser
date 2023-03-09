@@ -52,6 +52,11 @@ export const connectGuestToEventInput = z.object({
   eventId: z.string(),
 });
 
+export const getGuestByEmails = z.object({
+  userEmail: z.string(),
+  guestEmail: z.string(),
+});
+
 export type GetGuestInput = z.TypeOf<typeof getGuestInput>;
 export type AddGuestInput = z.TypeOf<typeof addGuestInput>;
 export type AddGuestAndConnectToEventInput = z.TypeOf<
@@ -63,4 +68,7 @@ export type GuestEventInput = z.TypeOf<typeof guestEventInput>;
 export type GetGuestsInput = z.TypeOf<typeof getGuestsInput>;
 export type ConnectGuestToEventInput = z.TypeOf<
   typeof connectGuestToEventInput
+>;
+export type GetGuestByEmails = z.TypeOf<
+  typeof getGuestByEmails
 >;

@@ -196,3 +196,24 @@ export const getEventController = async ({
     throw error;
   }
 };
+
+export const getFeedbackEventsController = async () => {
+  try {
+    const events = await prisma.event.findMany({
+      select: { id: true },
+    });
+
+    if (!events) {
+      return {
+        status: Status.NOT_FOUND,
+      };
+    }
+
+    return {
+      status: Status.SUCCESS,
+      events,
+    };
+  } catch (error) {
+    throw error;
+  }
+};

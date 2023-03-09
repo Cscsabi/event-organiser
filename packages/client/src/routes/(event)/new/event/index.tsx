@@ -54,11 +54,11 @@ export default component$(() => {
   });
 
   return (
-    <div class="form_wrapper">
+    <div>
       <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white">
         Create new Event
       </h1>
-      <div class="">
+      <div>
         <form
           preventdefault:submit
           onSubmit$={async () => {
@@ -99,7 +99,7 @@ export default component$(() => {
               minLength={3}
             ></input>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-4 w-1/2 items-center text-center">
+          <div class="grid gap-6 mb-6 md:grid-cols-4 w-1/2">
             <div>
               <label
                 class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
@@ -129,13 +129,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="p-2.5 inline-block mb-2 mt-12 text-sm font-medium text-gray-900 dark:text-white"
                 for="menu"
               >
                 Menu:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 onInput$={(event) =>
                   (store.menuNeeded = (
                     event.target as HTMLInputElement
@@ -147,13 +147,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="pr-4 mb-2 mt-12 text-sm font-medium text-gray-900 dark:text-white"
+                class="p-2.5 inline-block mb-2 mt-12 text-sm font-medium text-gray-900 dark:text-white"
                 for="decor"
               >
                 Decor:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 onInput$={(event) =>
                   (store.decorNeeded = (
                     event.target as HTMLInputElement
@@ -165,13 +165,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="p-2.5 inline-block mb-2 mt-12 text-sm font-medium text-gray-900 dark:text-white"
                 for="perfomer"
               >
                 Performer:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 onInput$={(event) =>
                   (store.performerNeeded = (
                     event.target as HTMLInputElement

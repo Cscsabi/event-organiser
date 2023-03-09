@@ -90,38 +90,45 @@ export const generateList = (
           onResolved={(result: GetEventsReturnType) => {
             return (
               <div>
-                {result.events
-                  .filter((event) =>
-                    props.isActive
-                      ? event.endDate && event?.endDate >= new Date()
-                      : event.endDate && event?.endDate < new Date()
-                  )
-                  .filter((event) => {
-                    if (searchInput.value.length > 0) {
-                      return event.name
-                        .toLowerCase()
-                        .includes(searchInput.value);
-                    } else {
-                      return event;
-                    }
-                  })
-                  .map((event) => {
-                    return (
-                      <Card
-                        id={event.id}
-                        description={event.type ?? ""}
-                        name={event.name}
-                        type={props.isActive ? "event" : "previous"}
-                        goTo={
-                          props.isActive
-                            ? paths.event + event.id
-                            : paths.previousEvent + event.id
-                        }
-                        icon="event"
-                        location={event.location.name}
-                      />
-                    );
-                  })}
+                {result.events.length > 0 ? (
+                  result.events
+                    .filter((event) =>
+                      props.isActive
+                        ? event.endDate && event?.endDate >= new Date()
+                        : event.endDate && event?.endDate < new Date()
+                    )
+                    .filter((event) => {
+                      if (searchInput.value.length > 0) {
+                        return event.name
+                          .toLowerCase()
+                          .includes(searchInput.value);
+                      } else {
+                        return event;
+                      }
+                    })
+                    .map((event) => {
+                      return (
+                        <Card
+                          id={event.id}
+                          description={event.type ?? ""}
+                          name={event.name}
+                          type={props.isActive ? "event" : "previous"}
+                          goTo={
+                            props.isActive
+                              ? paths.event + event.id
+                              : paths.previousEvent + event.id
+                          }
+                          icon="event"
+                          location={event.location.name}
+                        />
+                      );
+                    })
+                ) : (
+                  <h1 class="mt-6 mb-6 text-3xl font-bold text-black dark:text-white text-center">
+                    You have no {props.isActive ? "active" : "previous"} events
+                    yet! &#128561;
+                  </h1>
+                )}
               </div>
             );
           }}
@@ -133,28 +140,34 @@ export const generateList = (
           onResolved={(result) => {
             return (
               <div>
-                {result.locations
-                  .filter((event) => {
-                    if (searchInput.value.length > 0) {
-                      return event.name
-                        .toLowerCase()
-                        .includes(searchInput.value);
-                    } else {
-                      return event;
-                    }
-                  })
-                  .map((location) => {
-                    return (
-                      <Card
-                        id={location.id}
-                        description={location.price?.toString() + " Ft"}
-                        name={location.name}
-                        type="location"
-                        goTo={paths.location + location.id}
-                        icon="location"
-                      />
-                    );
-                  })}
+                {result.locations.length > 0 ? (
+                  result.locations
+                    .filter((event) => {
+                      if (searchInput.value.length > 0) {
+                        return event.name
+                          .toLowerCase()
+                          .includes(searchInput.value);
+                      } else {
+                        return event;
+                      }
+                    })
+                    .map((location) => {
+                      return (
+                        <Card
+                          id={location.id}
+                          description={location.price?.toString() + " Ft"}
+                          name={location.name}
+                          type="location"
+                          goTo={paths.location + location.id}
+                          icon="location"
+                        />
+                      );
+                    })
+                ) : (
+                  <h1 class="mt-6 mb-6 text-3xl font-bold text-black dark:text-white text-center">
+                    You have no locations yet. &#128564;
+                  </h1>
+                )}
               </div>
             );
           }}

@@ -1,10 +1,12 @@
 import { component$, useBrowserVisibleTask$, useStore } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
-import { getUser, getUserData, resetPassword } from "~/utils/supabase.client";
+import { getUser, getUserData } from "~/utils/supabase.client";
 import { QwikCalendar } from "~/integrations/react/calendar";
 import { client } from "~/utils/trpc";
 import type { CalendarEvent, ProfilStore } from "~/utils/types";
+import Toast from "~/components/toast/toast";
+import { Status } from "event-organiser-api-server/src/status.enum";
 
 export default component$(() => {
   const store = useStore<ProfilStore>({
@@ -106,16 +108,26 @@ export default component$(() => {
       </div>
       <button
         class="mt-6 mr-2 mb-6 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
-        onClick$={() => save(store)}
+        onClick$={() =>
+          save(store).then((result) => {
+            if (result.status === Status.SUCCESS) {
+              const toast = document.getElementById("successToast");
+              if (toast) {
+                toast.classList.remove("hidden");
+              }
+            } else {
+              const toast = document.getElementById("failedToast");
+              if (toast) {
+                toast.classList.remove("hidden");
+              }
+            }
+          })
+        }
       >
         Save Changes
       </button>
-      <button
-        class="mt-6 mr-2 mb-6 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
-        onClick$={() => resetPassword(store.email)}
-      >
-        Change Password
-      </button>
+      <Toast id="successToast" text="TEST" type="success"></Toast>
+      <Toast id="failedToast" text="TEST" type="failed"></Toast>
       <QwikCalendar
         client:load
         onChange$={(event: Date) => {
@@ -149,7 +161,7 @@ export async function getEvents(email: string) {
 }
 
 export function save(store: ProfilStore) {
-  client.updateUser.mutate({
+  return client.updateUser.mutate({
     params: { email: store.email },
     body: {
       firstname: store.firstname,

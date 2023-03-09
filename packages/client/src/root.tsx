@@ -1,7 +1,4 @@
-import {
-  component$,
-  useStyles$,
-} from "@builder.io/qwik";
+import { component$, useStyles$ } from "@builder.io/qwik";
 import {
   QwikCityProvider,
   RouterOutlet,
@@ -25,11 +22,19 @@ export default component$(() => {
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+          rel="stylesheet"
+        />
         <RouterHead />
       </head>
-      <body lang="en" class="px-5 pt-5 pb-10 bg-gray-400 dark:bg-gray-800 rounded-md">
+      <body
+        lang="en"
+        class="px-5 pt-5 pb-10 bg-gray-400 dark:bg-gray-800 rounded-md"
+      >
         <RouterOutlet />
         <ServiceWorkerRegister />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
       </body>
     </QwikCityProvider>
   );

@@ -1,4 +1,4 @@
-import type { EventType, Location, Contact } from "@prisma/client";
+import type { EventType, Location, Contact, Feedback } from "@prisma/client";
 import type { Status } from "event-organiser-api-server/src/status.enum";
 
 export interface NewEventStore {
@@ -92,6 +92,7 @@ export interface GuestListStore {
   selectedGuests: GuestType[];
   unselectedGuests: GuestType[];
   useClientEffectHook: number;
+  empty: boolean | undefined;
 }
 
 export interface GetGuestReturnType {
@@ -104,6 +105,22 @@ export interface EventStore {
   location: LocationStore;
   modalOpen: boolean;
   userEmail: string;
+}
+
+export interface FeedbackStore {
+  event: NewEventStore;
+  location: LocationStore;
+  guest: {
+    firstname: string;
+    lastname: string;
+    email: string;
+    plusOne: boolean;
+    diabetes: boolean;
+    lactose: boolean;
+    gluten: boolean;
+    additional: string;
+  };
+  eventExists?: boolean;
 }
 
 export interface ListProps {
@@ -187,6 +204,7 @@ export interface ContactType {
 export interface ContactStore {
   contacts: ContactType[];
   userEmail: string;
+  empty: boolean | undefined;
 }
 
 export interface ContactCard {
@@ -210,4 +228,9 @@ export interface ContactReturnType {
 export interface ContactsReturnType {
   status: Status;
   contacts?: Contact[];
+}
+
+export interface GetFeedbackReturnType {
+  status: Status;
+  feedbacks: Feedback[];
 }

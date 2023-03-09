@@ -16,6 +16,7 @@ import {
   getProperTimeFormat,
 } from "~/utils/common.functions";
 import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
+import Modal from "~/components/modal/modal";
 
 export default component$(() => {
   const { params } = useLocation();
@@ -68,7 +69,7 @@ export default component$(() => {
 
   return (
     <div>
-      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white">
+      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white text-center">
         Previous events cannot be modified!
       </h1>
       <div class="grid grid-cols-2">
@@ -188,7 +189,7 @@ export default component$(() => {
             </div>
           </div>
         </div>
-        <div class="place-self-end self-start">
+        <div class="place-self-center self-start">
           <Resource
             value={resource}
             onPending={() => <div>Loading...</div>}
@@ -275,22 +276,21 @@ export default component$(() => {
         eventId={params.eventId}
       />
       <button
+        data-modal-target="deleteModal"
+        data-modal-toggle="deleteModal"
         class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
-        preventdefault:click
-        onClick$={() => {
-          const result = window.prompt(
-            "Do you really want to delete this event? (To do so, type yes)"
-          );
-          if (result?.toLowerCase() === "yes") {
-            client.deleteEvent.mutate({
-              id: params.eventId,
-            });
-            navigate(paths.events);
-          }
-        }}
+        type="button"
       >
         Delete
       </button>
+      <Modal
+        id="deleteModal"
+        listType="previous-event"
+        size="max-w-xl"
+        type="popup"
+        listTypeId={params.eventId}
+        name="Are you sure you want to delete this event?"
+      />
       <button
         class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
         preventdefault:click
@@ -298,7 +298,7 @@ export default component$(() => {
           navigate(paths.location + newEventStore.value?.locationId);
         }}
       >
-        Go to Location
+        Location Card
       </button>
     </div>
   );

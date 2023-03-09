@@ -39,6 +39,7 @@ model Event {
   performerNeeded  Boolean
   eventGuest       EventGuest[]
   budgetPlanning   BudgetPlanning[]
+  feedback         Feedback[]
 
   @@unique([name, userEmail])
   @@map("events")
@@ -51,7 +52,7 @@ model Location {
   name        String 
   events      Event[]
   description String?
-  address     Address @relation(fields: [addressId], references: [id])
+  address     Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
   addressId   String  @unique
   type        String?
   price       Decimal?
@@ -102,22 +103,22 @@ model Guest {
   lastname      String?
   email         String?
   description   String?
-  EventGuest    EventGuest[] 
+  eventGuest    EventGuest[] 
 
   @@unique([userEmail, firstname, lastname, email, description])
   @@map("guests")
 }
 
 model BudgetPlanning {
+  id          Int       @id @default(autoincrement())
   contact     Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  contactId   String
+  contactId   String    
   amount      Decimal?
   isPaid      Boolean
   description String?
   event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  eventId     String  
+  eventId     String    
 
-  @@unique([contactId, eventId])
   @@map("budget_planning")
 }
 
@@ -132,6 +133,22 @@ model Contact {
   userEmail        String
 
   @@map("contacts")
+}
+
+model Feedback {
+  event      Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId    String 
+  guestEmail String
+  firstname  String
+  lastname   String
+  lactose    Boolean
+  gluten     Boolean
+  diabetes   Boolean
+  plusOne    Boolean
+  additional String?
+
+  @@unique([eventId, guestEmail])
+  @@map("feedbacks")
 }
 
 enum EventType {

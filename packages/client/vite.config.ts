@@ -11,7 +11,6 @@ export default defineConfig(() => {
       qwikVite(),
       tsconfigPaths(),
       qwikReact(),
-      qwikReact(),
     ],
     preview: {
       headers: {

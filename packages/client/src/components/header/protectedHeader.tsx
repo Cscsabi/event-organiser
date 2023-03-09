@@ -1,4 +1,4 @@
-import { component$, useTask$, useContext, useSignal } from "@builder.io/qwik";
+import { component$, useBrowserVisibleTask$, useContext, useSignal } from "@builder.io/qwik";
 import { useNavigate, Link } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import { logoutUser } from "~/utils/supabase.client";
@@ -11,7 +11,7 @@ export const ProtectedHeader = component$(() => {
   const user = useContext(CTX);
   const navigate = useNavigate();
 
-  useTask$(async ({ track }) => {
+  useBrowserVisibleTask$(async ({ track }) => {
     track(() => darkMode.value);
     const rootTag = document.getElementsByTagName("html")[0];
 
@@ -25,8 +25,10 @@ export const ProtectedHeader = component$(() => {
 
     if (darkMode.value && !rootTag.classList.contains("dark")) {
       rootTag.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else if (!darkMode.value && rootTag.classList.contains("dark")) {
       rootTag.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   });
 

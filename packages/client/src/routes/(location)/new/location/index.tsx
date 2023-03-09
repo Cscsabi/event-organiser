@@ -11,6 +11,7 @@ import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import { getUser } from "~/utils/supabase.client";
 import { Status } from "event-organiser-api-server/src/status.enum";
+import Toast from "~/components/toast/toast";
 
 export default component$(() => {
   const navigate = useNavigate();
@@ -73,7 +74,12 @@ export default component$(() => {
           });
 
           if (result.status === Status.SUCCESS) {
-            navigate(paths.location + result.location.id);
+            navigate(paths.locations);
+          } else {
+            const toast = document.getElementById("failedToast");
+            if (toast) {
+              toast.classList.remove("hidden");
+            }
           }
         }}
       >
@@ -289,6 +295,7 @@ export default component$(() => {
           Create Location
         </button>
       </form>
+      <Toast id="failedToast" text="Operation Failed!" type="failed"></Toast>
     </div>
   );
 });
