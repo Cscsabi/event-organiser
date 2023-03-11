@@ -22,6 +22,9 @@ export default component$(() => {
 
   return (
     <>
+      <h1 class="mb-3 text-center text-3xl font-semibold text-black dark:text-white">
+        Guests
+      </h1>
       <GuestList userEmail={userEmail.value} openedFromEvent={false} />
     </>
   );

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const budgetPlanningInput = z.object({
+  id: z.number(),
   contactId: z.string(),
   amount: z.number().optional(),
   isPaid: z.boolean(),

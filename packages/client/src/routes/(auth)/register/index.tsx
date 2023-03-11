@@ -18,6 +18,7 @@ export default component$(() => {
     password: "",
     message: "",
     openToast: false,
+    alreadyRegistered: false,
   });
 
   useBrowserVisibleTask$(async () => {
@@ -29,12 +30,13 @@ export default component$(() => {
 
   return (
     <div>
-      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white">
+      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white text-center">
         Registration Form
       </h1>
       <form
         preventdefault:submit
         onSubmit$={async () => {
+          store.alreadyRegistered = false;
           const result = await handleRegister(
             store.email,
             store.password,
@@ -44,6 +46,8 @@ export default component$(() => {
           );
           if (result) {
             navigate(paths.index);
+          } else {
+            store.alreadyRegistered = true;
           }
         }}
       >
@@ -51,12 +55,12 @@ export default component$(() => {
           <div>
             <label
               for="firstname"
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
             >
               First name:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onInput$={(event) =>
                 (store.firstname = (event.target as HTMLInputElement).value)
               }
@@ -71,13 +75,13 @@ export default component$(() => {
           <div class="input_field">
             <label
               for="lastname"
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
             >
               Last name:
             </label>
 
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onInput$={(event) =>
                 (store.lastname = (event.target as HTMLInputElement).value)
               }
@@ -92,13 +96,13 @@ export default component$(() => {
           <div class="input_field">
             <label
               for="email"
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
             >
               Email:
             </label>
 
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onInput$={(event) =>
                 (store.email = (event.target as HTMLInputElement).value)
               }
@@ -114,12 +118,12 @@ export default component$(() => {
           <div class="input_field">
             <label
               for="password"
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
             >
               Password:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onInput$={(event) =>
                 (store.password = (event.target as HTMLInputElement).value)
               }
@@ -134,9 +138,15 @@ export default component$(() => {
             ></input>
           </div>
         </div>
+        <p
+          style={store.alreadyRegistered ? "" : "display:none"}
+          class="text-red-600"
+        >
+          You have already registered with this email address!
+        </p>
         <button
           type="submit"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
         >
           Sign Up
         </button>
@@ -153,7 +163,6 @@ export async function handleRegister(
   darkModeEnabled: boolean
 ) {
   const result = await client.getUser.query({ email: email });
-  console.log(result.status);
   if (result.status === Status.SUCCESS) {
     return false;
   }
@@ -163,7 +172,6 @@ export async function handleRegister(
   };
 
   const customStatus = await registerUser(credentials);
-  console.log(customStatus);
   if (customStatus.result === Status.SUCCESS) {
     const detailedCredentials: CreateUserInput = {
       email: email.toLowerCase(),

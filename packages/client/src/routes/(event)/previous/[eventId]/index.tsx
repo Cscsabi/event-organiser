@@ -50,7 +50,6 @@ export default component$(() => {
         menuNeeded: event.menuNeeded,
         performerNeeded: event.performerNeeded,
       };
-      console.log(params);
 
       newEventStore.value = currentEvent;
     }
@@ -69,19 +68,22 @@ export default component$(() => {
 
   return (
     <div>
-      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white text-center">
+      <h1 class="mb-4 text-center text-3xl font-semibold text-black dark:text-white">
+        Previous Event
+      </h1>
+      <h1 class="mb-6 text-xl font-bold text-black dark:text-white">
         Previous events cannot be modified!
       </h1>
       <div class="grid grid-cols-2">
         <div>
           <label
-            class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+            class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
             for="name"
           >
             Event Name:
           </label>
           <input
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
             readOnly
             type="text"
             value={newEventStore.value?.name}
@@ -89,13 +91,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-3 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="type"
               >
                 Event Type:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 readOnly
                 type="text"
                 value={newEventStore.value?.type}
@@ -103,13 +105,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="budget"
               >
                 Budget:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="number"
                 readOnly
                 value={newEventStore.value?.budget}
@@ -117,13 +119,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="headcount"
               >
                 Headcount:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 readOnly
                 type="number"
                 value={newEventStore.value?.headcount}
@@ -133,13 +135,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="startDate"
               >
                 Start Date:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 readOnly
                 type="date"
                 value={getProperDateFormat(newEventStore.value?.startDate)}
@@ -147,13 +149,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="startTime"
               >
                 Start Time:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 readOnly
                 type="time"
                 value={getProperTimeFormat(newEventStore.value?.startDate)}
@@ -161,13 +163,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="endDate"
               >
                 End Date:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 readOnly
                 type="date"
                 value={getProperDateFormat(newEventStore.value?.endDate)}
@@ -175,13 +177,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="endTime"
               >
                 End Time:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 readOnly
                 type="time"
                 value={getProperTimeFormat(newEventStore.value?.endDate)}
@@ -201,7 +203,7 @@ export default component$(() => {
                   ) : (
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                       <label
-                        class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                        class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                         for="guestlist"
                       >
                         Guestlist:

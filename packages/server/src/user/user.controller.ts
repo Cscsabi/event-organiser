@@ -25,8 +25,6 @@ export const createUserController = async ({
       },
     });
 
-    console.log(user);
-
     return {
       status: Status.SUCCESS,
       data: {
@@ -97,7 +95,6 @@ export const findUserController = async ({
       user,
     };
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

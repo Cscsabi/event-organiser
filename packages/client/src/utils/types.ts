@@ -134,6 +134,8 @@ export interface ProfilStore {
   firstname: string;
   lastname: string;
   date: Date;
+  newPassword1: string;
+  newPassword2: string;
   events: CalendarEvent[];
 }
 
@@ -144,6 +146,7 @@ export interface RegisterStore {
   password: string;
   message: string;
   openToast: boolean;
+  alreadyRegistered: boolean;
 }
 
 export interface LoginStore {
@@ -169,6 +172,7 @@ export interface BudgetPlanningProps {
 }
 
 export interface BudgetPlanningType {
+  id: number;
   amount?: number;
   isPaid: boolean;
   eventId: string;

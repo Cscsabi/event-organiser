@@ -38,8 +38,6 @@ export const addLocationController = async ({
       },
     });
 
-    console.log(location);
-
     return {
       status: Status.SUCCESS,
       location,
@@ -90,8 +88,6 @@ export const updateLocationController = async ({
       },
     });
 
-    console.log(location);
-
     return {
       status: Status.SUCCESS,
       location,
@@ -119,8 +115,6 @@ export const deleteLocationController = async ({
         id: deleteLocationInput.id,
       },
     });
-
-    console.log(location);
 
     return {
       status: Status.SUCCESS,

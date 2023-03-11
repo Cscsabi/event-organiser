@@ -27,9 +27,9 @@ export default component$(() => {
 
   return (
     <>
-      <main class="bg-slate-300 dark:bg-gray-600 overflow-hidden rounded-3xl">
+      <main class="bg-green-300 dark:bg-indigo-900 overflow-hidden rounded-3xl">
         {userEmail.value.length > 0 ? <ProtectedHeader /> : <PublicHeader />}
-        <section class="border-b-violet-600 dark:border-b-slate-400 border-solid border-b-8 p-6">
+        <section class="border-b-green-800 dark:border-b-indigo-300 border-solid border-b-8 p-6">
           <Slot />
         </section>
         <script

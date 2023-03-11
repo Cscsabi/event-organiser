@@ -10,28 +10,28 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities { 
+@layer utilities {
   .card-loc-light {
-    background: radial-gradient(#e4d65f, #d1b40d);
+    background: radial-gradient(#ffffff2c, #00a7bdb0);
   }
 
   .card-loc-dark {
-    background: radial-gradient(#f3475e, #a00a0a);
+    background: radial-gradient(#4d5eff, #2b40ff);
   }
 
   .card-ev-light {
-    background: radial-gradient(#e55ff1, #b43ecc);
+    background: radial-gradient(#ffffff5d, #eeff00ad);
   }
 
   .card-ev-dark {
-    background: radial-gradient(#224a94, #3b1f5f);
+    background: radial-gradient(#ffffff60, #5005ff);
   }
 
   .card-prev-light {
-    background: radial-gradient(#26e0d7, #49caaa);
+    background: radial-gradient(#ffffff00, #00802ba4);
   }
 
   .card-prev-dark {
-    background: radial-gradient(#386cfa, #0004ff);
+    background: radial-gradient(#91d7ff, #00a2ff);
   }
 }

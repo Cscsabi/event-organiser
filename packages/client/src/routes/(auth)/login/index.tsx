@@ -1,4 +1,9 @@
-import { component$, useBrowserVisibleTask$, useContext, useStore } from "@builder.io/qwik";
+import {
+  component$,
+  useBrowserVisibleTask$,
+  useContext,
+  useStore,
+} from "@builder.io/qwik";
 import {
   getUser,
   loginUserWithPassword,
@@ -30,14 +35,13 @@ export default component$(() => {
 
   return (
     <div>
-      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white">
+      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white text-center">
         Login Form
       </h1>
       <form
         preventdefault:submit
         onSubmit$={async () => {
           store.invalidCredentials = false;
-          // TODO: Check the values, send feedback according to the input
           const credentials: SignInWithPasswordCredentials = {
             email: store.email,
             password: store.password,
@@ -55,12 +59,12 @@ export default component$(() => {
           <div>
             <label
               for="email"
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
             >
               Email:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onInput$={(event) =>
                 (store.email = (event.target as HTMLInputElement).value)
               }
@@ -75,12 +79,12 @@ export default component$(() => {
           <div>
             <label
               for="password"
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
             >
               Password:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onInput$={(event) =>
                 (store.password = (event.target as HTMLInputElement).value)
               }
@@ -100,13 +104,13 @@ export default component$(() => {
         </p>
         <button
           type="submit"
-          class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
         >
           Sign in
         </button>
         <button
           type="button"
-          class="text-white mr-2 bg-amber-700	 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800"
+          class="text-white mr-2 bg-orange-700 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-orange-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-700 dark:hover:bg-orange-500 dark:focus:ring-orange-600"
           onClick$={async () => {
             const login = await loginUserWithProvider({
               provider: "google",
@@ -120,7 +124,7 @@ export default component$(() => {
         </button>
         <button
           type="button"
-          class="text-white mr-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="text-white mr-2 bg-indigo-600 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-400 dark:focus:ring-indigo-500"
           onClick$={async () => {
             const login = await loginUserWithProvider({
               provider: "facebook",

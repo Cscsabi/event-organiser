@@ -13,6 +13,7 @@ import { paths } from "~/utils/paths";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import Toast from "~/components/toast/toast";
 import Modal from "~/components/modal/modal";
+import { generateGoogleMapsLink } from "~/utils/common.functions";
 
 export default component$(() => {
   const { params } = useLocation();
@@ -32,17 +33,20 @@ export default component$(() => {
 
   return (
     <div>
-      <div class="grid gap-4 mb-6 md:grid-cols-2 w-full">
+      <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
+        Location
+      </h1>
+      <div class="grid gap-4 mb-6 mt-8 md:grid-cols-2 w-full">
         <div>
           <div>
             <label
-              class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
               for="name"
             >
               Name:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
                 locationStore.value!.name = (
                   event.target as HTMLInputElement
@@ -53,13 +57,13 @@ export default component$(() => {
           </div>
           <div>
             <label
-              class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
               for="description"
             >
               Description:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
                 locationStore.value!.description = (
                   event.target as HTMLInputElement
@@ -71,13 +75,13 @@ export default component$(() => {
           <div class="grid gap-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="type"
               >
                 Type:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
                   locationStore.value!.type = (
                     event.target as HTMLInputElement
@@ -88,13 +92,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="link"
               >
                 Link:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
                   locationStore.value!.link = (
                     event.target as HTMLInputElement
@@ -107,13 +111,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="phone"
               >
                 Phone:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
                   locationStore.value!.phone = (
                     event.target as HTMLInputElement
@@ -124,14 +128,14 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="price"
               >
                 Price:
               </label>
               <input
                 type="number"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
                   locationStore.value!.price = +(
                     event.target as HTMLInputElement
@@ -143,13 +147,13 @@ export default component$(() => {
           </div>
           <div>
             <label
-              class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
               for="state"
             >
               State:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
                 locationStore.value!.state = (
                   event.target as HTMLInputElement
@@ -161,13 +165,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="city"
               >
                 City:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
                   locationStore.value!.city = (
                     event.target as HTMLInputElement
@@ -178,14 +182,14 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="zipCode"
               >
                 Zip Code:
               </label>
               <input
                 type="number"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
                   locationStore.value!.zipCode = +(
                     event.target as HTMLInputElement
@@ -197,13 +201,13 @@ export default component$(() => {
           </div>
           <div>
             <label
-              class="block mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
               for="street"
             >
               Street:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
                 locationStore.value!.street = (
                   event.target as HTMLInputElement
@@ -213,7 +217,7 @@ export default component$(() => {
             ></input>
           </div>
           <button
-            class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+            class="text-white mr-2 bg-indigo-600 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-400 dark:focus:ring-indigo-500"
             preventdefault:click
             onClick$={async () => {
               if (locationStore.value) {
@@ -266,18 +270,21 @@ export default component$(() => {
           <button
             data-modal-target="deleteLocationModal"
             data-modal-toggle="deleteLocationModal"
-            class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+            class="text-white mr-2 mt-6 bg-indigo-600 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-400 dark:focus:ring-indigo-500"
             type="button"
           >
             Delete
           </button>
         </div>
-
         <div>
           <iframe
-            src={`https://www.google.com/maps?q=${locationStore.value?.city}+${
-              locationStore.value?.state ? locationStore.value.state : ""
-            }${locationStore.value?.street.split(" ").join("+")}&output=embed`}
+            src={generateGoogleMapsLink(
+              true,
+              locationStore.value?.city,
+              locationStore.value?.state,
+              locationStore.value?.zipCode,
+              locationStore.value?.street
+            )}
             width="600"
             height="450"
             style="border:0;"

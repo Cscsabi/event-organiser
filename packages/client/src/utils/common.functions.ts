@@ -70,3 +70,17 @@ export const getDateOrUndefined = (date?: Date) => {
   }
   return new Date(date);
 };
+
+export const generateGoogleMapsLink = (
+  embed: boolean,
+  city?: string,
+  state?: string,
+  zipCode?: number,
+  street?: string
+) => {
+  return `https://${embed ? "maps." : "www."}google.com/maps?q=${state + "+"}${
+    city + "+"
+  }${zipCode?.toString() + "+"}${street?.split(" ").join("+")}${
+    embed ? "&output=embed" : ""
+  }`;
+};

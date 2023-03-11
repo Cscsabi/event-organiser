@@ -176,7 +176,7 @@ const appRouter = t.router({
       updateBudgetPlanningController({ budgetPlanningInput: input })
     ),
   deleteBudgetPlanning: t.procedure
-    .input(getBudgetPlanningInput)
+    .input(byNoInput)
     .mutation(({ input }) =>
       deleteBudgetPlanningController({ deleteBudgetPlanningInput: input })
     ),

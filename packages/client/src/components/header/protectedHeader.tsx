@@ -1,5 +1,10 @@
-import { component$, useBrowserVisibleTask$, useContext, useSignal } from "@builder.io/qwik";
-import { useNavigate, Link } from "@builder.io/qwik-city";
+import {
+  component$,
+  useBrowserVisibleTask$,
+  useContext,
+  useSignal,
+} from "@builder.io/qwik";
+import { useNavigate } from "@builder.io/qwik-city";
 import { paths } from "~/utils/paths";
 import { logoutUser } from "~/utils/supabase.client";
 import { CTX } from "~/routes/layout";
@@ -33,86 +38,124 @@ export const ProtectedHeader = component$(() => {
   });
 
   return (
-    <header class="overflow-hidden dark:bg-slate-700 bg-violet-400 pl-8 pr-8 pb-6 pt-4">
-      <Link
-        class="float-left hover:text-violet-700 pt-3.5 pr-4 dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white"
-        href={paths.index}
-      >
-        <i class="fa-solid fa-calendar-days"></i> Home
-      </Link>
-      <button
-        class="float-left"
-        onClick$={() => {
-          darkMode.value = !darkMode.value;
-          client.updateUser.mutate({
-            params: { email: user.value },
-            body: {
-              darkModeEnabled: darkMode.value,
-            },
-          });
-        }}
-      >
-        {!darkMode.value ? (
-          <div class="cursor-pointer hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white">
-            <i class="fa-regular fa-moon "></i> Dark mode
-          </div>
-        ) : (
-          <div class="cursor-pointer hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white">
-            <i class="fa-regular fa-sun "></i> Light mode
-          </div>
-        )}
-      </button>
-      <Link class="float-right cursor-pointer hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white">
-        <button
-          onClick$={async () => {
-            console.log("Clicked!");
-            const logout = await logoutUser();
-            if (logout.result === Status.SUCCESS) {
-              navigate(paths.logout);
-              user.value = "";
-            }
-          }}
-        >
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </button>
-      </Link>
-
-      <Link
-        class="float-right hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white"
-        href={paths.profile}
-      >
-        <i class="fa-regular fa-user"></i> Profile
-      </Link>
-      <Link
-        class="float-right hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white"
-        href={paths.contacts}
-      >
-        <i class="fa-solid fa-address-card"></i> Contacts
-      </Link>
-      <Link
-        class="float-right hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white"
-        href={paths.locations}
-      >
-        <i class="fa-solid fa-location-pin"></i> Locations
-      </Link>
-      <Link
-        class="float-right hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white"
-        href={paths.guests}
-      >
-        <i class="fa-solid fa-person"></i> Guests
-      </Link>
-      <Link
-        class="float-right hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white"
-        href={paths.events}
-      >
-        <i class="fa-solid fa-calendar-days"></i> Active Events
-      </Link>
-      <Link
-        class="float-right text-center hover:text-violet-700 pt-3.5 pr-4  dark:hover:text-blue-500 font-bold dark:font-bold dark:text-white"
-        href={paths.previousEvents}
-      >
-        <i class="fa-regular fa-calendar-xmark"></i> Previous Events
-      </Link>
-    </header>
+    <nav class="px-2 bg-green-200 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+      <div class="container flex flex-wrap items-center justify-between mx-auto">
+        <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-green-200 md:flex-row md:space-x-8 md:mt-0 md:text-md md:font-medium md:border-0 md:bg-green-200 dark:bg-gray-800 md:dark:bg-gray-800 dark:border-gray-700">
+          <li>
+            <a
+              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+              href={paths.index}
+            >
+              <button>
+                <i class="fa-solid fa-house"></i> Home
+              </button>
+            </a>
+          </li>
+          <li>
+            <div class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+              <button
+                type="button"
+                onClick$={() => {
+                  darkMode.value = !darkMode.value;
+                  client.updateUser.mutate({
+                    params: { email: user.value },
+                    body: {
+                      darkModeEnabled: darkMode.value,
+                    },
+                  });
+                }}
+              >
+                {!darkMode.value ? (
+                  <div>
+                    <i class="fa-regular fa-moon "></i> Dark mode
+                  </div>
+                ) : (
+                  <div>
+                    <i class="fa-regular fa-sun "></i> Light mode
+                  </div>
+                )}
+              </button>
+            </div>
+          </li>
+        </ul>
+        <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-green-200 md:flex-row md:space-x-8 md:mt-0 md:text-md md:font-medium md:border-0 md:bg-green-200 dark:bg-gray-800 md:dark:bg-gray-800 dark:border-gray-700">
+          <li>
+            <a
+              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+              href={paths.previousEvents}
+            >
+              <button>
+                <i class="fa-regular fa-calendar-xmark"></i> Previous Events
+              </button>
+            </a>
+          </li>
+          <li>
+            <a
+              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+              href={paths.events}
+            >
+              <button>
+                <i class="fa-solid fa-calendar-days"></i> Active Events
+              </button>
+            </a>
+          </li>
+          <li>
+            <a
+              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+              href={paths.guests}
+            >
+              <button>
+                <i class="fa-solid fa-person"></i> Guests
+              </button>
+            </a>
+          </li>
+          <li>
+            <a
+              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+              href={paths.locations}
+            >
+              <button>
+                <i class="fa-solid fa-location-pin"></i> Locations
+              </button>
+            </a>
+          </li>
+          <li>
+            <a
+              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+              href={paths.contacts}
+            >
+              <button>
+                <i class="fa-solid fa-address-card"></i> Contacts
+              </button>
+            </a>
+          </li>
+          <li>
+            <a
+              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+              href={paths.profile}
+            >
+              <button>
+                <i class="fa-regular fa-user"></i> Profile
+              </button>
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+              <button
+                onClick$={async () => {
+                  const logout = await logoutUser();
+                  if (logout.result === Status.SUCCESS) {
+                    navigate(paths.logout);
+                    user.value = "";
+                  }
+                }}
+              >
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </button>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 });

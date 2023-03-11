@@ -1,12 +1,13 @@
 /** @jsxImportSource react */
 import { qwikify$ } from "@builder.io/qwik-react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import "./calendar.css";
 import { isSameDay } from "~/utils/common.functions";
 import type { CalendarEvent } from "~/utils/types";
 
 export const QwikCalendar = qwikify$((props: any) => (
   <Calendar
+    className={props.className}
     tileContent={({ date, view }) => tileContent(date, view, props.events)}
     onClickDay={(value) => {
       const events: CalendarEvent[] = props.events;
@@ -15,8 +16,6 @@ export const QwikCalendar = qwikify$((props: any) => (
       );
       if (filteredEvents.length !== 0) {
         // TODO:
-        console.log(filteredEvents);
-        console.log(value);
       }
     }}
   />

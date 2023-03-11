@@ -20,6 +20,7 @@ import { EventType } from "@prisma/client";
 import { GuestList } from "~/components/guestlist/guestlist";
 import * as ics from "ics";
 import {
+  generateGoogleMapsLink,
   getDateOrUndefined,
   getProperDateFormat,
   getProperTimeFormat,
@@ -74,7 +75,6 @@ export default component$(() => {
     }
 
     store.userEmail = userDetails.data.user?.email ?? "";
-    console.log(store.userEmail);
 
     const event = await getCurrentEvent(location.params.eventId);
     if (event) {
@@ -126,17 +126,20 @@ export default component$(() => {
 
   return (
     <div>
+      <h1 class="mb-4 text-center text-3xl font-semibold text-black dark:text-white">
+        Event
+      </h1>
       <div class="grid gap-4 mb-6 md:grid-cols-2 w-full place-content-between">
         <div>
           <div>
             <label
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
               for="name"
             >
               Name:
             </label>
             <input
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               type="text"
               onChange$={(event) =>
                 (store.event.name = (event.target as HTMLInputElement).value)
@@ -147,13 +150,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-3 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="budget"
               >
                 Budget:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="number"
                 onChange$={(event) =>
                   (store.event.budget = +(event.target as HTMLInputElement)
@@ -164,13 +167,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="headcount"
               >
                 Headcount:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="number"
                 onChange$={(event) =>
                   (store.event.headcount = +(event.target as HTMLInputElement)
@@ -181,13 +184,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="eventType"
               >
                 Event type:
               </label>
               <select
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 id="eventType"
                 name="eventType"
                 onClick$={(event) =>
@@ -210,13 +213,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="startDate"
               >
                 Start Date:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="date"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -229,20 +232,19 @@ export default component$(() => {
                     store.event.startDate?.getHours(),
                     store.event.startDate?.getMinutes()
                   );
-                  console.log(store.event.startDate);
                 }}
                 value={getProperDateFormat(store.event?.startDate)}
               ></input>
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="startTime"
               >
                 Start Time:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="time"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -256,20 +258,19 @@ export default component$(() => {
                     +inputs[1] -
                       (store.event.startDate?.getTimezoneOffset() ?? 0)
                   );
-                  console.log(store.event.startDate);
                 }}
                 value={getProperTimeFormat(store.event?.startDate)}
               ></input>
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="endDate"
               >
                 End Date:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="date"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -288,13 +289,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                 for="time"
               >
                 End Time:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="time"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -312,16 +313,16 @@ export default component$(() => {
               ></input>
             </div>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-3 w-full">
+          <div class="grid gap-6 mb-6 md:grid-cols-3 w-full place-items-center">
             <div>
               <label
-                class="mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
                 for="Menu"
               >
-                Menu:
+                Menu:{" "}
               </label>
               <input
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                 type="checkbox"
                 onChange$={(event) =>
                   (store.event.menuNeeded = (
@@ -333,13 +334,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
                 for="decor"
               >
-                Decor:
+                Decor:{" "}
               </label>
               <input
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                 type="checkbox"
                 onChange$={(event) =>
                   (store.event.decorNeeded = (
@@ -351,13 +352,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
                 for="performer"
               >
-                Performer:
+                Performer:{" "}
               </label>
               <input
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                 type="checkbox"
                 onChange$={(event) =>
                   (store.event.performerNeeded = (
@@ -371,11 +372,13 @@ export default component$(() => {
         </div>
         <div>
           <iframe
-            src={`https://www.google.com/maps?q=${store.location.city}+${
-              store.location.zipCode
-                ? store.location.zipCode.toString() + "+"
-                : ""
-            }+${store.location.street.split(" ").join("+")}&output=embed`}
+            src={generateGoogleMapsLink(
+              true,
+              store.location.city,
+              store.location.state,
+              store.location.zipCode,
+              store.location.street
+            )}
             style="border:0;"
             allowFullScreen={false}
             loading="lazy"
@@ -385,13 +388,13 @@ export default component$(() => {
         </div>
       </div>
       {/* Buttons */}
-      <div class="mb-12 relative overflow-x-auto sm:rounded-lg">
+      <div class="p-6 relative overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-center">
           <tbody>
             <tr>
               <td>
                 <button
-                  class="w-full mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:focus:ring-green-800"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   preventdefault:click
                   onClick$={async () => {
                     if (store.event) {
@@ -431,18 +434,17 @@ export default component$(() => {
                 <button
                   data-modal-target="deleteEventModal"
                   data-modal-toggle="deleteEventModal"
-                  class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   type="button"
                 >
                   Delete
                 </button>
               </td>
               <td>
-                {" "}
                 <button
-                  class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   preventdefault:click
-                  onClick$={async () => {
+                  onClick$={() => {
                     exportToCalendar(store);
                   }}
                 >
@@ -450,9 +452,8 @@ export default component$(() => {
                 </button>
               </td>
               <td>
-                {" "}
                 <button
-                  class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   onClick$={() =>
                     navigate(paths.location + store.event.locationId)
                   }
@@ -461,22 +462,48 @@ export default component$(() => {
                 </button>
               </td>
               <td>
-                {" "}
                 <button
+                  onClick$={() => {
+                    navigator.clipboard.writeText(
+                      document.location.origin +
+                        paths.feedback +
+                        location.params.eventId
+                    );
+                  }}
                   data-tooltip-target="tooltip-click"
                   data-tooltip-trigger="click"
                   type="button"
-                  class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                 >
                   Copy Feedback URL
                 </button>
               </td>
               <td>
-                {" "}
+                <button
+                  data-tooltip-target="tooltip-click"
+                  data-tooltip-trigger="click"
+                  type="button"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  onClick$={() => {
+                    navigator.clipboard.writeText(
+                      generateGoogleMapsLink(
+                        false,
+                        store.location.city,
+                        store.location.state,
+                        store.location.zipCode,
+                        store.location.street
+                      )
+                    );
+                  }}
+                >
+                  Copy Google Maps URL
+                </button>
+              </td>
+              <td>
                 <button
                   data-modal-target="guestlistModal"
                   data-modal-toggle="guestlistModal"
-                  class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   type="button"
                 >
                   Show Guestlist
@@ -486,7 +513,7 @@ export default component$(() => {
                 <button
                   data-modal-target="feedbackModal"
                   data-modal-toggle="feedbackModal"
-                  class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   type="button"
                 >
                   Show Feedbacks
@@ -495,7 +522,6 @@ export default component$(() => {
             </tr>
           </tbody>
         </table>
-
         <Modal
           id="deleteEventModal"
           listType="active-event"
@@ -504,7 +530,6 @@ export default component$(() => {
           listTypeId={location.params.eventId}
           name="Are you sure you want to delete this event?"
         />
-
         <div
           id="tooltip-click"
           role="tooltip"
@@ -596,6 +621,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.diabetes}
@@ -606,6 +632,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.gluten}
@@ -616,6 +643,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.lactose}
@@ -626,6 +654,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.plusOne}
@@ -711,16 +740,18 @@ export const exportToCalendar = async (store: EventStore) => {
   const event: ics.EventAttributes = {
     start: [
       store.event?.startDate.getFullYear(),
-      store.event?.startDate.getMonth(),
+      store.event?.startDate.getMonth() + 1,
       store.event?.startDate.getDate(),
-      store.event?.startDate.getHours(),
+      store.event?.startDate.getHours() +
+        store.event.startDate.getTimezoneOffset() / 60,
       store.event?.startDate.getMinutes(),
     ],
     end: [
       store.event?.endDate.getFullYear(),
-      store.event?.endDate.getMonth(),
+      store.event?.endDate.getMonth() + 1,
       store.event?.endDate.getDate(),
-      store.event?.endDate.getHours(),
+      store.event?.endDate.getHours() +
+        store.event.endDate.getTimezoneOffset() / 60,
       store.event?.endDate.getMinutes(),
     ],
     title: store.event?.name,

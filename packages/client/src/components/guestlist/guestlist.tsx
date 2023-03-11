@@ -43,7 +43,6 @@ export const GuestList = component$((props: GuestListProps) => {
 
   useBrowserVisibleTask$(async ({ track }) => {
     track(() => store.useClientEffectHook);
-    console.log(props);
     let result;
 
     if (props.openedFromEvent) {
@@ -78,8 +77,6 @@ export const GuestList = component$((props: GuestListProps) => {
     } else {
       store.empty = true;
     }
-
-    console.log(store.connectableGuests);
   });
 
   return (
@@ -93,7 +90,7 @@ export const GuestList = component$((props: GuestListProps) => {
             ).value.toLowerCase();
           }}
           type="search"
-          class="mb-6 block w-full self-center p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="mb-6 p-4 bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
           placeholder="Search.."
         />
       </div>
@@ -109,7 +106,7 @@ export const GuestList = component$((props: GuestListProps) => {
         )}
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+            <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
               <th scope="col" class="px-6 py-4">
                 Firstname
               </th>
@@ -141,7 +138,7 @@ export const GuestList = component$((props: GuestListProps) => {
               <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+                    <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
                       <th scope="col" class="px-6 py-4">
                         Firstname
                       </th>
@@ -164,7 +161,7 @@ export const GuestList = component$((props: GuestListProps) => {
               </div>
               <button
                 type="button"
-                class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+                class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                 onClick$={() => {
                   addSelectedGuestsToEvent(store, props.eventId ?? "");
                 }}
@@ -186,14 +183,14 @@ export const GuestList = component$((props: GuestListProps) => {
         data-modal-toggle="selectableGuestlistModal"
         class={`${
           props.openedFromEvent ? "" : "hidden"
-        } mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800`}
+        } mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600`}
         type="button"
       >
         Show Existing Guests
       </button>
       <button
         preventdefault:click
-        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
         onClick$={() => {
           store.tableRows = [...store.tableRows, EMPTY_ROW];
         }}
@@ -201,7 +198,7 @@ export const GuestList = component$((props: GuestListProps) => {
         Add Row
       </button>
       <button
-        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
         type="submit"
         preventdefault:click
         onClick$={async () => {
@@ -226,9 +223,8 @@ export const GuestList = component$((props: GuestListProps) => {
 
 export const generateSelectableGuestTable = (store: GuestListStore) => {
   return store.connectableGuests.map((guest) => {
-    console.log(guest);
     return (
-      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
         <td
           scope="row"
           class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -255,10 +251,10 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
         </td>
         <td
           scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
         >
           <input
-            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
             type="checkbox"
             onChange$={(event) => {
               const checkbox = event.target as HTMLInputElement;
@@ -268,12 +264,10 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
                   if (row.id === guest.id)
                     store.unselectedGuests.splice(index, 1);
                 });
-                console.log(store.selectedGuests);
               } else {
                 store.selectedGuests.forEach((row, index) => {
                   if (row.id === guest.id)
                     store.selectedGuests.splice(index, 1);
-                  console.log(store.selectedGuests);
                 });
                 store.unselectedGuests = [...store.unselectedGuests, guest];
               }
@@ -305,16 +299,15 @@ export const generateEventGuestTable = (
     })
     .map((guest) => {
       return (
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
+        <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
           <td scope="row">
             <input
-              class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               type="text"
               onChange$={(event) =>
                 store.tableRows.map((row) => {
                   if (row.id === guest.id) {
                     row.firstname = (event.target as HTMLInputElement).value;
-                    console.log(row);
                   }
                 })
               }
@@ -324,7 +317,7 @@ export const generateEventGuestTable = (
           <td scope="row">
             <input
               type="text"
-              class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange$={(event) =>
                 store.tableRows.map((row) => {
                   if (row.id === guest.id) {
@@ -338,7 +331,7 @@ export const generateEventGuestTable = (
           <td scope="row">
             <input
               type="email"
-              class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               onChange$={(event) =>
                 store.tableRows.map((row) => {
@@ -352,7 +345,7 @@ export const generateEventGuestTable = (
           </td>
           <td scope="row">
             <input
-              class="w-full bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               type="text"
               onChange$={(event) =>
                 store.tableRows.map((row) => {
@@ -364,9 +357,9 @@ export const generateEventGuestTable = (
               value={guest.description}
             ></input>
           </td>
-          <td scope="row" class="text-center">
+          <td scope="row">
             <button
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              class="font-bold p-4 pl-10 text-sm text-indigo-600 dark:text-indigo-500 hover:underline"
               preventdefault:click
               onClick$={async () => {
                 let rowFound = false;
@@ -434,31 +427,25 @@ export const addSelectedGuestsToEvent = (
     });
   });
 
-  console.log(store.useClientEffectHook);
   store.tableRows = [...store.tableRows, ...store.selectedGuests];
   store.selectedGuests = [];
   store.connectableGuests = [];
   store.connectableGuests = [...store.unselectedGuests];
   store.modalOpen = false;
-
-  console.log(store.tableRows);
 };
 
 export const saveGuestList = async (
   store: GuestListStore,
   props: GuestListProps
 ) => {
-  console.log(store.tableRows);
   store.tableRows
     .filter((guest) => {
       return guest.firstname && guest.lastname;
     })
     .forEach(async (guest) => {
-      console.log(guest);
       const result = await client.getGuest.query({
         guestId: guest.id,
       });
-      console.log(result.status);
       const existingGuest = result.guest;
       if (result.status === Status.SUCCESS) {
         if (

@@ -110,8 +110,6 @@ export const addGuestController = async ({
       },
     });
 
-    console.log(guest);
-
     return {
       status: Status.SUCCESS,
       guest,
@@ -150,8 +148,6 @@ export const addGuestAndConnectToEventController = async ({
       },
     });
 
-    console.log(guest);
-
     return {
       status: Status.SUCCESS,
       guest,
@@ -181,8 +177,6 @@ export const connectGuestToEventController = async ({
         guestId: connectGuestToEventInput.guestId,
       },
     });
-
-    console.log(guest);
 
     return {
       status: Status.SUCCESS,

@@ -1,8 +1,5 @@
 import { prisma } from "../app";
-import {
-  ByIdInput,
-  GetByEmailInput,
-} from "../general/general.schema";
+import { ByIdInput, ByNoInput, GetByEmailInput } from "../general/general.schema";
 import { Status } from "../status.enum";
 import {
   BudgetPlanningInput,
@@ -38,7 +35,6 @@ export const getBudgetPlanningController = async ({
       budgetPlanning,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -69,7 +65,6 @@ export const getBudgetPlanningsController = async ({
       budgetPlanning,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -95,7 +90,6 @@ export const addBudgetPlanningController = async ({
       budgetPlanning,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -108,10 +102,7 @@ export const updateBudgetPlanningController = async ({
   try {
     const budgetPlanning = await prisma.budgetPlanning.update({
       where: {
-        contactId_eventId: {
-          eventId: budgetPlanningInput.eventId,
-          contactId: budgetPlanningInput.contactId,
-        },
+        id: budgetPlanningInput.id,
       },
       data: {
         contactId: budgetPlanningInput.contactId,
@@ -131,7 +122,6 @@ export const updateBudgetPlanningController = async ({
       budgetPlanning,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -139,15 +129,12 @@ export const updateBudgetPlanningController = async ({
 export const deleteBudgetPlanningController = async ({
   deleteBudgetPlanningInput,
 }: {
-  deleteBudgetPlanningInput: GetBudgetPlanningInput;
+  deleteBudgetPlanningInput: ByNoInput;
 }) => {
   try {
     await prisma.budgetPlanning.delete({
       where: {
-        contactId_eventId: {
-          contactId: deleteBudgetPlanningInput.contactId,
-          eventId: deleteBudgetPlanningInput.eventId,
-        },
+        id: deleteBudgetPlanningInput.id,
       },
     });
 
@@ -155,7 +142,6 @@ export const deleteBudgetPlanningController = async ({
       status: Status.SUCCESS,
     };
   } catch (error) {
-    console.log(error);
     return Status.FAILED;
   }
 };
@@ -183,7 +169,6 @@ export const getContactController = async ({
       contact,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -211,7 +196,6 @@ export const getContactsController = async ({
       contacts,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -237,7 +221,6 @@ export const addContactController = async ({
       contact,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -264,7 +247,6 @@ export const updateContactController = async ({
       status: Status.SUCCESS,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };
@@ -285,7 +267,6 @@ export const deleteContactController = async ({
       status: Status.SUCCESS,
     };
   } catch (error) {
-    console.log(error);
     return { status: Status.FAILED };
   }
 };

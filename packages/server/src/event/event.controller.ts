@@ -27,8 +27,6 @@ export const addEventController = async ({
       },
     });
 
-    console.log(event);
-
     return {
       status: Status.SUCCESS,
       event: event,
@@ -51,7 +49,6 @@ export const updateEventController = async ({
   updateEventInput: UpdateEventInput;
 }) => {
   try {
-    console.log(updateEventInput);
     const event = await prisma.event.update({
       where: {
         id: updateEventInput.id,
@@ -70,8 +67,6 @@ export const updateEventController = async ({
         performerNeeded: updateEventInput.performerNeeded,
       },
     });
-
-    console.log(event);
 
     return {
       status: Status.SUCCESS,
@@ -100,8 +95,6 @@ export const deleteEventController = async ({
         id: deleteInput.id,
       },
     });
-
-    console.log(event);
 
     return {
       status: Status.SUCCESS,

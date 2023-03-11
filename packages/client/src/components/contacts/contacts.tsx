@@ -48,20 +48,20 @@ export const Contact = component$((props: ContactProps) => {
         ) : !store.empty ? (
           <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
-                <th scope="col" class="px-6 py-4">
+              <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
+                <th scope="col" class="px-6 py-4 text-base">
                   Name
                 </th>
-                <th scope="col" class="px-6 py-4">
+                <th scope="col" class="px-6 py-4 text-base">
                   Description
                 </th>
-                <th scope="col" class="px-6 py-4">
+                <th scope="col" class="px-6 py-4 text-base">
                   Email
                 </th>
-                <th scope="col" class="px-6 py-4">
+                <th scope="col" class="px-6 py-4 text-base">
                   Phone
                 </th>
-                <th scope="col" class="px-6 py-4"></th>
+                <th scope="col" class="px-6 py-4 text-base"></th>
               </tr>
             </thead>
             <tbody>{generateContactList(store)}</tbody>
@@ -73,7 +73,7 @@ export const Contact = component$((props: ContactProps) => {
         )}
       </div>
       <button
-        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
         onClick$={() => navigate(paths.newContact)}
       >
         Add Contact
@@ -87,34 +87,34 @@ export const generateContactList = async (store: ContactStore) => {
     <>
       {store.contacts.map((row) => {
         return (
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
             <td
               scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.name}
             </td>
             <td
               scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.description}
             </td>
             <td
               scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.email}
             </td>
             <td
               scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.phone}
             </td>
             <td>
               <button
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                class="font-bold text-sm text-indigo-600 dark:text-indigo-500 hover:underline"
                 onClick$={async () => {
                   let rowFound = false;
                   if (
