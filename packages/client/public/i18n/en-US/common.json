@@ -1,0 +1,26 @@
+{
+  "common": {
+    "addRow": "Add Row",
+    "delete": "Delete",
+    "deleteRow": "Delete Row",
+    "description": "Description:",
+    "email": "Email:",
+    "emailPlaceholder": "sarah.smith@example.com",
+    "endDate": "End Date:",
+    "endTime": "End Time:",
+    "firstname": "First name:",
+    "firstnamePlaceholder": "Sarah",
+    "lastname": "Last name:",
+    "lastnamePlaceholder": "Smith",
+    "loading": "Loading...",
+    "login": "Sign In",
+    "password": "Password:",
+    "phone": "Phone:",
+    "phonePlaceholder": "123-456-7890",
+    "register": "Sign Up",
+    "save": "Save",
+    "search": "Search..",
+    "startDate": "Start Date:",
+    "startTime": "Start Time:"
+  }
+}

@@ -32,7 +32,16 @@ export const getBudgetPlanningInput = z.object({
   contactId: z.string(),
 });
 
+export const getContactsInput = z.object({
+  userEmail: z.string(),
+  skip: z.number().optional(),
+  cursor: z.string().optional(),
+  take: z.number().optional(),
+  filter: z.string().optional(),
+});
+
 export type BudgetPlanningInput = z.TypeOf<typeof budgetPlanningInput>;
 export type ContactInput = z.TypeOf<typeof contactInput>;
 export type UpdateContactInput = z.TypeOf<typeof updateContactInput>;
 export type GetBudgetPlanningInput = z.TypeOf<typeof getBudgetPlanningInput>;
+export type GetContactsInput = z.TypeOf<typeof getContactsInput>;

@@ -16,5 +16,6 @@ export const paths = {
   contact: "/contact/",
   contacts: "/contacts",
   newContact: "/new/contact",
-  feedback: "/feedback/"
+  feedback: "/feedback/",
+  hungarian: "/hu-HU",
 };

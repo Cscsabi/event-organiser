@@ -1,12 +1,12 @@
 import {
   component$,
   Resource,
-  useBrowserVisibleTask$,
+  useVisibleTask$,
   useResource$,
   useSignal,
 } from "@builder.io/qwik";
 import type { ResourceReturn, Signal } from "@builder.io/qwik";
-import { useNavigate } from "@builder.io/qwik-city";
+import { useNavigate, useLocation } from "@builder.io/qwik-city";
 import type {
   GetEventsReturnType,
   GetLocationsReturnType,
@@ -16,17 +16,20 @@ import { paths } from "~/utils/paths";
 import { getUser } from "~/utils/supabase.client";
 import { client } from "~/utils/trpc";
 import Card from "../card/card";
+import { generateRoutingLink } from "~/utils/common.functions";
+import { $translate as t, Speak } from "qwik-speak";
 
 export const List = component$((props: ListProps) => {
   const email = useSignal<string>("");
   const searchInput = useSignal<string>("");
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useBrowserVisibleTask$(async ({ track }) => {
+  useVisibleTask$(async ({ track }) => {
     track(() => email.value);
     const userResponse = await getUser();
     if (!userResponse.data.user) {
-      navigate(paths.login);
+      navigate(generateRoutingLink(location.params.lang, paths.login));
     }
     if (userResponse.data.user?.email) {
       email.value = userResponse.data.user.email;
@@ -56,7 +59,7 @@ export const List = component$((props: ListProps) => {
     }
   );
   return (
-    <div>
+    <Speak assets={["list", "common"]}>
       <div class="w-full m-auto mb-20">
         <div class="inline-block float-left ml-12">
           <a
@@ -68,11 +71,13 @@ export const List = component$((props: ListProps) => {
             <button class="min-w-[10rem] min-h-[3rem] mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600">
               {props.isEvent ? (
                 <div>
-                  <i class="fa-solid fa-calendar-plus"></i> Add Event
+                  <i class="fa-solid fa-calendar-plus"></i>{" "}
+                  {t("list.addEvent@@Add Event")}
                 </div>
               ) : (
                 <div>
-                  <i class="fa-solid fa-map-pin"></i> Add Location
+                  <i class="fa-solid fa-map-pin"></i>{" "}
+                  {t("list.addLocation@@Add Location")}
                 </div>
               )}
             </button>
@@ -88,12 +93,12 @@ export const List = component$((props: ListProps) => {
             }}
             type="search"
             class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl bg-gray-300 border border-gray-300 text-gray-900 text-md focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
-            placeholder="Search.."
+            placeholder={t("common.search@@Search..")}
           />
         </div>
       </div>
       {generateList(props, eventResource, searchInput, locationResource)}
-    </div>
+    </Speak>
   );
 });
 
@@ -108,7 +113,7 @@ export const generateList = (
       {props.isEvent ? (
         <Resource
           value={eventResource}
-          onPending={() => <div>Loading...</div>}
+          onPending={() => <div>{t("common.loading@@Loading...")}</div>}
           onResolved={(result: GetEventsReturnType) => {
             return (
               <div class="flex flex-wrap justify-center">
@@ -141,6 +146,7 @@ export const generateList = (
                         }
                         icon="event"
                         location={event.location.name}
+                        key={event.id}
                       />
                     );
                   })}
@@ -151,10 +157,10 @@ export const generateList = (
       ) : (
         <Resource
           value={locationResource}
-          onPending={() => <div>Loading...</div>}
+          onPending={() => <div>{t("common.loading@@Loading...")}</div>}
           onResolved={(result) => {
             return (
-              <div class="flex flex-wrap justify-center">
+              <div class="flex flex-wrap justify-center" key={""}>
                 {result.locations
                   .filter((event) => {
                     if (searchInput.value.length > 0) {
@@ -174,6 +180,7 @@ export const generateList = (
                         type="location"
                         goTo={paths.location + location.id}
                         icon="location"
+                        key={location.id}
                       />
                     );
                   })}

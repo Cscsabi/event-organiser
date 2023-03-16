@@ -86,13 +86,17 @@ export interface GuestType {
 }
 
 export interface GuestListStore {
-  modalOpen: boolean;
   tableRows: GuestType[];
   connectableGuests: GuestType[];
   selectedGuests: GuestType[];
   unselectedGuests: GuestType[];
   useClientEffectHook: number;
   empty: boolean | undefined;
+  lastpage: number;
+  currentCursor: string | undefined;
+  oldCursor: string | undefined;
+  nextButtonClicked: boolean | undefined;
+  endOfList: boolean;
 }
 
 export interface GetGuestReturnType {
@@ -105,6 +109,7 @@ export interface EventStore {
   location: LocationStore;
   modalOpen: boolean;
   userEmail: string;
+  origin: string;
 }
 
 export interface FeedbackStore {
@@ -129,7 +134,6 @@ export interface ListProps {
 }
 
 export interface ProfilStore {
-  checkbox: boolean;
   email: string;
   firstname: string;
   lastname: string;
@@ -209,6 +213,11 @@ export interface ContactStore {
   contacts: ContactType[];
   userEmail: string;
   empty: boolean | undefined;
+  lastpage: number;
+  currentCursor: string | undefined;
+  oldCursor: string | undefined;
+  nextButtonClicked: boolean | undefined;
+  endOfList: boolean;
 }
 
 export interface ContactCard {
@@ -237,4 +246,17 @@ export interface ContactsReturnType {
 export interface GetFeedbackReturnType {
   status: Status;
   feedbacks: Feedback[];
+}
+
+export interface SendEmailInput {
+  text: string;
+  subject: string;
+  html: string;
+  recieverEmail: string;
+  recieverName?: string;
+}
+
+export interface UserAttributes {
+  sendEmailInput: SendEmailInput;
+  password: string;
 }

@@ -25,8 +25,8 @@ export const updateUserSchema = z.object({
       lastname: z.string(),
       password: z.string(),
       email: z.string(),
-      notifications: z.boolean(),
       darkModeEnabled: z.boolean(),
+      language: z.string(),
     })
     .partial(),
 });
@@ -36,7 +36,16 @@ export const filterQuery = z.object({
   page: z.number().default(10),
 });
 
+export const sendEmailInput = z.object({
+  subject: z.string(),
+  text: z.string(),
+  html: z.string(),
+  email: z.string(),
+  name: z.string().optional(),
+});
+
 export type ParamsInput = z.TypeOf<typeof params>;
 export type FilterQueryInput = z.TypeOf<typeof filterQuery>;
 export type CreateUserInput = z.TypeOf<typeof createUserSchema>;
 export type UpdateUserInput = z.TypeOf<typeof updateUserSchema>;
+export type SendEmailInput = z.TypeOf<typeof sendEmailInput>;

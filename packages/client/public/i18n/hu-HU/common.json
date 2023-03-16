@@ -1,0 +1,26 @@
+{
+  "common": {
+    "addRow": "Sor hozzáadása",
+    "delete": "Törlés",
+    "deleteRow": "Sor törlése",
+    "description": "Leírás:",
+    "email": "Email cím:",
+    "emailPlaceholder": "minta.pista@példa.hu",
+    "endDate": "Befejezés dátuma:",
+    "endTime": "Befejezés időpontja:",
+    "firstname": "Keresztnév:",
+    "firstnamePlaceholder": "Pista",
+    "lastname": "Vezetéknév:",
+    "lastnamePlaceholder": "Minta",
+    "loading": "Betöltés alatt...",
+    "login": "Bejelentkezés",
+    "password": "Jelszó:",
+    "phone": "Telefon:",
+    "phonePlaceholder": "06-30-11-22-333",
+    "register": "Sign Up",
+    "save": "Mentés",
+    "search": "Keresés..",
+    "startDate": "Kezdés dátuma:",
+    "startTime": "Kezdés időpontja:"
+  }
+}

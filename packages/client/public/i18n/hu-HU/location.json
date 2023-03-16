@@ -1,0 +1,28 @@
+{
+  "location": {
+    "chooseHere": "Válassz itt",
+    "city": "Város:",
+    "cityPlaceholder": "Budapest",
+    "country": "Ország:",
+    "createLocation": "Helyszín létrehozása",
+    "deleteLocation": "Biztosan törölni szeretnéd ezt a helyszínt?",
+    "descriptionPlaceholder": "Some important information..",
+    "link": "Link:",
+    "linkPlaceholder": "www.példa.hu",
+    "location": "Helyszín",
+    "locationName": "Helyszín neve:",
+    "locationNamePlaceholder": "Minta Helyszín",
+    "locationType": "Helyszín típusa:",
+    "locationTypePlaceholder": "A helyszín típusa..",
+    "name": "Név:",
+    "newLocation": "Helyszín létrehozása",
+    "price": "Ár:",
+    "state": "Megye:",
+    "statePlaceholder": "Pest",
+    "street": "Utca, házszám:",
+    "streetPlaceholder": "Örs vezér tere 25/A",
+    "type": "Típus:",
+    "zipCode": "Irányítószám:",
+    "zipCodePlaceholder": "1106"
+  }
+}

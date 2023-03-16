@@ -5,9 +5,11 @@ import {
   CreateUserInput,
   FilterQueryInput,
   ParamsInput,
+  SendEmailInput,
   UpdateUserInput,
 } from "./user.schema";
 import { Status } from "../status.enum";
+import { Client, SendEmailV3_1 } from "node-mailjet";
 
 export const createUserController = async ({
   input,
@@ -20,7 +22,6 @@ export const createUserController = async ({
         email: input.email,
         firstname: input.firstname,
         lastname: input.lastname,
-        notifications: false,
         darkModeEnabled: false,
       },
     });
@@ -144,3 +145,38 @@ export const deleteUserController = async ({
     throw error;
   }
 };
+
+const mailjet = new Client({
+  apiKey: process.env.MJ_API_KEY,
+  apiSecret: process.env.MJ_API_SECRET,
+});
+
+export async function sendEmailController({
+  sendEmailInput,
+}: {
+  sendEmailInput: SendEmailInput;
+}) {
+  const data: SendEmailV3_1.Body = {
+    Messages: [
+      {
+        From: {
+          Email: process.env.MJ_SENDER_EMAIL ?? "",
+          Name: "Event Organiser Team",
+        },
+        To: [
+          {
+            Email: sendEmailInput.email,
+            Name: sendEmailInput.name,
+          },
+        ],
+        Subject: sendEmailInput.subject,
+        TextPart: sendEmailInput.text,
+        HTMLPart: sendEmailInput.html,
+      },
+    ],
+  };
+
+  return mailjet
+    .post("send", { version: "v3.1" })
+    .request(data);
+}

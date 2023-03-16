@@ -1,0 +1,14 @@
+{
+  "feedback": {
+    "additional": "Anything else the organiser should know:",
+    "additionalPlaceholder": "Additional details...",
+    "diabetes": "Are you suffering from diabetes?",
+    "gluten": "Are you gluten intolerant?",
+    "lactose": "Are you lactose intolerant?",
+    "notEligible": "Thank you for filling this form!",
+    "organiser": "Organiser:",
+    "pageNotFound": "Oops, Page Not Found",
+    "plusOne": "Do you intend to bring a plus one?",
+    "submit": "Submit Form"
+  }
+}

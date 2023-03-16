@@ -1,0 +1,18 @@
+{
+  "header": {
+    "active": "Aktív Események",
+    "contacts": "Kapcsolattartók",
+    "dark": "Sötét mód",
+    "english": "Angol",
+    "guests": "Vendégek",
+    "home": "Kezdőlap",
+    "hungarian": "Magyar",
+    "light": "Világos mód",
+    "locations": "Helyszínek",
+    "login": "Bejelentkezés",
+    "logout": "Kijelentkezés",
+    "previous": "Előző Események",
+    "profile": "Fiók",
+    "register": "Regisztráció"
+  }
+}

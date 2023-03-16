@@ -12,9 +12,9 @@ model User {
   firstname       String
   lastname        String
   darkModeEnabled Boolean
+  language        String?
   events          Event[]
   locations       Location[]
-  notifications   Boolean
   contacts        Contact[]
   guests          Guest[]
 

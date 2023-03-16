@@ -1,0 +1,28 @@
+{
+  "location": {
+    "chooseHere": "Choose here",
+    "city": "City:",
+    "cityPlaceholder": "Los Angeles",
+    "country": "Country:",
+    "createLocation": "Create Location",
+    "deleteLocation": "Are you sure you want to delete this location?",
+    "descriptionPlaceholder": "Some important information..",
+    "link": "Link:",
+    "linkPlaceholder": "www.example.com",
+    "location": "Location",
+    "locationName": "Location Name:",
+    "locationNamePlaceholder": "Example Location",
+    "locationType": "Location Type:",
+    "locationTypePlaceholder": "Type of Location",
+    "name": "Name:",
+    "newLocation": "Create New Location",
+    "price": "Price:",
+    "state": "State:",
+    "statePlaceholder": "California",
+    "street": "Street, house no.:",
+    "streetPlaceholder": "Hollywood Boulevard, Vine St",
+    "type": "Type:",
+    "zipCode": "Zip Code:",
+    "zipCodePlaceholder": "90028"
+  }
+}

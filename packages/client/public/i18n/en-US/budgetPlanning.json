@@ -1,0 +1,10 @@
+{
+  "budgetPlanning": {
+    "amount": "Amount",
+    "contactName": "Contact Name",
+    "paid": "Paid",
+    "percent": "%",
+    "remaining": "Remaining:",
+    "summary": "Summary:"
+  }
+}

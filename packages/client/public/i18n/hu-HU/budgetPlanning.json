@@ -1,0 +1,10 @@
+{
+  "budgetPlanning": {
+    "amount": "Mennyiség",
+    "contactName": "Szolgáltató neve",
+    "paid": "Fizetve",
+    "percent": "%",
+    "remaining": "Fennmaradó:",
+    "summary": "Összesen:"
+  }
+}

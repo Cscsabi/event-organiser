@@ -1,0 +1,10 @@
+{
+  "list": {
+    "addEvent": "Add Event",
+    "addLocation": "Add Location",
+    "contacts": "Contacts",
+    "guests": "Guests",
+    "locations": "Locations",
+    "previousEvents": "Previous Events"
+  }
+}

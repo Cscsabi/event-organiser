@@ -1,12 +1,10 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "../app";
-import { GetByEmailInput } from "../general/general.schema";
 import { Status } from "../status.enum";
 import {
   AddGuestAndConnectToEventInput,
   AddGuestInput,
-  connectGuestToEventInput,
   ConnectGuestToEventInput,
   DeleteGuestInput,
   GetGuestByEmails,
@@ -33,28 +31,106 @@ export const getGuestsController = async ({
               eventId: getGuestsInput.eventId,
             },
           },
-        },
-      });
-    } else if (getGuestsInput.connectingOnly) {
-      // Selecting existing guests, that are not assigned to the event
-      guests = await prisma.guest.findMany({
-        where: {
-          userEmail: getGuestsInput.userEmail,
-          eventGuest: {
-            none: {
-              eventId: getGuestsInput.eventId,
+          OR: [
+            {
+              firstname: {
+                contains: getGuestsInput.filter,
+              },
             },
-          },
+            {
+              lastname: {
+                contains: getGuestsInput.filter,
+              },
+            },
+            {
+              email: {
+                contains: getGuestsInput.filter,
+              },
+            },
+            {
+              description: {
+                contains: getGuestsInput.filter,
+              },
+            },
+          ],
         },
+        ...(getGuestsInput.cursor === undefined
+          ? {}
+          : { cursor: { id: getGuestsInput.cursor } }),
+        skip: getGuestsInput.skip,
+        take: getGuestsInput.take,
+        orderBy: { id: "asc" },
       });
     } else {
       // Selecting all guests
       guests = await prisma.guest.findMany({
         where: {
           userEmail: getGuestsInput.userEmail,
+          OR: [
+            {
+              firstname: {
+                contains: getGuestsInput.filter,
+                mode: "insensitive",
+              },
+            },
+            {
+              lastname: {
+                contains: getGuestsInput.filter,
+                mode: "insensitive",
+              },
+            },
+            {
+              email: {
+                contains: getGuestsInput.filter,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: getGuestsInput.filter,
+                mode: "insensitive",
+              },
+            },
+          ],
         },
+        ...(getGuestsInput.cursor === undefined
+          ? {}
+          : { cursor: { id: getGuestsInput.cursor } }),
+        skip: getGuestsInput.skip,
+        take: getGuestsInput.take,
+        orderBy: { id: "asc" },
       });
     }
+
+    return {
+      status: Status.SUCCESS,
+      guests,
+    };
+  } catch (error) {
+    console.error("Invalid input!");
+    throw error;
+  }
+};
+
+export const getConnectableGuestsController = async ({
+  getGuestsInput,
+}: {
+  getGuestsInput: GetGuestsInput;
+}) => {
+  try {
+    // Selecting existing guests, that are not assigned to the event
+    const guests = await prisma.guest.findMany({
+      where: {
+        userEmail: getGuestsInput.userEmail,
+        eventGuest: {
+          none: {
+            eventId: getGuestsInput.eventId,
+          },
+        },
+      
+      },
+      orderBy: { id: "asc" },
+    });
 
     return {
       status: Status.SUCCESS,

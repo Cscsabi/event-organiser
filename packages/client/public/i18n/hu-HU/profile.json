@@ -1,0 +1,11 @@
+{
+  "profile": {
+    "changePassword": "Jelszó módosítása",
+    "notMatching": "A megadott jelszavak nem egyeznek!",
+    "passwordAgain": "Jelszó ismét:",
+    "passwordUpdated1": "Kedves,",
+    "passwordUpdated2": "Jelezni szeretnénk, hogy a jelszavad az imént megváltozott!",
+    "passwordUpdatedSubject": "A jelszó frissült!",
+    "profile": "Fiók"
+  }
+}

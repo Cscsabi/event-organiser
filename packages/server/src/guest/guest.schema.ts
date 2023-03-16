@@ -43,8 +43,15 @@ export const deleteGuestInput = z.object({
 export const getGuestsInput = z.object({
   userEmail: z.string(),
   filteredByEvent: z.boolean().optional(),
-  connectingOnly: z.boolean().optional(),
   eventId: z.string().optional(),
+  skip: z.number().optional(),
+  cursor: z.string().optional(),
+  take: z.number().optional(),
+  firstname: z.string().optional(),
+  lastname: z.string().optional(),
+  email: z.string().optional(),
+  description: z.string().optional(),
+  filter: z.string().optional(),
 });
 
 export const connectGuestToEventInput = z.object({
@@ -69,6 +76,4 @@ export type GetGuestsInput = z.TypeOf<typeof getGuestsInput>;
 export type ConnectGuestToEventInput = z.TypeOf<
   typeof connectGuestToEventInput
 >;
-export type GetGuestByEmails = z.TypeOf<
-  typeof getGuestByEmails
->;
+export type GetGuestByEmails = z.TypeOf<typeof getGuestByEmails>;

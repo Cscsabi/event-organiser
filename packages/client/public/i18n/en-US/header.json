@@ -1,0 +1,18 @@
+{
+  "header": {
+    "active": "Active Events",
+    "contacts": "Contacts",
+    "dark": "Dark mode",
+    "english": "English",
+    "guests": "Guests",
+    "home": "Home",
+    "hungarian": "Hungarian",
+    "light": "Light mode",
+    "locations": "Locations",
+    "login": "Login",
+    "logout": "Logout",
+    "previous": "Previous Events",
+    "profile": "Profile",
+    "register": "Register"
+  }
+}

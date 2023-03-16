@@ -1,0 +1,10 @@
+{
+  "guestlist": {
+    "addSelectedGuests": "Kiválasztott vendégek eseményhez rendelése",
+    "existingGuests": "Létező vendégek listája",
+    "noGuests": "Még egy vendéged sincs!",
+    "noMoreToAdd": "Nincs több eseményhez rendelhető vendéged!",
+    "saveGuestlist": "Vendéglista mentése",
+    "select": "Kiválasztás"
+  }
+}

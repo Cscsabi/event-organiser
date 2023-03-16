@@ -1,0 +1,11 @@
+{
+  "profile": {
+    "changePassword": "Change Password",
+    "notMatching": "The passwords are not matching!",
+    "passwordAgain": "Password again:",
+    "passwordUpdated1": "Dear,",
+    "passwordUpdated2": "We would like to inform you, that your password was just changed!",
+    "passwordUpdatedSubject": "Your password was updated",
+    "profile": "Profile"
+  }
+}

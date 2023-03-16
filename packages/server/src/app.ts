@@ -1,4 +1,5 @@
-import "./load.env";
+import { config } from "dotenv";
+config();
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -9,6 +10,7 @@ import {
   createUserSchema,
   filterQuery,
   params,
+  sendEmailInput,
   updateUserSchema,
 } from "./user/user.schema";
 import {
@@ -16,6 +18,7 @@ import {
   deleteUserController,
   findAllUsersController,
   findUserController,
+  sendEmailController,
   updateUserController,
 } from "./user/user.controller";
 import SuperJSON from "superjson";
@@ -62,6 +65,7 @@ import {
   connectGuestToEventController,
   deleteEventGuestController,
   deleteGuestController,
+  getConnectableGuestsController,
   getEventGuestController,
   getGuestByEmailController,
   getGuestController,
@@ -77,6 +81,7 @@ import {
   getBudgetPlanningsController,
   getContactController,
   getContactsController,
+  getContactsPaginationController,
   updateBudgetPlanningController,
   updateContactController,
 } from "./contact/contact.controller";
@@ -84,6 +89,7 @@ import {
   budgetPlanningInput,
   contactInput,
   getBudgetPlanningInput,
+  getContactsInput,
   updateContactInput,
 } from "./contact/contact.schema";
 import { addFeedbackInput, getFeedbackInput } from "./feedback/feedback.schema";
@@ -184,8 +190,13 @@ const appRouter = t.router({
     .input(byIdInput)
     .query(({ input }) => getContactController({ byIdInput: input })),
   getContacts: t.procedure
-    .input(getByEmailInput)
-    .query(({ input }) => getContactsController({ getByEmailInput: input })),
+    .input(getContactsInput)
+    .query(({ input }) => getContactsController({ getContactsInput: input })),
+  getContactsPagination: t.procedure
+    .input(getContactsInput)
+    .query(({ input }) =>
+      getContactsPaginationController({ getContactsInput: input })
+    ),
   addContact: t.procedure
     .input(contactInput)
     .mutation(({ input }) => addContactController({ contactInput: input })),
@@ -200,6 +211,11 @@ const appRouter = t.router({
   getGuests: t.procedure
     .input(getGuestsInput)
     .query(({ input }) => getGuestsController({ getGuestsInput: input })),
+  getConnectableGuests: t.procedure
+    .input(getGuestsInput)
+    .query(({ input }) =>
+      getConnectableGuestsController({ getGuestsInput: input })
+    ),
   getGuest: t.procedure
     .input(getGuestInput)
     .query(({ input }) => getGuestController({ getGuestInput: input })),
@@ -255,6 +271,9 @@ const appRouter = t.router({
     .input(byIdInput)
     .query(({ input }) => getLocationController({ getByIdInput: input })),
   getCountries: t.procedure.query(() => getCountriesController()),
+  sendEmail: t.procedure
+    .input(sendEmailInput)
+    .query(({ input }) => sendEmailController({ sendEmailInput: input })),
 });
 
 export type AppRouter = typeof appRouter;
@@ -264,7 +283,7 @@ if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "http://localhost:4173"],
     credentials: true,
   })
 );

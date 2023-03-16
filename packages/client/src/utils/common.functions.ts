@@ -1,3 +1,7 @@
+import { paths } from "./paths";
+import { client } from "./trpc";
+import type { SendEmailInput } from "./types";
+
 export const getProperDateFormat = (date?: Date) => {
   let usedDate = date;
   if (!usedDate) {
@@ -84,3 +88,23 @@ export const generateGoogleMapsLink = (
     embed ? "&output=embed" : ""
   }`;
 };
+
+export function sendEmail(sendEmailInput: SendEmailInput) {
+  client.sendEmail.query({
+    text: sendEmailInput.text,
+    subject: sendEmailInput.subject,
+    html: sendEmailInput.html,
+    email: sendEmailInput.recieverEmail,
+    name: sendEmailInput.recieverName,
+  });
+}
+
+export async function getCurrentEvent(eventId: string) {
+  const result = await client.getEvent.query({ id: eventId });
+  return result.event;
+}
+
+export function generateRoutingLink(lang: string, path: string) {
+
+  return lang !== "hu-HU" ? path : paths.hungarian + path;
+}

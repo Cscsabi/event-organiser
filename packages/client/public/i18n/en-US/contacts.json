@@ -1,0 +1,9 @@
+{
+  "contacts": {
+    "addContact": "Add Contact",
+    "contactNamePlaceholder": "Example Ltd.",
+    "contacts": "Contact Name:",
+    "descriptionPlaceholder": "Something important about this contact...",
+    "noContacts": "You have no contacts yet."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "feedback": {
+    "additional": "További hasznos információk:",
+    "additionalPlaceholder": "További részletek...",
+    "diabetes": "Ön cukorbeteg?",
+    "gluten": "Ön gluténérzékeny?",
+    "lactose": "Ön laktózérzékeny?",
+    "notEligible": "Köszönjük, hogy kitöltötte ezt az űrlapot!",
+    "organiser": "Szervező:",
+    "pageNotFound": "Hoppá, az oldal nem található",
+    "plusOne": "Szeretne az eseményre hozni plusz egy főt?",
+    "submit": "Űrlap benyújtása"
+  }
+}

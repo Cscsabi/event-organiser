@@ -1,0 +1,11 @@
+{
+  "list": {
+    "addEvent": "Esemény létrehozása",
+    "addLocation": "Helyszín létrehozása",
+    "contacts": "Szolgáltatók",
+    "guests": "Vendégek",
+    "loading": "Betöltés alatt...",
+    "locations": "Helyszínek",
+    "previousEvents": "Előző Események"
+  }
+}

@@ -1,7 +1,7 @@
 import {
   component$,
   Resource,
-  useBrowserVisibleTask$,
+  useVisibleTask$,
   useResource$,
   useStore,
 } from "@builder.io/qwik";
@@ -15,6 +15,7 @@ import type {
   ContactsReturnType,
 } from "~/utils/types";
 import Toast from "../toast/toast";
+import { $translate as t, Speak } from "qwik-speak";
 
 export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
   const EMPTY_ROW = {
@@ -44,7 +45,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
     modalOpen: false,
   });
 
-  useBrowserVisibleTask$(async ({ track }) => {
+  useVisibleTask$(async ({ track }) => {
     track(() => props.budget);
     if (store.userEmail === "") {
       store.userEmail = (await getUser()).data.user?.email ?? "";
@@ -89,12 +90,12 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       track(() => store.userEmail);
       const controller = new AbortController();
       cleanup(() => controller.abort());
-      return client.getContacts.query({ email: store.userEmail });
+      return client.getContacts.query({ userEmail: store.userEmail });
     }
   );
 
   return (
-    <div>
+    <Speak assets={["budgetPlanning", "common"]}>
       <div
         class="relative overflow-x-auto shadow-md sm:rounded-lg"
         style={props.budget !== 0 ? "" : "display:none"}
@@ -103,19 +104,19 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
               <th scope="col" class="px-6 py-4">
-                Contact Name
+                {t("budgetPlanning.contactName@@Contact Name")}
               </th>
               <th scope="col" class="px-6 py-4">
-                Amount
+                {t("budgetPlanning.amount@@Amount")}
               </th>
               <th scope="col" class="px-6 py-4">
-                %
+                {t("budgetPlanning.percent@@%")}
               </th>
               <th scope="col" class="px-6 py-4">
-                Description
+                {t("common.description@@Description")}
               </th>
               <th scope="col" class="px-6 py-4">
-                Paid
+                {t("budgetPlanning.paid@@Paid")}
               </th>
             </tr>
           </thead>
@@ -123,12 +124,12 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
             {generateBudgetPlanningBody(store, props, contactsResource)}
             <tr class="font-semibold text-gray-900 dark:text-white dark:bg-slate-900">
               <td scope="row" class="px-6 py-3 text-base">
-                Summary:
+                {t("budgetPlanning.summary@@Summary:")}
               </td>
               <td class="px-6 py-3">{store.amountAltogether}</td>
               <td class="px-6 py-3">{store.percentAltogether}</td>
               <td scope="row" class="px-6 py-3 text-base">
-                Remaining:
+                {t("budgetPlanning.remaining@@Remaining:")}
               </td>
               <td class="px-6 py-3">{props.budget - store.amountAltogether}</td>
             </tr>
@@ -143,7 +144,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           (store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW])
         }
       >
-        Add Row
+        {t("common.addRow@@Add Row")}
       </button>
       <button
         class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
@@ -157,15 +158,15 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           }
         }}
       >
-        Save
+        {t("common.save@@Save")}
       </button>
       <Toast
         id="successToast2"
-        text="Operation Successful!"
+        text={t("toast.operationSuccessful@@Operation Successful!")}
         type="success"
         position="bottom-right"
       ></Toast>
-    </div>
+    </Speak>
   );
 });
 
@@ -182,7 +183,9 @@ export const generateBudgetPlanningBody = async (
             <td>
               <Resource
                 value={resource}
-                onPending={() => <div>Loading...</div>}
+                onPending={() => (
+                  <div> {t("common.loading@@Loading...")}</div>
+                )}
                 onResolved={(result) => {
                   return (
                     <select
@@ -227,6 +230,7 @@ export const generateBudgetPlanningBody = async (
                         {row.contact.name ? row.contact.name : "Choose here"}
                       </option>
                       {result.contacts?.map((contact) => {
+                        console.log(contact);
                         return (
                           <option value={contact.id}>{contact.name}</option>
                         );

@@ -1,0 +1,10 @@
+{
+  "guestlist": {
+    "addSelectedGuests": "Add selected guests to event",
+    "existingGuests": "Show Existing Guests",
+    "noGuests": "You have no guests yet!",
+    "noMoreToAdd": "You have no more guests to add!",
+    "saveGuestlist": "Save Guestlist",
+    "select": "Select"
+  }
+}

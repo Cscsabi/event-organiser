@@ -1,10 +1,15 @@
 import { prisma } from "../app";
-import { ByIdInput, ByNoInput, GetByEmailInput } from "../general/general.schema";
+import {
+  ByIdInput,
+  ByNoInput,
+  GetByEmailInput,
+} from "../general/general.schema";
 import { Status } from "../status.enum";
 import {
   BudgetPlanningInput,
   ContactInput,
   GetBudgetPlanningInput,
+  GetContactsInput,
   UpdateContactInput,
 } from "./contact.schema";
 
@@ -173,17 +178,51 @@ export const getContactController = async ({
   }
 };
 
-export const getContactsController = async ({
-  getByEmailInput,
+export const getContactsPaginationController = async ({
+  getContactsInput,
 }: {
-  getByEmailInput: GetByEmailInput;
+  getContactsInput: GetContactsInput;
 }) => {
   try {
     const contacts = await prisma.contact.findMany({
+      skip: getContactsInput.skip,
+      take: getContactsInput.take,
+      orderBy: { id: "asc" },
+      ...(getContactsInput.cursor === undefined
+        ? {}
+        : { cursor: { id: getContactsInput.cursor } }),
       where: {
-        userEmail: getByEmailInput.email,
+        userEmail: getContactsInput.userEmail,
+        OR: [
+          {
+            name: {
+              contains: getContactsInput.filter,
+              mode: "insensitive",
+            },
+          },
+          {
+            email: {
+              contains: getContactsInput.filter,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: getContactsInput.filter,
+              mode: "insensitive",
+            },
+          },
+          {
+            phone: {
+              contains: getContactsInput.filter,
+              mode: "insensitive",
+            },
+          },
+        ],
       },
     });
+
+    console.log(getContactsInput);
 
     if (!contacts) {
       return {
@@ -196,6 +235,38 @@ export const getContactsController = async ({
       contacts,
     };
   } catch (error) {
+    console.log(error);
+    return { status: Status.FAILED };
+  }
+};
+
+export const getContactsController = async ({
+  getContactsInput,
+}: {
+  getContactsInput: GetContactsInput;
+}) => {
+  try {
+    const contacts = await prisma.contact.findMany({
+      orderBy: { id: "asc" },
+      where: {
+        userEmail: getContactsInput.userEmail,
+      },
+    });
+
+    console.log(getContactsInput);
+
+    if (!contacts) {
+      return {
+        status: Status.NOT_FOUND,
+      };
+    }
+
+    return {
+      status: Status.SUCCESS,
+      contacts,
+    };
+  } catch (error) {
+    console.log(error);
     return { status: Status.FAILED };
   }
 };
