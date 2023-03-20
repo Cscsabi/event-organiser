@@ -1,17 +1,19 @@
 import {
-  component$,
-  useVisibleTask$,
-  useSignal,
-  useStore,
+  component$, useContext, useStore, useVisibleTask$
 } from "@builder.io/qwik";
-import type { Signal } from "@builder.io/qwik";
-import type { GuestListProps, GuestListStore, GuestType } from "~/utils/types";
-import { client } from "~/utils/trpc";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import { capitalize } from "~/utils/common.functions";
-import Modal from "~/components/modal/modal";
-import Toast from "../toast/toast";
 import { $translate as t, Speak } from "qwik-speak";
+import Modal from "~/components/modal/modal";
+import { CTX } from "~/routes/[...lang]/layout";
+import { capitalize } from "~/utils/common.functions";
+import { client } from "~/utils/trpc";
+import type {
+  GuestListProps,
+  GuestListStore,
+  GuestType,
+  UserContext
+} from "~/utils/types";
+import Toast from "../toast/toast";
 
 export const EMPTY_ROW = {
   id: "",
@@ -30,6 +32,7 @@ export enum ExecuteUseClientEffect {
 }
 
 export const GuestList = component$((props: GuestListProps) => {
+  const user = useContext(CTX);
   const store = useStore<GuestListStore>({
     tableRows: [],
     connectableGuests: [],
@@ -42,20 +45,20 @@ export const GuestList = component$((props: GuestListProps) => {
     oldCursor: undefined,
     nextButtonClicked: undefined,
     endOfList: false,
+    searchInput: "",
+    searchInput2: ""
   });
-
-  const searchInput = useSignal<string>("");
-  const searchInput2 = useSignal<string>("");
 
   useVisibleTask$(async ({ track }) => {
     track(() => store.useClientEffectHook);
     track(() => store.currentCursor);
-    track(() => searchInput.value);
+    track(() => store.searchInput);
+    track(() => user.userEmail);
     let result;
 
     if (props.openedFromEvent) {
       result = await client.getGuests.query({
-        userEmail: props.userEmail.toLowerCase(),
+        userEmail: user.userEmail.toLowerCase(),
         filteredByEvent: true,
         eventId: props.eventId ?? "",
         skip: store.lastpage > 0 ? 1 : undefined,
@@ -66,19 +69,19 @@ export const GuestList = component$((props: GuestListProps) => {
           store.currentCursor === undefined
             ? 10
             : -10,
-        filter: searchInput.value,
+        filter: store.searchInput,
       });
 
       store.connectableGuests = [];
       store.connectableGuests = (
         await client.getConnectableGuests.query({
-          userEmail: props.userEmail,
+          userEmail: user.userEmail,
           eventId: props.eventId,
         })
       ).guests;
     } else {
       result = await client.getGuests.query({
-        userEmail: props.userEmail,
+        userEmail: user.userEmail,
         filteredByEvent: false,
         skip: store.lastpage > 0 ? 1 : undefined,
         cursor: store.currentCursor,
@@ -88,7 +91,7 @@ export const GuestList = component$((props: GuestListProps) => {
           store.currentCursor === undefined
             ? 10
             : -10,
-        filter: searchInput.value,
+        filter: store.searchInput,
       });
     }
 
@@ -111,7 +114,7 @@ export const GuestList = component$((props: GuestListProps) => {
         <input
           preventdefault:change
           onChange$={(event) => {
-            searchInput.value = (
+            store.searchInput = (
               event.target as HTMLInputElement
             ).value.toLowerCase();
           }}
@@ -154,7 +157,7 @@ export const GuestList = component$((props: GuestListProps) => {
           <button
             disabled={
               store.lastpage === 0 ||
-              (searchInput.value !== "" && store.endOfList)
+              (store.searchInput !== "" && store.endOfList)
             }
             onClick$={() => {
               store.nextButtonClicked = false;
@@ -221,7 +224,7 @@ export const GuestList = component$((props: GuestListProps) => {
                 <input
                   preventdefault:change
                   onInput$={(event) => {
-                    searchInput2.value = (
+                    store.searchInput2 = (
                       event.target as HTMLInputElement
                     ).value.toLowerCase();
                   }}
@@ -252,7 +255,7 @@ export const GuestList = component$((props: GuestListProps) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {generateSelectableGuestTable(store, searchInput2)}
+                    {generateSelectableGuestTable(store)}
                   </tbody>
                 </table>
               </div>
@@ -303,7 +306,7 @@ export const GuestList = component$((props: GuestListProps) => {
         type="submit"
         preventdefault:click
         onClick$={async () => {
-          saveGuestList(store, props);
+          saveGuestList(store, props, user);
           const toast = document.getElementById("successToast");
           if (toast) {
             toast.classList.remove("hidden");
@@ -324,16 +327,15 @@ export const GuestList = component$((props: GuestListProps) => {
 
 export const generateSelectableGuestTable = (
   store: GuestListStore,
-  searchInput: Signal<string>
 ) => {
   return store.connectableGuests
     .filter((guest) => {
-      if (searchInput.value.length > 0) {
+      if (store.searchInput.length > 0) {
         return (
-          guest.firstname?.toLowerCase().includes(searchInput.value) ||
-          guest.lastname?.toLowerCase().includes(searchInput.value) ||
-          guest.email?.toLowerCase().includes(searchInput.value) ||
-          guest.description?.toLowerCase().includes(searchInput.value)
+          guest.firstname?.toLowerCase().includes(store.searchInput) ||
+          guest.lastname?.toLowerCase().includes(store.searchInput) ||
+          guest.email?.toLowerCase().includes(store.searchInput) ||
+          guest.description?.toLowerCase().includes(store.searchInput)
         );
       } else {
         return guest;
@@ -550,7 +552,8 @@ export const addSelectedGuestsToEvent = (
 
 export const saveGuestList = async (
   store: GuestListStore,
-  props: GuestListProps
+  props: GuestListProps,
+  user: UserContext
 ) => {
   store.tableRows
     .filter((guest) => {
@@ -577,7 +580,7 @@ export const saveGuestList = async (
             firstname: capitalize(guest.firstname ?? ""),
             lastname: capitalize(guest.lastname ?? ""),
             description: guest.description ?? undefined,
-            userEmail: props.userEmail,
+            userEmail: user.userEmail,
           });
         }
       } else if (props.openedFromEvent) {
@@ -587,7 +590,7 @@ export const saveGuestList = async (
           firstname: capitalize(guest.firstname ?? ""),
           lastname: capitalize(guest.lastname ?? ""),
           description: guest.description ?? undefined,
-          userEmail: props.userEmail.toLowerCase(),
+          userEmail: user.userEmail.toLowerCase(),
           eventId: props.eventId ?? "",
         });
       } else if (!props.openedFromEvent) {
@@ -596,7 +599,7 @@ export const saveGuestList = async (
           lastname: capitalize(guest.lastname ?? ""),
           email: guest.email?.toLowerCase(),
           description: guest.description ?? undefined,
-          userEmail: props.userEmail.toLowerCase(),
+          userEmail: user.userEmail.toLowerCase(),
         });
       }
     });

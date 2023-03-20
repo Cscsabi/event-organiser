@@ -1,28 +1,18 @@
-import {
-  component$,
-  useVisibleTask$,
-  useContext,
-  useSignal,
-} from "@builder.io/qwik";
-import { CTX } from "~/routes/layout";
-import { getUser } from "~/utils/supabase.client";
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
 import { $translate as t, Speak } from "qwik-speak";
 
 export default component$(() => {
-  const userEmail = useContext(CTX);
-
-  const authTokenValue = useSignal("");
-  const authToken: string = import.meta.env.VITE_AUTH_TOKEN;
-
+  
   useVisibleTask$(async () => {
-    authTokenValue.value = window.location.hash.slice(1);
+    const authToken: string = import.meta.env.VITE_AUTH_TOKEN;
+    let authTokenValue = "";
+
+    authTokenValue = window.location.hash.slice(1);
     if (
       localStorage.getItem(authToken) === null &&
-      authTokenValue.value.startsWith("access_token")
+      authTokenValue.startsWith("access_token")
     ) {
-      localStorage.setItem(authToken, authTokenValue.value);
-      const userDetails = await getUser();
-      userEmail.value = userDetails.data.user?.email ?? "";
+      localStorage.setItem(authToken, authTokenValue);
     }
   });
 

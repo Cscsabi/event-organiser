@@ -1,65 +1,64 @@
 import {
   component$,
   Resource,
-  useVisibleTask$,
+  useContext,
   useResource$,
   useSignal,
+  useStore,
+  type ResourceReturn,
+  type Signal,
 } from "@builder.io/qwik";
-import type { ResourceReturn, Signal } from "@builder.io/qwik";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
+import { $translate as t, Speak } from "qwik-speak";
+import { CTX } from "~/routes/[...lang]/layout";
+import { paths } from "~/utils/paths";
+import { client } from "~/utils/trpc";
 import type {
+  EventTypeTranslation,
   GetEventsReturnType,
   GetLocationsReturnType,
   ListProps,
 } from "~/utils/types";
-import { paths } from "~/utils/paths";
-import { getUser } from "~/utils/supabase.client";
-import { client } from "~/utils/trpc";
 import Card from "../card/card";
-import { generateRoutingLink } from "~/utils/common.functions";
-import { $translate as t, Speak } from "qwik-speak";
 
 export const List = component$((props: ListProps) => {
-  const email = useSignal<string>("");
+  const user = useContext(CTX);
   const searchInput = useSignal<string>("");
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useVisibleTask$(async ({ track }) => {
-    track(() => email.value);
-    const userResponse = await getUser();
-    if (!userResponse.data.user) {
-      navigate(generateRoutingLink(location.params.lang, paths.login));
-    }
-    if (userResponse.data.user?.email) {
-      email.value = userResponse.data.user.email;
-    }
+  const loading = useSignal(t("common.loading@@Loading..."));
+  // TODO: Undefined lang
+  const eventType = useStore<EventTypeTranslation>({
+    wedding: t("event.wedding@@Wedding"),
+    graduation: t("event.graduation@@Graduation"),
+    party: t("event.party@@Party"),
+    conference: t("event.conference@@Conference"),
+    exhibition: t("event.exhibition@@Exhibition"),
+    custom: t("event.custom@@Custom"),
   });
 
   const eventResource = useResource$<GetEventsReturnType>(
     // @ts-ignore
     ({ track, cleanup }) => {
-      track(() => email.value);
+      track(() => user.userEmail);
       const controller = new AbortController();
       cleanup(() => controller.abort());
       return client.getEvents.query({
-        email: email.value,
+        email: user.userEmail,
       });
     }
   );
 
   const locationResource = useResource$<GetLocationsReturnType>(
     ({ track, cleanup }) => {
-      track(() => email.value);
+      track(() => user.userEmail);
       const controller = new AbortController();
       cleanup(() => controller.abort());
       return client.getLocations.query({
-        email: email.value,
+        email: user.userEmail,
       });
     }
   );
+
   return (
-    <Speak assets={["list", "common"]}>
+    <Speak assets={["list", "common", "event"]}>
       <div class="w-full m-auto mb-20">
         <div class="inline-block float-left ml-12">
           <a
@@ -97,7 +96,14 @@ export const List = component$((props: ListProps) => {
           />
         </div>
       </div>
-      {generateList(props, eventResource, searchInput, locationResource)}
+      {generateList(
+        props,
+        eventResource,
+        searchInput,
+        locationResource,
+        loading,
+        eventType
+      )}
     </Speak>
   );
 });
@@ -106,14 +112,16 @@ export const generateList = (
   props: ListProps,
   eventResource: ResourceReturn<GetEventsReturnType>,
   searchInput: Signal<string>,
-  locationResource: ResourceReturn<GetLocationsReturnType>
+  locationResource: ResourceReturn<GetLocationsReturnType>,
+  loading: Signal<string>,
+  eventType: EventTypeTranslation
 ) => {
   return (
     <div>
       {props.isEvent ? (
         <Resource
           value={eventResource}
-          onPending={() => <div>{t("common.loading@@Loading...")}</div>}
+          onPending={() => <div>{loading.value}</div>}
           onResolved={(result: GetEventsReturnType) => {
             return (
               <div class="flex flex-wrap justify-center">
@@ -136,7 +144,21 @@ export const generateList = (
                     return (
                       <Card
                         id={event.id}
-                        description={event.type ?? ""}
+                        description={
+                          event.type === "WEDDING"
+                            ? eventType.wedding
+                            : event.type === "GRADUATION"
+                            ? t("event.graduation@@Graduation")
+                            : event.type === "PARTY"
+                            ? t("event.party@@Party")
+                            : event.type === "CONFERENCE"
+                            ? t("event.conference@@Conference")
+                            : event.type === "EXHIBITION"
+                            ? t("event.exhibition@@Exhibition")
+                            : event.type === "CUSTOM"
+                            ? t("event.custom@@Custom")
+                            : ""
+                        }
                         name={event.name}
                         type={props.isActive ? "event" : "previous"}
                         goTo={
@@ -157,7 +179,7 @@ export const generateList = (
       ) : (
         <Resource
           value={locationResource}
-          onPending={() => <div>{t("common.loading@@Loading...")}</div>}
+          onPending={() => <div>{loading.value}</div>}
           onResolved={(result) => {
             return (
               <div class="flex flex-wrap justify-center" key={""}>

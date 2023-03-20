@@ -1,14 +1,14 @@
-import { component$, useVisibleTask$, useStore } from "@builder.io/qwik";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
-import { getUser, registerUser } from "~/utils/supabase.client";
+import { component$, useStore } from "@builder.io/qwik";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
-import { paths } from "~/utils/paths";
-import { client } from "~/utils/trpc";
-import type { CreateUserInput } from "event-organiser-api-server/src/user/user.schema";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import { capitalize, generateRoutingLink } from "~/utils/common.functions";
-import type { RegisterStore } from "~/utils/types";
+import type { CreateUserInput } from "event-organiser-api-server/src/user/user.schema";
 import { $translate as t, Speak } from "qwik-speak";
+import { capitalize, generateRoutingLink } from "~/utils/common.functions";
+import { paths } from "~/utils/paths";
+import { registerUser } from "~/utils/supabase.client";
+import { client } from "~/utils/trpc";
+import type { RegisterStore } from "~/utils/types";
 
 export default component$(() => {
   const location = useLocation();
@@ -23,12 +23,6 @@ export default component$(() => {
     alreadyRegistered: false,
   });
 
-  useVisibleTask$(async () => {
-    const result = await getUser();
-    if (result.data.user) {
-      navigate(generateRoutingLink(location.params.lang, paths.index));
-    }
-  });
 
   return (
     <Speak assets={["auth", "common"]}>

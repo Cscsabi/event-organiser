@@ -1,6 +1,7 @@
 {
   "profile": {
     "changePassword": "Jelszó módosítása",
+    "language": "Nyelv: ",
     "notMatching": "A megadott jelszavak nem egyeznek!",
     "passwordAgain": "Jelszó ismét:",
     "passwordUpdated1": "Kedves,",

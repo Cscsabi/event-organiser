@@ -1,24 +1,22 @@
 import {
   component$,
+  Resource,
+  useContext,
+  useResource$,
   useStore,
   useVisibleTask$,
-  useResource$,
-  Resource,
 } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
-import { client } from "~/utils/trpc";
-import type {
-  EventStore,
-  GetFeedbackReturnType,
-  LocationStore,
-  NewEventStore,
-} from "~/utils/types";
-import { getUser } from "~/utils/supabase.client";
-import { paths } from "~/utils/paths";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
-import { GuestList } from "~/components/guestlist/guestlist";
+import { Status } from "event-organiser-api-server/src/status.enum";
 import * as ics from "ics";
+import { $translate as t, Speak } from "qwik-speak";
+import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
+import { GuestList } from "~/components/guestlist/guestlist";
+import Modal from "~/components/modal/modal";
+import Toast from "~/components/toast/toast";
+import { CTX } from "~/routes/[...lang]/layout";
 import {
   generateGoogleMapsLink,
   generateRoutingLink,
@@ -27,21 +25,25 @@ import {
   getProperDateFormat,
   getProperTimeFormat,
 } from "~/utils/common.functions";
-import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
-import Modal from "~/components/modal/modal";
-import Toast from "~/components/toast/toast";
-import { Status } from "event-organiser-api-server/src/status.enum";
-import { $translate as t, Speak } from "qwik-speak";
+import { paths } from "~/utils/paths";
+import { client } from "~/utils/trpc";
+import type {
+  EventStore,
+  GetFeedbackReturnType,
+  LocationStore,
+  NewEventStore,
+  UserContext,
+} from "~/utils/types";
 
 export default component$(() => {
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useContext(CTX);
 
   const store = useStore<EventStore>({
     event: {
       budget: 0,
       decorNeeded: false,
-      userEmail: "",
       endDate: new Date(),
       headcount: 0,
       locationId: location.params.eventId,
@@ -56,7 +58,6 @@ export default component$(() => {
       city: "",
       countryId: 0,
       description: "",
-      userEmail: "",
       link: "",
       name: "",
       phone: "",
@@ -67,19 +68,24 @@ export default component$(() => {
       zipCode: 0,
     },
     modalOpen: false,
-    userEmail: "",
     origin: "",
+    feedbackTranslations: {
+      firstname: t("common.firstname@@First name"),
+      lastname: t("common.lastname@@Last name"),
+      email: t("common.email@@Email"),
+      diabetes: t("event.diabetes@@Diabetes"),
+      gluten: t("event.gluten@@Gluten"),
+      lactose: t("event.lactose@@Lactose"),
+      plusOne: t("event.plusOne@@Plus one"),
+      additional: t("event.additional@@Additional information"),
+      noFeedbacks: t(
+        "event.noFeedbacks@@You have no feedbacks yet on this event!"
+      ),
+    },
+    loading: t("common.loading@@Loading..."),
   });
 
-  useVisibleTask$(async ({ track }) => {
-    track(() => store.userEmail);
-    const userDetails = await getUser();
-    if (!userDetails.data.user) {
-      navigate(generateRoutingLink(location.params.lang, paths.login));
-    }
-
-    store.userEmail = userDetails.data.user?.email ?? "";
-
+  useVisibleTask$(async () => {
     const event = await getCurrentEvent(location.params.eventId);
     if (event) {
       if (event.endDate && event.endDate < new Date()) {
@@ -95,7 +101,6 @@ export default component$(() => {
         budget: +event.budget,
         startDate: event.startDate ?? undefined,
         endDate: event.endDate ?? undefined,
-        userEmail: event.userEmail,
         headcount: event.headcount ?? undefined,
         locationId: event.locationId,
         name: event.name,
@@ -110,7 +115,6 @@ export default component$(() => {
         city: event.location.address.city,
         countryId: event.location.address.countryId,
         description: event.location.description ?? undefined,
-        userEmail: event.location.userEmail,
         link: event.location.link ?? undefined,
         name: event.location.name,
         phone: event.location.phone ?? undefined,
@@ -128,7 +132,7 @@ export default component$(() => {
   });
 
   const resource = useResource$<GetFeedbackReturnType>(({ track, cleanup }) => {
-    track(() => store.userEmail);
+    track(() => user.userEmail);
     const controller = new AbortController();
     cleanup(() => controller.abort());
     return client.getFeedbacks.query({ id: location.params.eventId });
@@ -209,7 +213,19 @@ export default component$(() => {
                 }
               >
                 <option value="" selected disabled hidden>
-                  {store.event.type}
+                  {store.event.type === "WEDDING"
+                    ? t("event.wedding@@Wedding")
+                    : store.event.type === "GRADUATION"
+                    ? t("event.graduation@@Graduation")
+                    : store.event.type === "PARTY"
+                    ? t("event.party@@Party")
+                    : store.event.type === "CONFERENCE"
+                    ? t("event.conference@@Conference")
+                    : store.event.type === "EXHIBITION"
+                    ? t("event.exhibition@@Exhibition")
+                    : store.event.type === "CUSTOM"
+                    ? t("event.custom@@Custom")
+                    : ""}
                 </option>
                 <option value="WEDDING">{t("event.wedding@@Wedding")}</option>
                 <option value="GRADUATION">
@@ -416,7 +432,7 @@ export default component$(() => {
                     if (store.event) {
                       const result = await client.updateEvent.mutate({
                         id: location.params.eventId,
-                        userEmail: store.event.userEmail,
+                        userEmail: user.userEmail,
                         budget: store.event.budget,
                         startDate: getDateOrUndefined(store.event.startDate),
                         endDate: getDateOrUndefined(store.event.endDate),
@@ -461,7 +477,7 @@ export default component$(() => {
                   class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   preventdefault:click
                   onClick$={() => {
-                    exportToCalendar(store);
+                    exportToCalendar(store, user);
                   }}
                 >
                   {t("event.exportToCalendar@@Export to Calendar")}
@@ -554,11 +570,7 @@ export default component$(() => {
           listType="active-event"
           type=""
         >
-          <GuestList
-            userEmail={store.userEmail}
-            openedFromEvent={true}
-            eventId={location.params.eventId}
-          />
+          <GuestList openedFromEvent={true} eventId={location.params.eventId} />
         </Modal>
         <Modal
           id="feedbackModal"
@@ -569,7 +581,7 @@ export default component$(() => {
         >
           <Resource
             value={resource}
-            onPending={() => <div>{t("common.loading@@Loading...")}</div>}
+            onPending={() => <div>{store.loading}</div>}
             onResolved={(result: GetFeedbackReturnType) => {
               return (
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -578,28 +590,28 @@ export default component$(() => {
                       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
                           <th scope="col" class="px-6 py-4">
-                            {t("common.firstname@@First name")}
+                            {store.feedbackTranslations.firstname}
                           </th>
                           <th scope="col" class="px-6 py-4">
-                            {t("common.lastname@@Last name")}
+                            {store.feedbackTranslations.lastname}
                           </th>
                           <th scope="col" class="px-6 py-4">
-                            {t("common.email@@Email")}
+                            {store.feedbackTranslations.email}
                           </th>
                           <th scope="col" class="px-6 py-4">
-                            {t("event.diabetes@@Diabetes")}
+                            {store.feedbackTranslations.diabetes}
                           </th>
                           <th scope="col" class="px-6 py-4">
-                            {t("event.gluten@@Gluten")}
+                            {store.feedbackTranslations.gluten}
                           </th>
                           <th scope="col" class="px-6 py-4">
-                            {t("event.lactose@@Lactose")}
+                            {store.feedbackTranslations.lactose}
                           </th>
                           <th scope="col" class="px-6 py-4">
-                            {t("event.plusOne@@Plus one")}
+                            {store.feedbackTranslations.plusOne}
                           </th>
                           <th scope="col" class="px-6 py-4">
-                            {t("event.additional@@Additional information")}
+                            {store.feedbackTranslations.additional}
                           </th>
                         </tr>
                       </thead>
@@ -682,9 +694,7 @@ export default component$(() => {
                     </table>
                   ) : (
                     <h2 class="mb-6 text-3xl font-bold text-black dark:text-white text-center">
-                      {t(
-                        "event.noFeedbacks@@You have no feedbacks yet on this event!"
-                      )}
+                      {store.feedbackTranslations.noFeedbacks}
                       &#128565;
                     </h2>
                   )}
@@ -720,8 +730,10 @@ export default component$(() => {
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
+  const user = useContext(CTX);
+
   const result = await client.getEvents.query({
-    email: (await getUser()).data.user?.email ?? "",
+    email: user.userEmail,
   });
 
   return {
@@ -736,14 +748,15 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
   };
 };
 
-export const exportToCalendar = async (store: EventStore) => {
+export const exportToCalendar = async (
+  store: EventStore,
+  user: UserContext
+) => {
   if (!store.event?.startDate || !store.event?.endDate) {
     // TODO: tell the user to fill date field
     return;
   }
-  const user = await client.getUser.query({
-    email: store.userEmail,
-  });
+
   const event: ics.EventAttributes = {
     start: [
       store.event?.startDate.getFullYear(),
@@ -771,8 +784,8 @@ export const exportToCalendar = async (store: EventStore) => {
     status: "CONFIRMED",
     busyStatus: "BUSY",
     organizer: {
-      name: user.user?.lastname + " " + user.user?.firstname,
-      email: store.userEmail,
+      name: user?.lastname + " " + user?.firstname,
+      email: user.userEmail,
     },
     productId: store.event.name + "/ics",
   };

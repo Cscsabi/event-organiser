@@ -1,44 +1,39 @@
 import {
-  component$,
-  useVisibleTask$,
-  useSignal,
-  useStore,
+  component$, useContext,
+  useStore, useVisibleTask$
 } from "@builder.io/qwik";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
+import { $translate as t, Speak } from "qwik-speak";
+import { CTX } from "~/routes/[...lang]/layout";
 import { generateRoutingLink } from "~/utils/common.functions";
 import { paths } from "~/utils/paths";
-import { getUser } from "~/utils/supabase.client";
 import { client } from "~/utils/trpc";
-import type { ContactProps, ContactStore } from "~/utils/types";
-import { $translate as t, Speak } from "qwik-speak";
+import type { ContactStore } from "~/utils/types";
 
-export const Contact = component$((props: ContactProps) => {
+export const Contact = component$(() => {
+  const user = useContext(CTX);
   const location = useLocation();
   const store = useStore<ContactStore>({
     contacts: [],
-    userEmail: props.userEmail,
     empty: undefined,
     lastpage: 0,
     currentCursor: undefined,
     oldCursor: undefined,
     nextButtonClicked: undefined,
     endOfList: false,
+    searchInput: ""
   });
   const navigate = useNavigate();
-  const searchInput = useSignal<string>("");
 
   useVisibleTask$(async ({ track }) => {
-    track(() => props.userEmail);
+    track(() => user.userEmail);
     track(() => store.currentCursor);
-    track(() => searchInput.value);
+    track(() => store.searchInput);
     store.contacts = [];
-    if (store.userEmail === "") {
-      store.userEmail = (await getUser()).data.user?.email ?? "";
-    }
 
     const result = await client.getContactsPagination.query({
-      userEmail: store.userEmail,
+      userEmail: user.userEmail,
       skip: store.lastpage > 0 ? 1 : undefined,
       cursor: store.currentCursor,
       take:
@@ -47,7 +42,7 @@ export const Contact = component$((props: ContactProps) => {
         store.currentCursor === undefined
           ? 10
           : -10,
-      filter: searchInput.value,
+      filter: store.searchInput,
     });
 
     if (result.status === Status.SUCCESS) {
@@ -76,7 +71,7 @@ export const Contact = component$((props: ContactProps) => {
         <input
           preventdefault:change
           onChange$={(event) => {
-            searchInput.value = (
+            store.searchInput = (
               event.target as HTMLInputElement
             ).value.toLowerCase();
           }}
@@ -94,7 +89,7 @@ export const Contact = component$((props: ContactProps) => {
               <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
                   <th scope="col" class="px-6 py-4 text-base">
-                    {t("common.firstname@@First name")}
+                    {t("common.name@@Name")}
                   </th>
                   <th scope="col" class="px-6 py-4 text-base">
                     {t("common.description@@Description")}

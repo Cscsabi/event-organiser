@@ -36,9 +36,9 @@ export default component$((card: CardProps) => {
                 <i class="fa-solid fa-building"></i>
               )}
             </div>
-            <h2 class="grid-rows-4 self-center">{card.name}</h2>
-            <p>{card.description}</p>
-            <p>{card.location}</p>
+            <h2 class="font-bold">{card.name}</h2>
+            <h3 class="pt-2 font-semibold">{card.description}</h3>
+            <h3 class="font-semibold">{card.location}</h3>
           </div>
         </div>
       </a>

@@ -1,26 +1,27 @@
 import {
   component$,
   Resource,
-  useVisibleTask$,
+  useContext,
   useResource$,
   useStore,
 } from "@builder.io/qwik";
-import type { NewEventStore, GetLocationsReturnType } from "~/utils/types";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
-import { client } from "~/utils/trpc";
-import { getUser } from "~/utils/supabase.client";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
-import { paths } from "~/utils/paths";
 import { Status } from "event-organiser-api-server/src/status.enum";
+import { $translate as t, Speak } from "qwik-speak";
+import { CTX } from "~/routes/[...lang]/layout";
 import {
   generateRoutingLink,
   getMaxTimeFormat,
   getMinTimeFormat,
   getProperDateFormat,
 } from "~/utils/common.functions";
-import { $translate as t, Speak } from "qwik-speak";
+import { paths } from "~/utils/paths";
+import { client } from "~/utils/trpc";
+import type { GetLocationsReturnType, NewEventStore } from "~/utils/types";
 
 export default component$(() => {
+  const user = useContext(CTX);
   const location = useLocation();
   const navigate = useNavigate();
   const store = useStore<NewEventStore>({
@@ -30,30 +31,23 @@ export default component$(() => {
     endDate: new Date(),
     budget: 0,
     locationId: "",
-    userEmail: "",
     headcount: 0,
     decorNeeded: false,
     menuNeeded: false,
     performerNeeded: false,
+    chooseHere: t("event.chooseHere@@Choose here"),
+    loading: t("common.loading@@Loading..."),
   });
 
   const resource = useResource$<GetLocationsReturnType>(
     ({ track, cleanup }) => {
-      track(() => store.userEmail);
+      track(() => user.userEmail);
+
       const controller = new AbortController();
       cleanup(() => controller.abort());
-      return client.getLocations.query({ email: store.userEmail });
+      return client.getLocations.query({ email: user.userEmail });
     }
   );
-
-  useVisibleTask$(async () => {
-    const userDetails = await getUser();
-    if (!userDetails.data.user) {
-      navigate(generateRoutingLink(location.params.lang, paths.login));
-    } else {
-      store.userEmail = userDetails.data.user.email ?? "";
-    }
-  });
 
   return (
     <Speak assets={["event"]}>
@@ -71,7 +65,7 @@ export default component$(() => {
               headcount: store.headcount ?? undefined,
               name: store.name,
               type: store.type,
-              userEmail: store.userEmail,
+              userEmail: user.userEmail,
               locationId: store.locationId,
               decorNeeded: store.decorNeeded,
               menuNeeded: store.menuNeeded,
@@ -164,7 +158,7 @@ export default component$(() => {
                 class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
                 for="decor"
               >
-                {t("event.decor@@Decor:")}:
+                {t("event.decor@@Decor:")}
               </label>
               <input
                 class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
@@ -348,7 +342,7 @@ export default component$(() => {
               </label>
               <Resource
                 value={resource}
-                onPending={() => <div>Loading...</div>}
+                onPending={() => <div>{store.loading}</div>}
                 onResolved={(result: GetLocationsReturnType) => {
                   return (
                     <div>
@@ -362,7 +356,7 @@ export default component$(() => {
                         }}
                       >
                         <option value="" selected disabled hidden>
-                          {t("event.chooseHere@@Choose here")}
+                          {store.chooseHere}
                         </option>
                         {result.locations.map((location) => {
                           return (

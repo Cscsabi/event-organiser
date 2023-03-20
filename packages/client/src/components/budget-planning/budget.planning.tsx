@@ -1,23 +1,22 @@
+import type { ResourceReturn } from "@builder.io/qwik";
 import {
   component$,
-  Resource,
-  useVisibleTask$,
-  useResource$,
-  useStore,
+  Resource, useContext, useResource$,
+  useStore, useVisibleTask$
 } from "@builder.io/qwik";
-import type { ResourceReturn } from "@builder.io/qwik";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import { getUser } from "~/utils/supabase.client";
+import { $translate as t, Speak } from "qwik-speak";
+import { CTX } from "~/routes/[...lang]/layout";
 import { client } from "~/utils/trpc";
 import type {
   BudgetPlanningProps,
   BudgetPlanningStore,
-  ContactsReturnType,
+  ContactsReturnType
 } from "~/utils/types";
 import Toast from "../toast/toast";
-import { $translate as t, Speak } from "qwik-speak";
 
 export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
+  const user = useContext(CTX);
   const EMPTY_ROW = {
     id: 0,
     amount: 0,
@@ -32,7 +31,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       phone: "",
       email: "",
       description: "",
-      userEmail: "",
+      userEmail: ""
     },
   };
 
@@ -40,16 +39,14 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
     budgetPlanning: [],
     amountAltogether: 0,
     percentAltogether: 0,
-    userEmail: "",
     modalContactId: "",
     modalOpen: false,
+    chooseHere: t("event.chooseHere@@Choose here"),
+    loading: t("common.loading@@Loading..."),
   });
 
   useVisibleTask$(async ({ track }) => {
     track(() => props.budget);
-    if (store.userEmail === "") {
-      store.userEmail = (await getUser()).data.user?.email ?? "";
-    }
 
     if (store.budgetPlanning.length === 0) {
       const result = await client.getBudgetPlannings.query({
@@ -87,10 +84,10 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
 
   const contactsResource = useResource$<ContactsReturnType>(
     ({ track, cleanup }) => {
-      track(() => store.userEmail);
+      track(() => user.userEmail);
       const controller = new AbortController();
       cleanup(() => controller.abort());
-      return client.getContacts.query({ userEmail: store.userEmail });
+      return client.getContacts.query({ userEmail: user.userEmail });
     }
   );
 
@@ -140,9 +137,10 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
         class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
         type="button"
         hidden={!props.active}
-        onClick$={() =>
-          (store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW])
-        }
+        onClick$={() => {
+          console.log(store.budgetPlanning);
+          store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW];
+        }}
       >
         {t("common.addRow@@Add Row")}
       </button>
@@ -183,9 +181,7 @@ export const generateBudgetPlanningBody = async (
             <td>
               <Resource
                 value={resource}
-                onPending={() => (
-                  <div> {t("common.loading@@Loading...")}</div>
-                )}
+                onPending={() => <div>{store.loading}</div>}
                 onResolved={(result) => {
                   return (
                     <select
@@ -227,7 +223,7 @@ export const generateBudgetPlanningBody = async (
                         disabled
                         hidden
                       >
-                        {row.contact.name ? row.contact.name : "Choose here"}
+                        {row.contact.name ? row.contact.name : store.chooseHere}
                       </option>
                       {result.contacts?.map((contact) => {
                         console.log(contact);

@@ -1,6 +1,7 @@
 {
   "profile": {
     "changePassword": "Change Password",
+    "language": "Language: ",
     "notMatching": "The passwords are not matching!",
     "passwordAgain": "Password again:",
     "passwordUpdated1": "Dear,",

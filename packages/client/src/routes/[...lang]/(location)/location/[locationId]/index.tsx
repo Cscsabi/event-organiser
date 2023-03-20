@@ -1,30 +1,24 @@
-import { component$, useVisibleTask$, useSignal } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { component$, useContext, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
-import { useNavigate } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
+import { Status } from "event-organiser-api-server/src/status.enum";
+import { $translate as t, Speak } from "qwik-speak";
+import Modal from "~/components/modal/modal";
+import Toast from "~/components/toast/toast";
+import { CTX } from "~/routes/[...lang]/layout";
+import {
+  generateGoogleMapsLink
+} from "~/utils/common.functions";
 import { client } from "~/utils/trpc";
 import type { LocationStore } from "~/utils/types";
-import { getUser } from "~/utils/supabase.client";
-import { paths } from "~/utils/paths";
-import { Status } from "event-organiser-api-server/src/status.enum";
-import Toast from "~/components/toast/toast";
-import Modal from "~/components/modal/modal";
-import {
-  generateGoogleMapsLink,
-  generateRoutingLink,
-} from "~/utils/common.functions";
-import { $translate as t, Speak } from "qwik-speak";
+
 
 export default component$(() => {
+  const user = useContext(CTX);
   const { params } = useLocation();
   const locationStore = useSignal<LocationStore>();
-  const navigate = useNavigate();
 
   useVisibleTask$(async () => {
-    const result = await getUser();
-    if (!result.data.user) {
-      navigate(generateRoutingLink(params.lang, paths.login));
-    }
     const location = await getCurrentLocation(params.locationId);
     if (location) {
       locationStore.value = location;
@@ -242,7 +236,7 @@ export default component$(() => {
                     countryId: locationStore.value.countryId,
                   },
                   description: locationStore.value.description,
-                  userEmail: locationStore.value.userEmail,
+                  userEmail: user.userEmail,
                   link: locationStore.value.link,
                   name: locationStore.value.name,
                   phone: locationStore.value.phone,
@@ -322,10 +316,10 @@ export default component$(() => {
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
-  const userResponse = await getUser();
+  const user = useContext(CTX);
 
   const result = await client.getLocations.query({
-    email: userResponse.data.user?.email ?? "",
+    email: user.userEmail,
   });
 
   return {

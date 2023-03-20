@@ -53,7 +53,7 @@ export default component$(() => {
       plusOne: false,
       additional: "",
     },
-    eventExists: undefined,
+    eventExists: true,
   });
 
   useVisibleTask$(async () => {
@@ -100,7 +100,7 @@ export default component$(() => {
 
   return (
     <Speak assets={["feedback", "common"]}>
-      <div style={store.eventExists === undefined ? "display:none" : ""}>
+      <div>
         {store.eventExists ? (
           <div id="content">
             <form
@@ -279,7 +279,8 @@ export default component$(() => {
           </div>
         ) : (
           <h1 class="mb-6 text-3xl font-bold text-black dark:text-white text-center">
-            &#128721; {t("feedback.pageNotFound@@Oops, Page Not Found")} &#128566;
+            &#128721; {t("feedback.pageNotFound@@Oops, Page Not Found")}{" "}
+            &#128566;
           </h1>
         )}
       </div>

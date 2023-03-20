@@ -1,32 +1,23 @@
-import { component$, useVisibleTask$, useStore } from "@builder.io/qwik";
-import { client } from "~/utils/trpc";
-import { getUser } from "~/utils/supabase.client";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
-import { paths } from "~/utils/paths";
+import { component$, useContext, useStore } from "@builder.io/qwik";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import type { NewContact } from "~/utils/types";
-import { generateRoutingLink } from "~/utils/common.functions";
 import { $translate as t, Speak } from "qwik-speak";
+import { CTX } from "~/routes/[...lang]/layout";
+import { generateRoutingLink } from "~/utils/common.functions";
+import { paths } from "~/utils/paths";
+import { client } from "~/utils/trpc";
+import type { NewContact } from "~/utils/types";
 
 export default component$(() => {
   const location = useLocation();
+  const user = useContext(CTX);
   const store = useStore<NewContact>({
     description: "",
     email: "",
     name: "",
     phone: "",
-    userEmail: "",
   });
   const navigate = useNavigate();
-
-  useVisibleTask$(async () => {
-    const userDetails = await getUser();
-    if (!userDetails.data.user) {
-      navigate(generateRoutingLink(location.params.lang, paths.login));
-    } else {
-      store.userEmail = userDetails.data.user.email ?? "";
-    }
-  });
 
   return (
     <Speak assets={["contacts", "common"]}>
@@ -41,7 +32,7 @@ export default component$(() => {
             email: store.email,
             name: store.name,
             phone: store.phone,
-            userEmail: store.userEmail,
+            userEmail: user.userEmail,
           });
 
           if (result.status === Status.SUCCESS) {
@@ -68,7 +59,6 @@ export default component$(() => {
             minLength={3}
           ></input>
         </div>
-        1
         <div>
           <label
             class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -101,9 +91,7 @@ export default component$(() => {
             type="email"
             pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
             minLength={6}
-            placeholder={t(
-              "common.emailPlaceholder@@sarah.smith@example.com"
-            )}
+            placeholder={t("common.emailPlaceholder@@sarah.smith@example.com")}
             name="email"
           ></input>
         </div>

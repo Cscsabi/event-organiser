@@ -23,9 +23,7 @@
     "qwik": "qwik",
     "qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-US,hu-HU"
   },
-  "devDependencies": {
-    "@angular/compiler": "^15.2.2",
-    "@angular/compiler-cli": "^15.2.2",
+  "devDependencies": { 
     "@builder.io/qwik": "^0.21.0",
     "@builder.io/qwik-city": "^0.5.2",
     "@builder.io/qwik-react": "0.4.2",
@@ -60,7 +58,6 @@
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
-    "@angular/localize": "^15.2.2",
     "@builder.io/sdk-qwik": "^0.1.6",
     "@trpc/client": "^10.9.0",
     "@types/node-mailjet": "^3.3.9",
@@ -69,8 +66,6 @@
     "ics": "^3.0.1",
     "node-mailjet": "^6.0.2",
     "qwik": "^1.0.57",
-    "react-modal": "^3.16.1",
-    "react-toastify": "^9.1.1",
     "trpc-qwik-city": "^0.0.1"
   }
 }

@@ -81,6 +81,7 @@ export const findUserController = async ({
   paramsInput: ParamsInput;
 }) => {
   try {
+    console.log(paramsInput);
     const user = await prisma.user.findFirst({
       where: { email: paramsInput.email },
     });
@@ -176,7 +177,5 @@ export async function sendEmailController({
     ],
   };
 
-  return mailjet
-    .post("send", { version: "v3.1" })
-    .request(data);
+  return mailjet.post("send", { version: "v3.1" }).request(data);
 }

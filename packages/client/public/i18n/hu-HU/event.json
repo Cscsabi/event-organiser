@@ -32,14 +32,14 @@
     "menu": "Menü:",
     "name": "Név:",
     "noFeedbacks": "Még nincs visszajelzésed ehhez az eseményhez!",
-    "openFeedback": "Visszajelző űrlapra ugrás",
+    "openFeedback": "Visszajelző űrlapra megnyitása",
     "party": "Buli",
     "performer": "Előadó:",
     "plusOne": "Plusz egy",
     "previousEvent": "Előző Esemény",
     "showFeedbacks": "Visszjelzések megnyitása",
     "showGuestlist": "Vendéglista megnyitása",
-    "showInGoogleMaps": "Ugrás a Google Maps-re",
+    "showInGoogleMaps": "Google Maps megnyitása",
     "specialNeeds": "Különleges igények",
     "wedding": "Esküvő"
   }

@@ -1,6 +1,5 @@
 import { component$, useVisibleTask$, useSignal } from "@builder.io/qwik";
 import { paths } from "~/utils/paths";
-import { ChangeLocale } from "../change-local/change.local";
 import { useLocation } from "@builder.io/qwik-city";
 import { generateRoutingLink } from "~/utils/common.functions";
 import { $translate as t, Speak } from "qwik-speak";
@@ -40,9 +39,6 @@ export const PublicHeader = component$(() => {
                   <i class="fa-solid fa-house"></i> {t("header.home@@Home")}
                 </button>
               </a>
-            </li>
-            <li>
-              <ChangeLocale />
             </li>
             <li>
               <div class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">

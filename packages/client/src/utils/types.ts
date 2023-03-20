@@ -3,7 +3,6 @@ import type { Status } from "event-organiser-api-server/src/status.enum";
 
 export interface NewEventStore {
   name: string;
-  userEmail: string;
   type?: EventType;
   startDate?: Date;
   endDate?: Date;
@@ -14,10 +13,11 @@ export interface NewEventStore {
   menuNeeded: boolean;
   decorNeeded: boolean;
   performerNeeded: boolean;
+  chooseHere?: string;
+  loading?: string;
 }
 
 export interface LocationStore {
-  userEmail: string;
   name: string;
   description?: string;
   addressId: string;
@@ -30,6 +30,8 @@ export interface LocationStore {
   price?: number;
   phone?: string;
   link?: string;
+  chooseHere?: string;
+  loading?: string;
 }
 
 export interface GetLocationsReturnType {
@@ -70,7 +72,6 @@ export interface CalendarEvent {
 }
 
 export interface GuestListProps {
-  userEmail: string;
   openedFromEvent: boolean;
   eventId?: string;
   historic?: boolean;
@@ -97,6 +98,8 @@ export interface GuestListStore {
   oldCursor: string | undefined;
   nextButtonClicked: boolean | undefined;
   endOfList: boolean;
+  searchInput: string;
+  searchInput2: string;
 }
 
 export interface GetGuestReturnType {
@@ -104,12 +107,25 @@ export interface GetGuestReturnType {
   guests: GuestType[];
 }
 
+export interface FeedbackTranslations {
+  firstname: string;
+  lastname: string;
+  email: string;
+  diabetes: string;
+  gluten: string;
+  lactose: string;
+  plusOne: string;
+  additional: string;
+  noFeedbacks: string;
+}
+
 export interface EventStore {
   event: NewEventStore;
   location: LocationStore;
   modalOpen: boolean;
-  userEmail: string;
   origin: string;
+  feedbackTranslations: FeedbackTranslations;
+  loading?: string;
 }
 
 export interface FeedbackStore {
@@ -134,13 +150,13 @@ export interface ListProps {
 }
 
 export interface ProfilStore {
-  email: string;
   firstname: string;
   lastname: string;
   date: Date;
   newPassword1: string;
   newPassword2: string;
   events: CalendarEvent[];
+  language?: string;
 }
 
 export interface RegisterStore {
@@ -190,15 +206,12 @@ export interface BudgetPlanningStore {
   })[];
   amountAltogether: number;
   percentAltogether: number;
-  userEmail: string;
   modalOpen: boolean;
   modalContactId: string;
   contactId?: string;
   contact?: Contact;
-}
-
-export interface ContactProps {
-  userEmail: string;
+  chooseHere?: string;
+  loading?: string;
 }
 
 export interface ContactType {
@@ -211,13 +224,13 @@ export interface ContactType {
 
 export interface ContactStore {
   contacts: ContactType[];
-  userEmail: string;
   empty: boolean | undefined;
   lastpage: number;
   currentCursor: string | undefined;
   oldCursor: string | undefined;
   nextButtonClicked: boolean | undefined;
   endOfList: boolean;
+  searchInput: string;
 }
 
 export interface ContactCard {
@@ -230,7 +243,6 @@ export interface NewContact {
   phone?: string;
   email?: string;
   description?: string;
-  userEmail: string;
 }
 
 export interface ContactReturnType {
@@ -259,4 +271,22 @@ export interface SendEmailInput {
 export interface UserAttributes {
   sendEmailInput: SendEmailInput;
   password: string;
+}
+
+export interface UserContext {
+  userEmail: string;
+  darkModeEnabled?: boolean;
+  language?: string;
+  privateHeader?: boolean;
+  firstname?: string;
+  lastname?: string;
+}
+
+export interface EventTypeTranslation {
+  wedding: string;
+  graduation: string;
+  party: string;
+  conference: string;
+  exhibition: string;
+  custom: string;
 }

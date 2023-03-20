@@ -1,25 +1,17 @@
+import { component$, useStore } from "@builder.io/qwik";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import type { SignInWithPasswordCredentials } from "@supabase/supabase-js";
+import { Status } from "event-organiser-api-server/src/status.enum";
+import { $translate as t, Speak } from "qwik-speak";
+import { generateRoutingLink } from "~/utils/common.functions";
+import { paths } from "~/utils/paths";
 import {
-  component$,
-  useVisibleTask$,
-  useContext,
-  useStore,
-} from "@builder.io/qwik";
-import {
-  getUser,
   loginUserWithPassword,
   loginUserWithProvider,
 } from "~/utils/supabase.client";
-import type { SignInWithPasswordCredentials } from "@supabase/supabase-js";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
-import { paths } from "~/utils/paths";
-import { CTX } from "~/routes/layout";
-import { Status } from "event-organiser-api-server/src/status.enum";
 import type { LoginStore } from "~/utils/types";
-import { $translate as t, Speak } from "qwik-speak";
-import { generateRoutingLink } from "~/utils/common.functions";
 
 export default component$(() => {
-  const user = useContext(CTX);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -27,13 +19,6 @@ export default component$(() => {
     email: "",
     password: "",
     invalidCredentials: false,
-  });
-
-  useVisibleTask$(async () => {
-    const result = await getUser();
-    if (result.data.user) {
-      navigate(generateRoutingLink(location.params.lang, paths.index));
-    }
   });
 
   return (
@@ -52,7 +37,6 @@ export default component$(() => {
           const login = await loginUserWithPassword(credentials);
           if (login?.result === Status.SUCCESS) {
             navigate(generateRoutingLink(location.params.lang, paths.index));
-            user.value = login.data?.session?.access_token ?? "";
           } else {
             store.invalidCredentials = true;
           }
@@ -73,7 +57,9 @@ export default component$(() => {
               }
               type="email"
               name="email"
-              placeholder={t("common.emailPlaceholder@@sarah.smith@example.com")}
+              placeholder={t(
+                "common.emailPlaceholder@@sarah.smith@example.com"
+              )}
               pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               value={store.email}
               required

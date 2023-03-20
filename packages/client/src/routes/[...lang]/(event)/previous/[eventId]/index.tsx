@@ -4,12 +4,12 @@ import {
   useVisibleTask$,
   useResource$,
   useSignal,
+  useContext,
 } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import type { NewEventStore, GetGuestReturnType } from "~/utils/types";
-import { getUser } from "~/utils/supabase.client";
 import { paths } from "~/utils/paths";
 import {
   generateRoutingLink,
@@ -20,20 +20,16 @@ import {
 import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
 import Modal from "~/components/modal/modal";
 import { $translate as t, Speak } from "qwik-speak";
+import { CTX } from "~/routes/[...lang]/layout";
 
 export default component$(() => {
   const { params } = useLocation();
   const newEventStore = useSignal<NewEventStore>();
   const navigate = useNavigate();
-  const userEmail = useSignal<string>("");
+  const user = useContext(CTX);
+  const loading = useSignal<string>(t("common.loading@@Loading..."));
 
   useVisibleTask$(async () => {
-    const userDetails = await getUser();
-    if (!userDetails.data.user) {
-      navigate(generateRoutingLink(params.lang, paths.login));
-    }
-
-    userEmail.value = userDetails.data.user?.email ?? "";
     const event = await getCurrentEvent(params.eventId);
     if (event) {
       if (event.endDate != null && event.endDate >= new Date()) {
@@ -46,7 +42,6 @@ export default component$(() => {
         budget: +event.budget,
         startDate: event.startDate ?? undefined,
         endDate: event.endDate ?? undefined,
-        userEmail: event.userEmail,
         headcount: event.headcount ?? undefined,
         locationId: event.locationId,
         name: event.name,
@@ -61,11 +56,11 @@ export default component$(() => {
   });
 
   const resource = useResource$<GetGuestReturnType>(({ track, cleanup }) => {
-    track(() => userEmail.value);
+    track(() => user.userEmail);
     const controller = new AbortController();
     cleanup(() => controller.abort());
     return client.getGuests.query({
-      userEmail: userEmail.value,
+      userEmail: user.userEmail,
       filteredByEvent: true,
       eventId: params.eventId,
     });
@@ -199,7 +194,7 @@ export default component$(() => {
         <div class="place-self-center self-start">
           <Resource
             value={resource}
-            onPending={() => <div>{t("common.loading@@Loading...")}</div>}
+            onPending={() => <div>{loading.value}</div>}
             onResolved={(result: GetGuestReturnType) => {
               return (
                 <div>
@@ -319,8 +314,9 @@ export default component$(() => {
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
+  const user = useContext(CTX);
   const result = await client.getEvents.query({
-    email: (await getUser()).data.user?.email ?? "",
+    email: user.userEmail,
   });
 
   return {

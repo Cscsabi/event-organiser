@@ -1,21 +1,16 @@
-import {
-  component$,
-  Resource,
-  useVisibleTask$,
-  useResource$,
-  useStore,
-} from "@builder.io/qwik";
-import type { LocationStore } from "~/utils/types";
-import { client } from "~/utils/trpc";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
-import { paths } from "~/utils/paths";
-import { getUser } from "~/utils/supabase.client";
+import { component$, Resource, useContext, useResource$, useStore } from "@builder.io/qwik";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import Toast from "~/components/toast/toast";
-import { generateRoutingLink } from "~/utils/common.functions";
 import { $translate as t, Speak } from "qwik-speak";
+import Toast from "~/components/toast/toast";
+import { CTX } from "~/routes/[...lang]/layout";
+import { generateRoutingLink } from "~/utils/common.functions";
+import { paths } from "~/utils/paths";
+import { client } from "~/utils/trpc";
+import type { LocationStore } from "~/utils/types";
 
 export default component$(() => {
+  const user = useContext(CTX);
   const location = useLocation();
   const navigate = useNavigate();
   const resource = useResource$(() => {
@@ -23,7 +18,6 @@ export default component$(() => {
   });
 
   const store = useStore<LocationStore>({
-    userEmail: "",
     name: "",
     description: "",
     addressId: "",
@@ -36,14 +30,8 @@ export default component$(() => {
     price: 0,
     phone: "",
     link: "",
-  });
-
-  useVisibleTask$(async () => {
-    const userResponse = await getUser();
-    if (!userResponse.data.user) {
-      navigate(generateRoutingLink(location.params.lang, paths.login));
-    }
-    store.userEmail = userResponse.data.user?.email ?? "";
+    chooseHere: t("location.chooseHere@@Choose here"),
+    loading: t("common.loading@@Loading..."),
   });
 
   return (
@@ -61,7 +49,7 @@ export default component$(() => {
             price: store.price,
             phone: store.phone,
             link: store.link,
-            userEmail: store.userEmail,
+            userEmail: user.userEmail,
             addressId: store.addressId,
             address: {
               city: store.city,
@@ -210,7 +198,7 @@ export default component$(() => {
           </label>
           <Resource
             value={resource}
-            onPending={() => <div>{t("common.loading@@Loading...")}</div>}
+            onPending={() => <div>{store.loading}</div>}
             onResolved={(result) => {
               return (
                 <div>
@@ -224,7 +212,7 @@ export default component$(() => {
                     }
                   >
                     <option value="" selected disabled hidden>
-                      {t("location.chooseHere@@Choose here")}
+                      {store.chooseHere}
                     </option>
                     {result.countries.map((country) => {
                       return <option value={country.id}>{country.name}</option>;
