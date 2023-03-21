@@ -1,6 +1,5 @@
 import { component$, useContext, useVisibleTask$ } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
-import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
 import { CTX } from "~/routes/[...lang]/layout";
 import { generateRoutingLink } from "~/utils/common.functions";
@@ -148,13 +147,12 @@ export const ProtectedHeader = component$(() => {
               <a class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
                 <button
                   onClick$={async () => {
-                    const logout = await logoutUser();
-                    if (logout.result === Status.SUCCESS) {
-                      navigate(
-                        generateRoutingLink(location.params.lang, paths.logout)
-                      );
-                      user.userEmail = "";
-                    }
+                    navigate(
+                      generateRoutingLink(location.params.lang, paths.logout)
+                    );
+                    await logoutUser();
+
+                    user.userEmail = "";
                   }}
                 >
                   <i class="fa-solid fa-right-from-bracket"></i>{" "}

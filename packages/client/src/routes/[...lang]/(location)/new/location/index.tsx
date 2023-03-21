@@ -36,7 +36,7 @@ export default component$(() => {
 
   return (
     <Speak assets={["location", "toast", "common"]}>
-      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white">
+      <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
         {t("location.newLocation@@Create New Location")}
       </h1>
       <form
@@ -115,7 +115,7 @@ export default component$(() => {
             )}
           ></input>
         </div>
-        <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
+        <div class="grid gap-6 md:grid-cols-2 w-1/2">
           <div>
             <label
               class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -224,7 +224,7 @@ export default component$(() => {
             }}
           />
         </div>
-        <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
+        <div class="grid gap-6 md:grid-cols-2 w-1/2">
           <div>
             <label
               class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -299,7 +299,7 @@ export default component$(() => {
           </div>
         </div>
         <button
-          class="text-white mr-2 bg-indigo-600 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-400 dark:focus:ring-indigo-500"
+          class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-1/2 sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
           type="submit"
         >
           {t("location.createLocation@@Create Location")}

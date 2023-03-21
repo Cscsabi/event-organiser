@@ -43,13 +43,10 @@ export default component$(() => {
   const store = useStore<EventStore>({
     event: {
       budget: 0,
-      decorNeeded: false,
       endDate: new Date(),
       headcount: 0,
       locationId: location.params.eventId,
-      menuNeeded: false,
       name: "",
-      performerNeeded: false,
       startDate: new Date(),
       type: EventType.CUSTOM,
     },
@@ -105,9 +102,6 @@ export default component$(() => {
         locationId: event.locationId,
         name: event.name,
         type: event.type ?? undefined,
-        decorNeeded: event.decorNeeded,
-        menuNeeded: event.menuNeeded,
-        performerNeeded: event.performerNeeded,
       };
 
       const currentLocation: LocationStore = {
@@ -140,14 +134,14 @@ export default component$(() => {
 
   return (
     <Speak assets={["event", "toast", "common"]}>
-      <h1 class="mb-4 text-center text-3xl font-semibold text-black dark:text-white">
+      <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
         {t("event.event@@Event")}
       </h1>
       <div class="grid gap-4 mb-6 md:grid-cols-2 w-full place-content-between">
         <div>
           <div>
             <label
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               for="name"
             >
               {t("event.name@@Name:")}
@@ -161,7 +155,7 @@ export default component$(() => {
               value={store.event?.name}
             ></input>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-3 w-full">
+          <div class="grid gap-6 md:grid-cols-3 w-full">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -242,7 +236,7 @@ export default component$(() => {
               </select>
             </div>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
+          <div class="grid gap-6 md:grid-cols-2 w-full">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -345,62 +339,6 @@ export default component$(() => {
               ></input>
             </div>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-3 w-full place-items-center">
-            <div>
-              <label
-                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
-                for="Menu"
-              >
-                {t("event.menu@@Menu:")}{" "}
-              </label>
-              <input
-                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
-                type="checkbox"
-                onChange$={(event) =>
-                  (store.event.menuNeeded = (
-                    event.target as HTMLInputElement
-                  ).checked)
-                }
-                checked={store.event?.menuNeeded}
-              ></input>
-            </div>
-            <div>
-              <label
-                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
-                for="decor"
-              >
-                {t("event.decor@@Decor:")}{" "}
-              </label>
-              <input
-                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
-                type="checkbox"
-                onChange$={(event) =>
-                  (store.event.decorNeeded = (
-                    event.target as HTMLInputElement
-                  ).checked)
-                }
-                checked={store.event?.decorNeeded}
-              ></input>
-            </div>
-            <div>
-              <label
-                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
-                for="performer"
-              >
-                {t("event.performer@@Performer:")}{" "}
-              </label>
-              <input
-                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
-                type="checkbox"
-                onChange$={(event) =>
-                  (store.event.performerNeeded = (
-                    event.target as HTMLInputElement
-                  ).checked)
-                }
-                checked={store.event?.performerNeeded}
-              ></input>
-            </div>
-          </div>
         </div>
         <div>
           <iframe
@@ -439,10 +377,7 @@ export default component$(() => {
                         headcount: store.event.headcount ?? undefined,
                         locationId: store.event.locationId,
                         name: store.event.name,
-                        type: store.event.type,
-                        decorNeeded: store.event.decorNeeded,
-                        menuNeeded: store.event.menuNeeded,
-                        performerNeeded: store.event.performerNeeded,
+                        type: store.event.type
                       });
 
                       if (result.status === Status.SUCCESS) {
@@ -705,13 +640,17 @@ export default component$(() => {
         </Modal>
       </div>
       <div>
+        <label
+          class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+          for="budgetPlanning"
+        >
+          {t("event.budgetPlanning@@Budget Planning:")}
+        </label>
         <BudgetPlanning
           eventId={location.params.eventId}
           budget={store.event.budget}
           active={true}
         />
-        {/* Menu */}
-        {/* Decoration */}
       </div>
       <Toast
         id="successToast3"

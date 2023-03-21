@@ -46,9 +46,6 @@ export default component$(() => {
         locationId: event.locationId,
         name: event.name,
         type: event.type ?? undefined,
-        decorNeeded: event.decorNeeded,
-        menuNeeded: event.menuNeeded,
-        performerNeeded: event.performerNeeded,
       };
 
       newEventStore.value = currentEvent;
@@ -68,7 +65,7 @@ export default component$(() => {
 
   return (
     <Speak assets={["event", "common"]}>
-      <h1 class="mb-4 text-center text-3xl font-semibold text-black dark:text-white">
+      <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
         {t("event.previousEvent@@Previous Event")}
       </h1>
       <h1 class="mb-6 text-xl font-bold text-black dark:text-white">
@@ -88,7 +85,7 @@ export default component$(() => {
             type="text"
             value={newEventStore.value?.name}
           ></input>
-          <div class="grid gap-6 mb-6 md:grid-cols-3 w-full">
+          <div class="grid gap-6 md:grid-cols-3 w-full">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -100,7 +97,21 @@ export default component$(() => {
                 class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 readOnly
                 type="text"
-                value={newEventStore.value?.type}
+                value={
+                  newEventStore.value?.type === "WEDDING"
+                    ? t("event.wedding@@Wedding")
+                    : newEventStore.value?.type === "GRADUATION"
+                    ? t("event.graduation@@Graduation")
+                    : newEventStore.value?.type === "PARTY"
+                    ? t("event.party@@Party")
+                    : newEventStore.value?.type === "CONFERENCE"
+                    ? t("event.conference@@Conference")
+                    : newEventStore.value?.type === "EXHIBITION"
+                    ? t("event.exhibition@@Exhibition")
+                    : newEventStore.value?.type === "CUSTOM"
+                    ? t("event.custom@@Custom")
+                    : ""
+                }
               ></input>
             </div>
             <div>
@@ -132,7 +143,7 @@ export default component$(() => {
               ></input>
             </div>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
+          <div class="grid gap-6 md:grid-cols-2 w-full">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -163,7 +174,7 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
                 for="endDate"
               >
                 {t("common.endDate@@End Date:")}
@@ -177,7 +188,7 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
                 for="endTime"
               >
                 {t("common.endTime@@End Time:")}
@@ -267,7 +278,7 @@ export default component$(() => {
         </div>
       </div>
       <label
-        class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+        class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
         for="budgetPlanning"
       >
         {t("event.budgetPlanning@@Budget Planning:")}

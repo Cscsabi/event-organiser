@@ -32,9 +32,6 @@ export default component$(() => {
     budget: 0,
     locationId: "",
     headcount: 0,
-    decorNeeded: false,
-    menuNeeded: false,
-    performerNeeded: false,
     chooseHere: t("event.chooseHere@@Choose here"),
     loading: t("common.loading@@Loading..."),
   });
@@ -51,7 +48,7 @@ export default component$(() => {
 
   return (
     <Speak assets={["event"]}>
-      <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white">
+      <h1 class="mb-6 text-3xl text-center font-semibold text-black dark:text-white">
         {t("event.createNewEvent@@Create New Event")}
       </h1>
       <div>
@@ -67,9 +64,6 @@ export default component$(() => {
               type: store.type,
               userEmail: user.userEmail,
               locationId: store.locationId,
-              decorNeeded: store.decorNeeded,
-              menuNeeded: store.menuNeeded,
-              performerNeeded: store.performerNeeded,
             });
 
             if (result.status === Status.SUCCESS) {
@@ -101,7 +95,7 @@ export default component$(() => {
               minLength={3}
             ></input>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-4 w-1/2">
+          <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -137,57 +131,40 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
-                for="menu"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                for="location"
               >
-                {t("event.menu@@Menu:")}
+                {t("event.location@@Location:")}
               </label>
-              <input
-                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
-                onInput$={(event) =>
-                  (store.menuNeeded = (
-                    event.target as HTMLInputElement
-                  ).checked)
-                }
-                type="checkbox"
-                name="menu"
-              ></input>
-            </div>
-            <div>
-              <label
-                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
-                for="decor"
-              >
-                {t("event.decor@@Decor:")}
-              </label>
-              <input
-                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
-                onInput$={(event) =>
-                  (store.decorNeeded = (
-                    event.target as HTMLInputElement
-                  ).checked)
-                }
-                type="checkbox"
-                name="decor"
-              ></input>
-            </div>
-            <div>
-              <label
-                class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
-                for="perfomer"
-              >
-                {t("event.performer@@Performer:")}
-              </label>
-              <input
-                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
-                onInput$={(event) =>
-                  (store.performerNeeded = (
-                    event.target as HTMLInputElement
-                  ).checked)
-                }
-                type="checkbox"
-                name="perfomer"
-              ></input>
+              <Resource
+                value={resource}
+                onPending={() => <div>{store.loading}</div>}
+                onResolved={(result: GetLocationsReturnType) => {
+                  return (
+                    <div>
+                      <select
+                        class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                        name="location"
+                        onChange$={(event) => {
+                          store.locationId = (
+                            event.target as unknown as HTMLInputElement
+                          ).value;
+                        }}
+                      >
+                        <option value="" selected disabled hidden>
+                          {store.chooseHere}
+                        </option>
+                        {result.locations.map((location) => {
+                          return (
+                            <option value={location.id}>{location.name}</option>
+                          );
+                        })}
+                        ;
+                      </select>
+                    </div>
+                  );
+                }}
+              />
             </div>
           </div>
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
@@ -297,7 +274,7 @@ export default component$(() => {
               ></input>
             </div>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-3 w-1/2 self-center items-center">
+          <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2 self-center items-center">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -332,43 +309,6 @@ export default component$(() => {
                 placeholder="100"
                 name="headcount"
               ></input>
-            </div>
-            <div>
-              <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
-                for="location"
-              >
-                {t("event.location@@Location:")}
-              </label>
-              <Resource
-                value={resource}
-                onPending={() => <div>{store.loading}</div>}
-                onResolved={(result: GetLocationsReturnType) => {
-                  return (
-                    <div>
-                      <select
-                        class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
-                        name="location"
-                        onChange$={(event) => {
-                          store.locationId = (
-                            event.target as unknown as HTMLInputElement
-                          ).value;
-                        }}
-                      >
-                        <option value="" selected disabled hidden>
-                          {store.chooseHere}
-                        </option>
-                        {result.locations.map((location) => {
-                          return (
-                            <option value={location.id}>{location.name}</option>
-                          );
-                        })}
-                        ;
-                      </select>
-                    </div>
-                  );
-                }}
-              />
             </div>
           </div>
           <button

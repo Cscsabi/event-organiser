@@ -124,7 +124,7 @@ export default component$(() => {
           <div class="mt-6">
             <label
               for="language"
-              class="mb-2 mt-6 mr-3 text-lg font-medium text-gray-900 dark:text-white"
+              class="mb-2 mt-6 mr-1 text-lg font-medium text-gray-900 dark:text-white"
             >
               {t("profile.language@@Language: ")}
             </label>

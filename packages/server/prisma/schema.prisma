@@ -34,9 +34,6 @@ model Event {
   locationId       String
   headcount        Int?
   description      String?
-  menuNeeded       Boolean
-  decorNeeded      Boolean
-  performerNeeded  Boolean
   eventGuest       EventGuest[]
   budgetPlanning   BudgetPlanning[]
   feedback         Feedback[]

@@ -2,6 +2,7 @@
   "feedback": {
     "additional": "Anything else the organiser should know:",
     "additionalPlaceholder": "Additional details...",
+    "alreadyFilledForm": "You already filled out the form for this event!",
     "diabetes": "Are you suffering from diabetes?",
     "gluten": "Are you gluten intolerant?",
     "lactose": "Are you lactose intolerant?",
@@ -9,6 +10,7 @@
     "organiser": "Organiser:",
     "pageNotFound": "Oops, Page Not Found",
     "plusOne": "Do you intend to bring a plus one?",
-    "submit": "Submit Form"
+    "submit": "Submit Form",
+    "thankYou": "Thank you for filling this form!"
   }
 }

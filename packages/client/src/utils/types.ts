@@ -10,9 +10,6 @@ export interface NewEventStore {
   locationId: string;
   headcount?: number;
   description?: string;
-  menuNeeded: boolean;
-  decorNeeded: boolean;
-  performerNeeded: boolean;
   chooseHere?: string;
   loading?: string;
 }
@@ -51,9 +48,6 @@ export interface Event {
   locationId: string;
   headcount: number | null;
   description: string | null;
-  menuNeeded: boolean;
-  decorNeeded: boolean;
-  performerNeeded: boolean;
 }
 
 export interface GetEventsReturnType {
@@ -142,6 +136,9 @@ export interface FeedbackStore {
     additional: string;
   };
   eventExists?: boolean;
+  notEligible: string;
+  thankYou: string;
+  alreadyFilledForm: string;
 }
 
 export interface ListProps {
@@ -289,4 +286,11 @@ export interface EventTypeTranslation {
   conference: string;
   exhibition: string;
   custom: string;
+}
+
+export interface InformationCardProps {
+  name: string;
+  description: string;
+  icon: string;
+  goTo: string;
 }

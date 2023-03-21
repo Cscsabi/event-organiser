@@ -1,6 +1,8 @@
 import {
-  component$, useContext,
-  useStore, useVisibleTask$
+  component$,
+  useContext,
+  useStore,
+  useVisibleTask$,
 } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
@@ -22,7 +24,7 @@ export const Contact = component$(() => {
     oldCursor: undefined,
     nextButtonClicked: undefined,
     endOfList: false,
-    searchInput: ""
+    searchInput: "",
   });
   const navigate = useNavigate();
 

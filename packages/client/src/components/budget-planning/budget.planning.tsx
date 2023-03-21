@@ -1,8 +1,11 @@
 import type { ResourceReturn } from "@builder.io/qwik";
 import {
   component$,
-  Resource, useContext, useResource$,
-  useStore, useVisibleTask$
+  Resource,
+  useContext,
+  useResource$,
+  useStore,
+  useVisibleTask$,
 } from "@builder.io/qwik";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
@@ -11,7 +14,7 @@ import { client } from "~/utils/trpc";
 import type {
   BudgetPlanningProps,
   BudgetPlanningStore,
-  ContactsReturnType
+  ContactsReturnType,
 } from "~/utils/types";
 import Toast from "../toast/toast";
 
@@ -31,7 +34,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       phone: "",
       email: "",
       description: "",
-      userEmail: ""
+      userEmail: "",
     },
   };
 
@@ -73,9 +76,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           });
           store.amountAltogether += row?.amount ? +row.amount : 0;
         });
-        if (props.active) {
-          store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW];
-        }
+        store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW];
       }
     }
 
@@ -119,13 +120,13 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           </thead>
           <tbody>
             {generateBudgetPlanningBody(store, props, contactsResource)}
-            <tr class="font-semibold text-gray-900 dark:text-white dark:bg-slate-900">
-              <td scope="row" class="px-6 py-3 text-base">
+            <tr class="text-base bg-gray-300 text-gray-900 dark:text-white dark:bg-slate-900">
+              <td scope="row" class="px-6 py-3 font-bold text-base">
                 {t("budgetPlanning.summary@@Summary:")}
               </td>
               <td class="px-6 py-3">{store.amountAltogether}</td>
               <td class="px-6 py-3">{store.percentAltogether}</td>
-              <td scope="row" class="px-6 py-3 text-base">
+              <td scope="row" class="px-6 py-3 font-bold text-base">
                 {t("budgetPlanning.remaining@@Remaining:")}
               </td>
               <td class="px-6 py-3">{props.budget - store.amountAltogether}</td>
@@ -185,7 +186,7 @@ export const generateBudgetPlanningBody = async (
                 onResolved={(result) => {
                   return (
                     <select
-                      class="mx-6 my-4 bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      class="mx-6 my-4 bg-gray-200 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       disabled={!props.active ? true : row.isPaid}
                       name="contact"
                       onChange$={async (event) => {
@@ -223,7 +224,7 @@ export const generateBudgetPlanningBody = async (
                         disabled
                         hidden
                       >
-                        {row.contact.name ? row.contact.name : store.chooseHere}
+                        {!props.active ? "" : row.contact.name ? row.contact.name : store.chooseHere}
                       </option>
                       {result.contacts?.map((contact) => {
                         console.log(contact);

@@ -20,7 +20,7 @@ export default component$((card: CardProps) => {
   return (
     <div class="m-0 inline-block p-8 box-border">
       <a
-        class="after:absolute after:top-6 after:left-0 after:content-none after:w-0 after:h-1 after:bg-slate-300 after:transition-all relative text-black"
+        class="after:absolute after:top-6 after:left-0 after:content-none after:w-0 after:h-1 after:bg-slate-300 after:transition-all relative text-black dark:text-slate-200"
         href={card.goTo}
       >
         <div class="flex flex-wrap justify-between md:justify-center">
@@ -29,16 +29,16 @@ export default component$((card: CardProps) => {
               ${color}
             `}
           >
-            <div class="relative text-black">
+            <div class="relative text-black dark:text-slate-200">
               {card.icon === "event" ? (
-                <i class="fa-regular fa-calendar-days"></i>
+                <i class="fa-regular fa-calendar-days fa-xl"></i>
               ) : (
-                <i class="fa-solid fa-building"></i>
+                <i class="fa-solid fa-building fa-xl"></i>
               )}
             </div>
-            <h2 class="font-bold">{card.name}</h2>
-            <h3 class="pt-2 font-semibold">{card.description}</h3>
-            <h3 class="font-semibold">{card.location}</h3>
+            <h2 class="font-bold text-xl">{card.name}</h2>
+            <h3 class="pt-2 font-semibold text-lg">{card.description}</h3>
+            <h3 class="font-semibold text-lg">{card.location}</h3>
           </div>
         </div>
       </a>

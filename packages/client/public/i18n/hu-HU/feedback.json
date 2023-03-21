@@ -2,6 +2,7 @@
   "feedback": {
     "additional": "További hasznos információk:",
     "additionalPlaceholder": "További részletek...",
+    "alreadyFilledForm": "Ön már kitöltötte ezt az űrlapot!",
     "diabetes": "Ön cukorbeteg?",
     "gluten": "Ön gluténérzékeny?",
     "lactose": "Ön laktózérzékeny?",
@@ -9,6 +10,7 @@
     "organiser": "Szervező:",
     "pageNotFound": "Hoppá, az oldal nem található",
     "plusOne": "Szeretne az eseményre hozni plusz egy főt?",
-    "submit": "Űrlap benyújtása"
+    "submit": "Űrlap benyújtása",
+    "thankYou": "Köszönjük, hogy kitöltötte az űrlapot!"
   }
 }

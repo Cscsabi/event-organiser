@@ -21,7 +21,7 @@ export default component$(() => {
 
   return (
     <Speak assets={["contacts", "common"]}>
-      <h1 class="mb-6 text-3xl font-semibold text-white dark:text-white text-center">
+      <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
         {t("contacts.addContact@@Add Contact")}
       </h1>
       <form

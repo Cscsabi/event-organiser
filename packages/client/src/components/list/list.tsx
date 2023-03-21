@@ -24,7 +24,6 @@ export const List = component$((props: ListProps) => {
   const user = useContext(CTX);
   const searchInput = useSignal<string>("");
   const loading = useSignal(t("common.loading@@Loading..."));
-  // TODO: Undefined lang
   const eventType = useStore<EventTypeTranslation>({
     wedding: t("event.wedding@@Wedding"),
     graduation: t("event.graduation@@Graduation"),
@@ -148,15 +147,15 @@ export const generateList = (
                           event.type === "WEDDING"
                             ? eventType.wedding
                             : event.type === "GRADUATION"
-                            ? t("event.graduation@@Graduation")
+                            ? eventType.graduation
                             : event.type === "PARTY"
-                            ? t("event.party@@Party")
+                            ? eventType.party
                             : event.type === "CONFERENCE"
-                            ? t("event.conference@@Conference")
+                            ? eventType.conference
                             : event.type === "EXHIBITION"
-                            ? t("event.exhibition@@Exhibition")
+                            ? eventType.exhibition
                             : event.type === "CUSTOM"
-                            ? t("event.custom@@Custom")
+                            ? eventType.custom
                             : ""
                         }
                         name={event.name}
@@ -197,7 +196,8 @@ export const generateList = (
                     return (
                       <Card
                         id={location.id}
-                        description={location.price?.toString() + " Ft"}
+                        description={location.type ?? ""}
+                        location={location.price?.toString()}
                         name={location.name}
                         type="location"
                         goTo={paths.location + location.id}

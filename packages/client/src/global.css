@@ -32,6 +32,14 @@
   }
 
   .card-prev-dark {
-    background: radial-gradient(#91d7ff, #00a2ff);
+    background: radial-gradient(#6ebbe7, #00a2ff);
+  }
+
+  .card-home-light {
+    background: radial-gradient(#5dffe9, #00e1ff);
+  }
+
+  .card-home-dark {
+    background: radial-gradient(#7e39ff, #5900ff);
   }
 }

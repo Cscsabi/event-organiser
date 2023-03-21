@@ -1,5 +1,20 @@
 {
   "home": {
+    "addContacts": "A Szolgáltatók fül alatt nyomd meg a Szolgáltató hozzáadása gombot",
+    "addContactsTitle": "Adj hozzá szolgáltatókat",
+    "addGuests": "A Vendégek fül alatt adj hozzá közvetlenül új vendégeket. Nyomd meg a sor hozzáadása gombot, hogy több vendéget vehess fel egyszerre",
+    "addGuestsTitle": "Vegyél fel vendégeket",
+    "browsePreviousEvents": "Miután megtörténtek az események, azok átkerülnek az Előző események fül alá",
+    "browsePreviousEventsTitle": "Böngészd előző eseményeidet",
+    "createEvent": "Az Aktív Események fül alatt nyomd meg az Esemény hozzáadása gombot. Itt tudod használni az előzőleg felvett helyszíneket",
+    "createEventTitle": "Hozz létre egy eseményt",
+    "createLocation": "A Helyszínek fül alatt nyomd meg a Helyszín hozzáadása gombot",
+    "createLocationTitle": "Hozz létre egy helyszínt",
+    "manageEvents": "Innentől kezdve kezelheted a folyamatban lévő eseményeidet. Megtervezheted a költségvetést, szétküldheted az automatikusan generált visszajelző űrlapot stb.",
+    "manageEventsTitle": "Kezeld a eseményeidet",
+    "manageProfile": "A fiókodat a Fiók fül alatt kezelheted (jelszó/nyelv változtatás, naptár)",
+    "manageProfileTitle": "Kezeld a fiókodat",
+    "possibilities": "Kezdődhet is a szerverzés! Íme néhány lehetőség:",
     "welcome": "Üdvözlünk a Rendezvényszervezőnél!"
   }
 }

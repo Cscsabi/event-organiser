@@ -9,15 +9,6 @@ export const QwikCalendar = qwikify$((props: any) => (
   <Calendar
     className={props.className}
     tileContent={({ date, view }) => tileContent(date, view, props.events)}
-    onClickDay={(value) => {
-      const events: CalendarEvent[] = props.events;
-      const filteredEvents = events.filter(({ date }) =>
-        isSameDay(date, value)
-      );
-      if (filteredEvents.length !== 0) {
-        // TODO:
-      }
-    }}
   />
 ));
 

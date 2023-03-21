@@ -1,4 +1,9 @@
-import { component$, useVisibleTask$, useStore } from "@builder.io/qwik";
+import {
+  component$,
+  useVisibleTask$,
+  useStore,
+  useContext,
+} from "@builder.io/qwik";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import { useLocation } from "@builder.io/qwik-city";
@@ -6,25 +11,24 @@ import type {
   FeedbackStore,
   LocationStore,
   NewEventStore,
+  UserContext,
 } from "~/utils/types";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { getCurrentEvent } from "~/utils/common.functions";
 import { $translate as t, Speak } from "qwik-speak";
+import { CTX } from "../../layout";
 
 export default component$(() => {
+  const user = useContext(CTX);
   const { params } = useLocation();
   const store = useStore<FeedbackStore>({
     event: {
       budget: 0,
-      decorNeeded: false,
-      userEmail: "",
       endDate: new Date(),
       headcount: 0,
       locationId: params.eventId,
-      menuNeeded: false,
       name: "",
-      performerNeeded: false,
       startDate: new Date(),
       type: EventType.CUSTOM,
     },
@@ -33,7 +37,6 @@ export default component$(() => {
       city: "",
       countryId: 0,
       description: "",
-      userEmail: "",
       link: "",
       name: "",
       phone: "",
@@ -54,6 +57,13 @@ export default component$(() => {
       additional: "",
     },
     eventExists: true,
+    notEligible: t(
+      "feedback.notEligible@@You are not eligible to participate in this event!"
+    ),
+    thankYou: t("feedback.thankYou@@Thank you for filling this form!"),
+    alreadyFilledForm: t(
+      "feedback.alreadyFilledForm@@You already filled out the form for this event!"
+    ),
   });
 
   useVisibleTask$(async () => {
@@ -64,14 +74,10 @@ export default component$(() => {
         budget: +event.budget,
         startDate: event.startDate ?? undefined,
         endDate: event.endDate ?? undefined,
-        userEmail: event.userEmail,
         headcount: event.headcount ?? undefined,
         locationId: event.locationId,
         name: event.name,
         type: event.type ?? undefined,
-        decorNeeded: event.decorNeeded,
-        menuNeeded: event.menuNeeded,
-        performerNeeded: event.performerNeeded,
       };
 
       const currentLocation: LocationStore = {
@@ -79,7 +85,6 @@ export default component$(() => {
         city: event.location.address.city,
         countryId: event.location.address.countryId,
         description: event.location.description ?? undefined,
-        userEmail: event.location.userEmail,
         link: event.location.link ?? undefined,
         name: event.location.name,
         phone: event.location.phone ?? undefined,
@@ -106,14 +111,14 @@ export default component$(() => {
             <form
               preventdefault:submit
               class="text-center"
-              onSubmit$={() => submitForm(store, params.eventId)}
+              onSubmit$={() => submitForm(store, params.eventId, user)}
             >
-              <h1 class="mb-6 text-xl font-semibold text-black dark:text-white">
+              <h1 class="mb-6 text-2xl font-semibold text-black dark:text-white">
                 {store.event.name}
               </h1>
               <h2 class="mb-6 text-lg font-semibold text-black dark:text-white">
                 {t("feedback.organiser@@Organiser:")}
-                {store.event.userEmail}
+                {user.userEmail}
               </h2>
               <div>
                 <label
@@ -301,14 +306,17 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
   };
 };
 
-export const submitForm = async (store: FeedbackStore, eventId: string) => {
+// TODO: Translation use*() error
+export const submitForm = async (
+  store: FeedbackStore,
+  eventId: string,
+  user: UserContext
+) => {
   const contentDiv = document.getElementById("content");
-  let newContentDiv = `<h1 class="text-center mb-6 text-xl font-semibold text-black dark:text-white">${t(
-    "feedback.notEligible@@You are not eligible to participate in this event!"
-  )} &#9995;</h1>`;
+  let newContentDiv = `<h1 class="text-center mb-6 text-xl font-semibold text-black dark:text-white">${store.notEligible} &#9995;</h1>`;
   const guestId = await client.getGuestByEmails.query({
     guestEmail: store.guest.email,
-    userEmail: store.event.userEmail,
+    userEmail: user.userEmail,
   });
 
   if (guestId.guestId) {
@@ -323,13 +331,9 @@ export const submitForm = async (store: FeedbackStore, eventId: string) => {
         guestEmail: store.guest.email,
       });
 
-      newContentDiv = `<h1 class="text-center mb-6 text-xl font-semibold text-black dark:text-white">${t(
-        "feedback.notEligible@@You already filled out the form for this event!"
-      )} &#128204;</h1>`;
+      newContentDiv = `<h1 class="text-center mb-6 text-xl font-semibold text-black dark:text-white">${store.alreadyFilledForm} &#128204;</h1>`;
       if (feedbackResult.status === Status.NOT_FOUND) {
-        newContentDiv = `<h1 class="text-center mb-6 text-xl font-semibold text-black dark:text-white">${t(
-          "feedback.notEligible@@Thank you for filling this form!"
-        )} &#9989;</h1>`;
+        newContentDiv = `<h1 class="text-center mb-6 text-xl font-semibold text-black dark:text-white">${store.thankYou} &#9989;</h1>`;
 
         client.addFeedback.mutate({
           eventId: eventId,

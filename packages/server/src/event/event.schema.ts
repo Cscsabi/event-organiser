@@ -11,9 +11,6 @@ export const addEventInput = z.object({
   description: z.string().optional(),
   userEmail: z.string(),
   locationId: z.string(),
-  decorNeeded: z.boolean(),
-  menuNeeded: z.boolean(),
-  performerNeeded: z.boolean(),
 });
 
 export const updateEventInput = z.object({
@@ -26,9 +23,6 @@ export const updateEventInput = z.object({
   headcount: z.number().optional(),
   userEmail: z.string(),
   locationId: z.string(),
-  decorNeeded: z.boolean(),
-  menuNeeded: z.boolean(),
-  performerNeeded: z.boolean(),
 });
 
 export type AddEventInput = z.TypeOf<typeof addEventInput>;
