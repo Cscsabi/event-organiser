@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LocationType } from "@prisma/client";
 
 export const addAddressInput = z.object({
   countryId: z.number(),
@@ -17,7 +18,7 @@ export const addLocationInput = z.object({
   description: z.string().optional(),
   addressId: z.string(),
   address: addAddressInput,
-  type: z.string().optional(),
+  type: z.nativeEnum(LocationType),
   price: z.number().optional(),
   phone: z.string().optional(),
   link: z.string().optional(),
@@ -30,7 +31,7 @@ export const updateLocationInput = z.object({
   description: z.string().optional(),
   addressId: z.string().optional(),
   address: addAddressInput,
-  type: z.string().optional(),
+  type: z.nativeEnum(LocationType).optional(),
   price: z.number().optional(),
   phone: z.string().optional(),
   link: z.string().optional(),

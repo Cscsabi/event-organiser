@@ -36,7 +36,7 @@ export default component$(() => {
           };
           const login = await loginUserWithPassword(credentials);
           if (login?.result === Status.SUCCESS) {
-            navigate(generateRoutingLink(location.params.lang, paths.index));
+            navigate(generateRoutingLink(location.params.lang, paths.index), true);
           } else {
             store.invalidCredentials = true;
           }
@@ -107,7 +107,7 @@ export default component$(() => {
               provider: "google",
             });
             if (login.result === Status.SUCCESS) {
-              navigate(generateRoutingLink(location.params.lang, paths.index));
+              navigate(generateRoutingLink(location.params.lang, paths.index), true);
             }
           }}
         >
@@ -121,7 +121,7 @@ export default component$(() => {
               provider: "facebook",
             });
             if (login.result === Status.SUCCESS) {
-              navigate(generateRoutingLink(location.params.lang, paths.index));
+              navigate(generateRoutingLink(location.params.lang, paths.index), true);
             }
           }}
         >

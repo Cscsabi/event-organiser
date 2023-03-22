@@ -1,26 +1,24 @@
 import {
   component$,
-  useVisibleTask$,
+  useSignal,
   useStore,
-  useContext,
+  useVisibleTask$,
 } from "@builder.io/qwik";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
-import { client } from "~/utils/trpc";
 import { useLocation } from "@builder.io/qwik-city";
+import { EventType } from "@prisma/client";
+import { Status } from "event-organiser-api-server/src/status.enum";
+import { $translate as t, Speak } from "qwik-speak";
+import { getCurrentEvent } from "~/utils/common.functions";
+import { client } from "~/utils/trpc";
 import type {
   FeedbackStore,
   LocationStore,
   NewEventStore,
-  UserContext,
 } from "~/utils/types";
-import { EventType } from "@prisma/client";
-import { Status } from "event-organiser-api-server/src/status.enum";
-import { getCurrentEvent } from "~/utils/common.functions";
-import { $translate as t, Speak } from "qwik-speak";
-import { CTX } from "../../layout";
 
 export default component$(() => {
-  const user = useContext(CTX);
+  const userEmail = useSignal<string>("");
   const { params } = useLocation();
   const store = useStore<FeedbackStore>({
     event: {
@@ -43,7 +41,7 @@ export default component$(() => {
       price: 0,
       state: "",
       street: "",
-      type: "",
+      type: "INTERIOR",
       zipCode: 0,
     },
     guest: {
@@ -111,14 +109,16 @@ export default component$(() => {
             <form
               preventdefault:submit
               class="text-center"
-              onSubmit$={() => submitForm(store, params.eventId, user)}
+              onSubmit$={() =>
+                submitForm(store, params.eventId, userEmail.value)
+              }
             >
               <h1 class="mb-6 text-2xl font-semibold text-black dark:text-white">
                 {store.event.name}
               </h1>
               <h2 class="mb-6 text-lg font-semibold text-black dark:text-white">
                 {t("feedback.organiser@@Organiser:")}
-                {user.userEmail}
+                {userEmail.value}
               </h2>
               <div>
                 <label
@@ -306,17 +306,16 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
   };
 };
 
-// TODO: Translation use*() error
 export const submitForm = async (
   store: FeedbackStore,
   eventId: string,
-  user: UserContext
+  userEmail: string
 ) => {
   const contentDiv = document.getElementById("content");
   let newContentDiv = `<h1 class="text-center mb-6 text-xl font-semibold text-black dark:text-white">${store.notEligible} &#9995;</h1>`;
   const guestId = await client.getGuestByEmails.query({
     guestEmail: store.guest.email,
-    userEmail: user.userEmail,
+    userEmail: userEmail,
   });
 
   if (guestId.guestId) {

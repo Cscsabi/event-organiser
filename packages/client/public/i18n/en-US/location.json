@@ -1,5 +1,6 @@
 {
   "location": {
+    "both": "Both",
     "chooseHere": "Choose here",
     "city": "City:",
     "cityPlaceholder": "Los Angeles",
@@ -7,13 +8,15 @@
     "createLocation": "Create Location",
     "deleteLocation": "Are you sure you want to delete this location?",
     "descriptionPlaceholder": "Some important information..",
+    "exterior": "Exterior",
+    "interior": "Interior",
     "link": "Link:",
     "linkPlaceholder": "www.example.com",
+    "loading": "Loading...",
     "location": "Location",
     "locationName": "Location Name:",
     "locationNamePlaceholder": "Example Location",
     "locationType": "Location Type:",
-    "locationTypePlaceholder": "Type of Location",
     "name": "Name:",
     "newLocation": "Create New Location",
     "price": "Price:",

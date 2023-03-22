@@ -1,7 +1,7 @@
 {
   "budgetPlanning": {
-    "amount": "Amount",
     "contactName": "Contact Name",
+    "cost": "Cost",
     "paid": "Paid",
     "percent": "%",
     "remaining": "Remaining:",

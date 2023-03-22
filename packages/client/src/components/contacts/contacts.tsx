@@ -2,20 +2,16 @@ import {
   component$,
   useContext,
   useStore,
-  useVisibleTask$,
+  useVisibleTask$
 } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
 import { CTX } from "~/routes/[...lang]/layout";
-import { generateRoutingLink } from "~/utils/common.functions";
-import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import type { ContactStore } from "~/utils/types";
 
 export const Contact = component$(() => {
   const user = useContext(CTX);
-  const location = useLocation();
   const store = useStore<ContactStore>({
     contacts: [],
     empty: undefined,
@@ -26,7 +22,6 @@ export const Contact = component$(() => {
     endOfList: false,
     searchInput: "",
   });
-  const navigate = useNavigate();
 
   useVisibleTask$(async ({ track }) => {
     track(() => user.userEmail);
@@ -35,7 +30,7 @@ export const Contact = component$(() => {
     store.contacts = [];
 
     const result = await client.getContactsPagination.query({
-      userEmail: user.userEmail,
+      userEmail: user.userEmail ?? "",
       skip: store.lastpage > 0 ? 1 : undefined,
       cursor: store.currentCursor,
       take:
@@ -168,14 +163,6 @@ export const Contact = component$(() => {
           </h1>
         )}
       </div>
-      <button
-        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-        onClick$={() =>
-          navigate(generateRoutingLink(location.params.lang, paths.newContact))
-        }
-      >
-        {t("contacts.addContact@@Add Contact")}
-      </button>
     </Speak>
   );
 });

@@ -1,4 +1,9 @@
-import { component$, useContext, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  component$,
+  useContext,
+  useStore,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
@@ -6,22 +11,46 @@ import { $translate as t, Speak } from "qwik-speak";
 import Modal from "~/components/modal/modal";
 import Toast from "~/components/toast/toast";
 import { CTX } from "~/routes/[...lang]/layout";
-import {
-  generateGoogleMapsLink
-} from "~/utils/common.functions";
+import { generateGoogleMapsLink } from "~/utils/common.functions";
 import { client } from "~/utils/trpc";
 import type { LocationStore } from "~/utils/types";
-
+import type { LocationType } from "@prisma/client";
 
 export default component$(() => {
   const user = useContext(CTX);
   const { params } = useLocation();
-  const locationStore = useSignal<LocationStore>();
+  const store = useStore<LocationStore>({
+    addressId: "",
+    city: "",
+    countryId: 0,
+    name: "",
+    street: "",
+    type: "INTERIOR",
+    chooseHere: t("location.chooseHere@@Choose here"),
+    description: "",
+    link: "",
+    loading: t("location.loading@@Loading..."),
+    phone: "",
+    price: 0,
+    state: "",
+    zipCode: 0,
+  });
 
   useVisibleTask$(async () => {
     const location = await getCurrentLocation(params.locationId);
     if (location) {
-      locationStore.value = location;
+      store.addressId = location.addressId;
+      store.city = location.city;
+      store.countryId = location.countryId;
+      store.name = location.name;
+      store.street = location.street;
+      store.type = location.type;
+      store.description = location.description;
+      store.link = location.link;
+      store.phone = location.phone;
+      store.price = location.price;
+      store.state = location.state;
+      store.zipCode = location.zipCode;
     }
   });
 
@@ -42,11 +71,9 @@ export default component$(() => {
             <input
               class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
-                locationStore.value!.name = (
-                  event.target as HTMLInputElement
-                ).value;
+                store.name = (event.target as HTMLInputElement).value;
               }}
-              value={locationStore.value?.name}
+              value={store.name}
             ></input>
           </div>
           <div>
@@ -59,11 +86,9 @@ export default component$(() => {
             <input
               class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
-                locationStore.value!.description = (
-                  event.target as HTMLInputElement
-                ).value;
+                store.description = (event.target as HTMLInputElement).value;
               }}
-              value={locationStore.value?.description}
+              value={store.description}
             ></input>
           </div>
           <div class="grid gap-6 md:grid-cols-2 w-full">
@@ -74,15 +99,31 @@ export default component$(() => {
               >
                 {t("location.type@@Type:")}
               </label>
-              <input
+              <select
                 class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
-                onChange$={(event) => {
-                  locationStore.value!.type = (
-                    event.target as HTMLInputElement
-                  ).value;
-                }}
-                value={locationStore.value?.type}
-              ></input>
+                name="country"
+                onChange$={(event) =>
+                  (store.type = (event.target as unknown as HTMLInputElement)
+                    .value as LocationType)
+                }
+              >
+                <option value="" selected disabled hidden>
+                  {store.type === "INTERIOR"
+                    ? t("location.interior@@Interior")
+                    : store.type === "EXTERIOR"
+                    ? t("location.exterior@@Exterior")
+                    : store.type === "BOTH"
+                    ? t("location.both@@Interior and Exterior")
+                    : store.chooseHere}
+                </option>
+                <option value="INTERIOR">
+                  {t("location.interior@@Interior")}
+                </option>
+                <option value="EXTERIOR">
+                  {t("location.exterior@@Exterior")}
+                </option>
+                <option value="BOTH">{t("location.both@@Both")}</option>
+              </select>
             </div>
             <div>
               <label
@@ -94,11 +135,9 @@ export default component$(() => {
               <input
                 class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
-                  locationStore.value!.link = (
-                    event.target as HTMLInputElement
-                  ).value;
+                  store.link = (event.target as HTMLInputElement).value;
                 }}
-                value={locationStore.value?.link}
+                value={store.link}
               ></input>
             </div>
           </div>
@@ -113,11 +152,9 @@ export default component$(() => {
               <input
                 class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
-                  locationStore.value!.phone = (
-                    event.target as HTMLInputElement
-                  ).value;
+                  store.phone = (event.target as HTMLInputElement).value;
                 }}
-                value={locationStore.value?.phone}
+                value={store.phone}
               ></input>
             </div>
             <div>
@@ -131,11 +168,9 @@ export default component$(() => {
                 type="number"
                 class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
-                  locationStore.value!.price = +(
-                    event.target as HTMLInputElement
-                  ).value;
+                  store.price = +(event.target as HTMLInputElement).value;
                 }}
-                value={locationStore.value?.price}
+                value={store.price}
               ></input>
             </div>
           </div>
@@ -149,11 +184,9 @@ export default component$(() => {
             <input
               class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
-                locationStore.value!.state = (
-                  event.target as HTMLInputElement
-                ).value;
+                store.state = (event.target as HTMLInputElement).value;
               }}
-              value={locationStore.value?.state}
+              value={store.state}
             ></input>
           </div>
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
@@ -167,11 +200,9 @@ export default component$(() => {
               <input
                 class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
-                  locationStore.value!.city = (
-                    event.target as HTMLInputElement
-                  ).value;
+                  store.city = (event.target as HTMLInputElement).value;
                 }}
-                value={locationStore.value?.city}
+                value={store.city}
               ></input>
             </div>
             <div>
@@ -185,11 +216,9 @@ export default component$(() => {
                 type="number"
                 class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 onChange$={(event) => {
-                  locationStore.value!.zipCode = +(
-                    event.target as HTMLInputElement
-                  ).value;
+                  store.zipCode = +(event.target as HTMLInputElement).value;
                 }}
-                value={locationStore.value?.zipCode}
+                value={store.zipCode}
               ></input>
             </div>
           </div>
@@ -203,45 +232,39 @@ export default component$(() => {
             <input
               class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onChange$={(event) => {
-                locationStore.value!.street = (
-                  event.target as HTMLInputElement
-                ).value;
+                store.street = (event.target as HTMLInputElement).value;
               }}
-              value={locationStore.value?.street}
+              value={store.street}
             ></input>
           </div>
           <button
             class="text-white mr-2 bg-indigo-600 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-400 dark:focus:ring-indigo-500"
             preventdefault:click
             onClick$={async () => {
-              if (locationStore.value) {
+              if (store) {
                 const price =
-                  locationStore.value.price === undefined
-                    ? undefined
-                    : +locationStore.value.price;
+                  store.price === undefined ? undefined : +store.price;
                 const zipCode =
-                  locationStore.value.zipCode === undefined
-                    ? undefined
-                    : +locationStore.value.zipCode;
+                  store.zipCode === undefined ? undefined : +store.zipCode;
                 const result = await client.updateLocation.mutate({
-                  addressId: locationStore.value.addressId,
+                  addressId: store.addressId,
                   address: {
-                    city: locationStore.value.city,
+                    city: store.city,
                     country: {
-                      id: +locationStore.value.countryId,
+                      id: +store.countryId,
                     },
-                    state: locationStore.value.state,
-                    street: locationStore.value.street,
+                    state: store.state,
+                    street: store.street,
                     zipCode: zipCode,
-                    countryId: locationStore.value.countryId,
+                    countryId: store.countryId,
                   },
-                  description: locationStore.value.description,
+                  description: store.description,
                   userEmail: user.userEmail,
-                  link: locationStore.value.link,
-                  name: locationStore.value.name,
-                  phone: locationStore.value.phone,
+                  link: store.link,
+                  name: store.name,
+                  phone: store.phone,
                   price: price,
-                  type: locationStore.value.type,
+                  type: store.type,
                   id: params.locationId,
                 });
 
@@ -274,10 +297,10 @@ export default component$(() => {
           <iframe
             src={generateGoogleMapsLink(
               true,
-              locationStore.value?.city,
-              locationStore.value?.state,
-              locationStore.value?.zipCode,
-              locationStore.value?.street
+              store.city,
+              store.state,
+              store.zipCode,
+              store.street
             )}
             width="600"
             height="450"
@@ -319,7 +342,7 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
   const user = useContext(CTX);
 
   const result = await client.getLocations.query({
-    email: user.userEmail,
+    email: user.userEmail ?? "",
   });
 
   return {

@@ -32,11 +32,14 @@ export default component$(() => {
             email: store.email,
             name: store.name,
             phone: store.phone,
-            userEmail: user.userEmail,
+            userEmail: user.userEmail ?? "",
           });
 
           if (result.status === Status.SUCCESS) {
-            navigate(generateRoutingLink(location.params.lang, paths.contacts));
+            navigate(
+              generateRoutingLink(location.params.lang, paths.contacts),
+              true
+            );
           }
         }}
       >

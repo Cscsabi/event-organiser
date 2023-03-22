@@ -142,6 +142,13 @@ export const getLocationsController = async ({
       where: {
         userEmail: getByEmailInput.email,
       },
+      include: {
+        address: {
+          select: {
+            city: true,
+          },
+        },
+      },
     });
 
     return {

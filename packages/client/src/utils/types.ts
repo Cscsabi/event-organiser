@@ -1,4 +1,10 @@
-import type { EventType, Location, Contact, Feedback } from "@prisma/client";
+import type {
+  EventType,
+  LocationType,
+  Location,
+  Contact,
+  Feedback,
+} from "@prisma/client";
 import type { Status } from "event-organiser-api-server/src/status.enum";
 
 export interface NewEventStore {
@@ -23,7 +29,7 @@ export interface LocationStore {
   street: string;
   state?: string;
   zipCode?: number;
-  type?: string;
+  type: LocationType;
   price?: number;
   phone?: string;
   link?: string;
@@ -34,7 +40,11 @@ export interface LocationStore {
 export interface GetLocationsReturnType {
   status: Status;
   results: number;
-  locations: Location[];
+  locations: (Location & {
+    address: {
+        city: string;
+    };
+})[];
 }
 
 export interface Event {
@@ -271,7 +281,7 @@ export interface UserAttributes {
 }
 
 export interface UserContext {
-  userEmail: string;
+  userEmail?: string;
   darkModeEnabled?: boolean;
   language?: string;
   privateHeader?: boolean;
@@ -279,13 +289,16 @@ export interface UserContext {
   lastname?: string;
 }
 
-export interface EventTypeTranslation {
+export interface TypeTranslations {
   wedding: string;
   graduation: string;
   party: string;
   conference: string;
   exhibition: string;
   custom: string;
+  interior: string;
+  exterior: string;
+  both: string;
 }
 
 export interface InformationCardProps {
@@ -293,4 +306,5 @@ export interface InformationCardProps {
   description: string;
   icon: string;
   goTo: string;
+  textCenter?: boolean;
 }

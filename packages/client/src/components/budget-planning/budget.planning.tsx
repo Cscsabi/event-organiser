@@ -88,7 +88,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       track(() => user.userEmail);
       const controller = new AbortController();
       cleanup(() => controller.abort());
-      return client.getContacts.query({ userEmail: user.userEmail });
+      return client.getContacts.query({ userEmail: user.userEmail ?? "" });
     }
   );
 
@@ -100,12 +100,12 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       >
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
+            <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black text-center">
               <th scope="col" class="px-6 py-4">
                 {t("budgetPlanning.contactName@@Contact Name")}
               </th>
               <th scope="col" class="px-6 py-4">
-                {t("budgetPlanning.amount@@Amount")}
+                {t("budgetPlanning.cost@@Cost")}
               </th>
               <th scope="col" class="px-6 py-4">
                 {t("budgetPlanning.percent@@%")}
@@ -120,7 +120,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           </thead>
           <tbody>
             {generateBudgetPlanningBody(store, props, contactsResource)}
-            <tr class="text-base bg-gray-300 text-gray-900 dark:text-white dark:bg-slate-900">
+            <tr class="text-base text-center bg-gray-300 text-gray-900 dark:text-white dark:bg-slate-900">
               <td scope="row" class="px-6 py-3 font-bold text-base">
                 {t("budgetPlanning.summary@@Summary:")}
               </td>
@@ -178,7 +178,7 @@ export const generateBudgetPlanningBody = async (
     <>
       {store.budgetPlanning.map((row) => {
         return (
-          <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
+          <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700 text-center">
             <td>
               <Resource
                 value={resource}
@@ -186,7 +186,7 @@ export const generateBudgetPlanningBody = async (
                 onResolved={(result) => {
                   return (
                     <select
-                      class="mx-6 my-4 bg-gray-200 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      class="text-center mx-6 my-4 bg-gray-200 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       disabled={!props.active ? true : row.isPaid}
                       name="contact"
                       onChange$={async (event) => {
@@ -211,9 +211,7 @@ export const generateBudgetPlanningBody = async (
                           row.contact.name = store.contact.name;
                         }
 
-                        row.description =
-                          store.contact?.description + " " + row.description ??
-                          row.description;
+                        row.description = store.contact?.description ?? "";
 
                         store.budgetPlanning = [...store.budgetPlanning];
                       }}
@@ -224,7 +222,11 @@ export const generateBudgetPlanningBody = async (
                         disabled
                         hidden
                       >
-                        {!props.active ? "" : row.contact.name ? row.contact.name : store.chooseHere}
+                        {!props.active
+                          ? ""
+                          : row.contact.name
+                          ? row.contact.name
+                          : store.chooseHere}
                       </option>
                       {result.contacts?.map((contact) => {
                         console.log(contact);
@@ -240,7 +242,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
-                class="w-full bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="text-center ml-2 w-full bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 disabled={!props.active ? true : row.isPaid}
                 type="number"
                 value={row.amount}
@@ -257,7 +259,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td class="w-fit bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               <input
-                class="w-full bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="text-center w-full bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="text"
                 disabled
                 value={((row.amount ?? 0) / props.budget) * 100}
@@ -265,7 +267,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
-                class="w-full bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="w-full text-center bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 type="text"
                 disabled={!props.active ? true : row.isPaid}
                 value={row.description}
@@ -276,7 +278,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
-                class="mx-6 my-4 w-4 h-4 dark:text-blue-600 bg-gray-100 border-gray-300 rounded dark:focus:ring-blue-500 text-green-600 focus:ring-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                class="text-center mx-6 my-4 w-4 h-4 dark:text-blue-600 bg-gray-100 border-gray-300 rounded dark:focus:ring-blue-500 text-green-600 focus:ring-green-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 type="checkbox"
                 checked={row.isPaid}
                 disabled={

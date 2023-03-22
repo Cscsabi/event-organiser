@@ -23,10 +23,10 @@
     "qwik": "qwik",
     "qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-US,hu-HU"
   },
-  "devDependencies": { 
-    "@builder.io/qwik": "^0.21.0",
-    "@builder.io/qwik-city": "^0.5.2",
-    "@builder.io/qwik-react": "0.4.2",
+  "devDependencies": {
+    "@builder.io/qwik": "^0.23.0",
+    "@builder.io/qwik-city": "^0.6.6",
+    "@builder.io/qwik-react": "^0.5.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
     "@supabase/supabase-js": "^2.4.1",
     "@types/eslint": "8.4.10",

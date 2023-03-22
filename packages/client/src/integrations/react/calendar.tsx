@@ -20,7 +20,7 @@ export const tileContent = (
   if (view === "month") {
     const events = eventDates.filter(({ date }) => isSameDay(date, givenDate));
     if (events.length !== 0) {
-      return <div>{events.map((event) => event.name)}</div>;
+      return <div>{events.map((event) => event.name + " ")}</div>;
     }
   }
 

@@ -10,11 +10,16 @@
     "createEventTitle": "Hozz létre egy eseményt",
     "createLocation": "A Helyszínek fül alatt nyomd meg a Helyszín hozzáadása gombot",
     "createLocationTitle": "Hozz létre egy helyszínt",
+    "justLogin": "Bejelentkezéshez kattints ide",
+    "login": "Bejelentkezés",
     "manageEvents": "Innentől kezdve kezelheted a folyamatban lévő eseményeidet. Megtervezheted a költségvetést, szétküldheted az automatikusan generált visszajelző űrlapot stb.",
     "manageEventsTitle": "Kezeld a eseményeidet",
     "manageProfile": "A fiókodat a Fiók fül alatt kezelheted (jelszó/nyelv változtatás, naptár)",
     "manageProfileTitle": "Kezeld a fiókodat",
+    "newAccount": "Regisztrációhoz kattints ide",
+    "pleaseLogin": "Hogy elkezdődhessen a szervezés, első körben be kell jelentkezned",
     "possibilities": "Kezdődhet is a szerverzés! Íme néhány lehetőség:",
+    "register": "Regisztráció",
     "welcome": "Üdvözlünk a Rendezvényszervezőnél!"
   }
 }

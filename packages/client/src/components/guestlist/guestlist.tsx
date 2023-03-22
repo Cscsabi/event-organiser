@@ -58,7 +58,7 @@ export const GuestList = component$((props: GuestListProps) => {
 
     if (props.openedFromEvent) {
       result = await client.getGuests.query({
-        userEmail: user.userEmail.toLowerCase(),
+        userEmail: user.userEmail ?? "",
         filteredByEvent: true,
         eventId: props.eventId ?? "",
         skip: store.lastpage > 0 ? 1 : undefined,
@@ -75,13 +75,13 @@ export const GuestList = component$((props: GuestListProps) => {
       store.connectableGuests = [];
       store.connectableGuests = (
         await client.getConnectableGuests.query({
-          userEmail: user.userEmail,
+          userEmail: user.userEmail ?? "",
           eventId: props.eventId,
         })
       ).guests;
     } else {
       result = await client.getGuests.query({
-        userEmail: user.userEmail,
+        userEmail: user.userEmail ?? "",
         filteredByEvent: false,
         skip: store.lastpage > 0 ? 1 : undefined,
         cursor: store.currentCursor,
@@ -412,7 +412,7 @@ export const generateEventGuestTable = (
       <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
         <td scope="row">
           <input
-            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             type="text"
             onChange$={(event) =>
               store.tableRows.map((row) => {
@@ -427,7 +427,7 @@ export const generateEventGuestTable = (
         <td scope="row">
           <input
             type="text"
-            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             onChange$={(event) =>
               store.tableRows.map((row) => {
                 if (row.id === guest.id) {
@@ -441,7 +441,7 @@ export const generateEventGuestTable = (
         <td scope="row">
           <input
             type="email"
-            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
             onChange$={(event) =>
               store.tableRows.map((row) => {
@@ -455,7 +455,7 @@ export const generateEventGuestTable = (
         </td>
         <td scope="row">
           <input
-            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             type="text"
             onChange$={(event) =>
               store.tableRows.map((row) => {
@@ -467,9 +467,9 @@ export const generateEventGuestTable = (
             value={guest.description}
           ></input>
         </td>
-        <td scope="row">
+        <td scope="row" class="text-center">
           <button
-            class="font-bold p-4 pl-10 text-sm text-indigo-600 dark:text-indigo-500 hover:underline"
+            class="font-bold py-4 text-sm text-indigo-600 dark:text-indigo-500 hover:underline"
             preventdefault:click
             onClick$={async () => {
               let rowFound = false;
@@ -532,17 +532,24 @@ export const addSelectedGuestsToEvent = (
   store: GuestListStore,
   eventId: string
 ) => {
+  let guestAdded;
   store.selectedGuests.forEach((selectedGuest) => {
     client.connectGuestToEvent.mutate({
       eventId: eventId,
       guestId: selectedGuest.id,
     });
+    guestAdded = true;
   });
 
   store.tableRows = [...store.tableRows, ...store.selectedGuests];
   store.selectedGuests = [];
   store.connectableGuests = [];
   store.connectableGuests = [...store.unselectedGuests];
+
+  if (guestAdded) {
+    store.empty = false;
+  }
+
   const checkboxes = document.getElementsByName("checkbox");
   for (const checkbox of checkboxes) {
     // @ts-ignore Property 'checked' does not exist on type 'HTMLElement'
@@ -580,7 +587,7 @@ export const saveGuestList = async (
             firstname: capitalize(guest.firstname ?? ""),
             lastname: capitalize(guest.lastname ?? ""),
             description: guest.description ?? undefined,
-            userEmail: user.userEmail,
+            userEmail: user.userEmail ?? "",
           });
         }
       } else if (props.openedFromEvent) {
@@ -590,7 +597,7 @@ export const saveGuestList = async (
           firstname: capitalize(guest.firstname ?? ""),
           lastname: capitalize(guest.lastname ?? ""),
           description: guest.description ?? undefined,
-          userEmail: user.userEmail.toLowerCase(),
+          userEmail: user.userEmail ?? "",
           eventId: props.eventId ?? "",
         });
       } else if (!props.openedFromEvent) {
@@ -599,7 +606,7 @@ export const saveGuestList = async (
           lastname: capitalize(guest.lastname ?? ""),
           email: guest.email?.toLowerCase(),
           description: guest.description ?? undefined,
-          userEmail: user.userEmail.toLowerCase(),
+          userEmail: user.userEmail ?? "",
         });
       }
     });

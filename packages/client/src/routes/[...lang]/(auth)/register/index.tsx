@@ -23,7 +23,6 @@ export default component$(() => {
     alreadyRegistered: false,
   });
 
-
   return (
     <Speak assets={["auth", "common"]}>
       <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white text-center">
@@ -41,7 +40,10 @@ export default component$(() => {
             false
           );
           if (result) {
-            navigate(generateRoutingLink(location.params.lang, paths.index));
+            navigate(
+              generateRoutingLink(location.params.lang, paths.index),
+              true
+            );
           } else {
             store.alreadyRegistered = true;
           }
@@ -105,7 +107,9 @@ export default component$(() => {
               type="email"
               name="email"
               minLength={6}
-              placeholder={t("common.emailPlaceholder@@sarah.smith@example.com")}
+              placeholder={t(
+                "common.emailPlaceholder@@sarah.smith@example.com"
+              )}
               pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               value={store.email}
               required

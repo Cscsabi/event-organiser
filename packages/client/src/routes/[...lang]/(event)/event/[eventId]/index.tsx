@@ -61,7 +61,7 @@ export default component$(() => {
       price: 0,
       state: "",
       street: "",
-      type: "",
+      type: "INTERIOR",
       zipCode: 0,
     },
     modalOpen: false,
@@ -90,7 +90,8 @@ export default component$(() => {
           generateRoutingLink(
             location.params.lang,
             paths.previousEvent + location.params.eventId
-          )
+          ),
+          true
         );
       }
 
@@ -115,7 +116,7 @@ export default component$(() => {
         price: event.location.price as unknown as number,
         state: event.location.address.state ?? undefined,
         street: event.location.address.street,
-        type: event.location.type ?? undefined,
+        type: event.location.type,
         zipCode: event.location.address.zip_code as unknown as number,
       };
 
@@ -353,7 +354,7 @@ export default component$(() => {
             allowFullScreen={false}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            class="w-[95%] h-[95%] float-right"
+            class="w-[95%] h-[100%] float-right"
           ></iframe>
         </div>
       </div>
@@ -370,14 +371,14 @@ export default component$(() => {
                     if (store.event) {
                       const result = await client.updateEvent.mutate({
                         id: location.params.eventId,
-                        userEmail: user.userEmail,
+                        userEmail: user.userEmail ?? "",
                         budget: store.event.budget,
                         startDate: getDateOrUndefined(store.event.startDate),
                         endDate: getDateOrUndefined(store.event.endDate),
                         headcount: store.event.headcount ?? undefined,
                         locationId: store.event.locationId,
                         name: store.event.name,
-                        type: store.event.type
+                        type: store.event.type,
                       });
 
                       if (result.status === Status.SUCCESS) {
@@ -426,7 +427,8 @@ export default component$(() => {
                       generateRoutingLink(
                         location.params.lang,
                         paths.location + store.event.locationId
-                      )
+                      ),
+                      true
                     )
                   }
                 >
@@ -436,7 +438,11 @@ export default component$(() => {
               <td>
                 <a
                   target="_blank"
-                  href={store.origin + paths.feedback + location.params.eventId}
+                  href={
+                    store.origin +
+                    generateRoutingLink(location.params.lang, paths.feedback) +
+                    location.params.eventId
+                  }
                 >
                   <button
                     type="button"
@@ -672,7 +678,7 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
   const user = useContext(CTX);
 
   const result = await client.getEvents.query({
-    email: user.userEmail,
+    email: user.userEmail ?? "",
   });
 
   return {

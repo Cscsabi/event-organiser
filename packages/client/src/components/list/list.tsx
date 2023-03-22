@@ -13,10 +13,10 @@ import { CTX } from "~/routes/[...lang]/layout";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import type {
-  EventTypeTranslation,
   GetEventsReturnType,
   GetLocationsReturnType,
   ListProps,
+  TypeTranslations,
 } from "~/utils/types";
 import Card from "../card/card";
 
@@ -24,13 +24,16 @@ export const List = component$((props: ListProps) => {
   const user = useContext(CTX);
   const searchInput = useSignal<string>("");
   const loading = useSignal(t("common.loading@@Loading..."));
-  const eventType = useStore<EventTypeTranslation>({
+  const typeTranslations = useStore<TypeTranslations>({
     wedding: t("event.wedding@@Wedding"),
     graduation: t("event.graduation@@Graduation"),
     party: t("event.party@@Party"),
     conference: t("event.conference@@Conference"),
     exhibition: t("event.exhibition@@Exhibition"),
     custom: t("event.custom@@Custom"),
+    interior: t("location.interior@@Interior"),
+    exterior: t("location.exterior@@Exterior"),
+    both: t("location.both@@Interior and Exterior"),
   });
 
   const eventResource = useResource$<GetEventsReturnType>(
@@ -40,7 +43,7 @@ export const List = component$((props: ListProps) => {
       const controller = new AbortController();
       cleanup(() => controller.abort());
       return client.getEvents.query({
-        email: user.userEmail,
+        email: user.userEmail ?? "",
       });
     }
   );
@@ -51,36 +54,14 @@ export const List = component$((props: ListProps) => {
       const controller = new AbortController();
       cleanup(() => controller.abort());
       return client.getLocations.query({
-        email: user.userEmail,
+        email: user.userEmail ?? "",
       });
     }
   );
 
   return (
-    <Speak assets={["list", "common", "event"]}>
+    <Speak assets={["list", "common", "event", "location"]}>
       <div class="w-full m-auto mb-20">
-        <div class="inline-block float-left ml-12">
-          <a
-            href={!props.isEvent ? paths.newLocation : paths.newEvent}
-            class={`${
-              !props.isActive && props.isActive !== undefined ? "hidden" : ""
-            } w-[10rem]`}
-          >
-            <button class="min-w-[10rem] min-h-[3rem] mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600">
-              {props.isEvent ? (
-                <div>
-                  <i class="fa-solid fa-calendar-plus"></i>{" "}
-                  {t("list.addEvent@@Add Event")}
-                </div>
-              ) : (
-                <div>
-                  <i class="fa-solid fa-map-pin"></i>{" "}
-                  {t("list.addLocation@@Add Location")}
-                </div>
-              )}
-            </button>
-          </a>
-        </div>
         <div class="flex justify-center items-center">
           <input
             preventdefault:change
@@ -101,7 +82,7 @@ export const List = component$((props: ListProps) => {
         searchInput,
         locationResource,
         loading,
-        eventType
+        typeTranslations
       )}
     </Speak>
   );
@@ -113,7 +94,7 @@ export const generateList = (
   searchInput: Signal<string>,
   locationResource: ResourceReturn<GetLocationsReturnType>,
   loading: Signal<string>,
-  eventType: EventTypeTranslation
+  typeTranslations: TypeTranslations
 ) => {
   return (
     <div>
@@ -145,17 +126,17 @@ export const generateList = (
                         id={event.id}
                         description={
                           event.type === "WEDDING"
-                            ? eventType.wedding
+                            ? typeTranslations.wedding
                             : event.type === "GRADUATION"
-                            ? eventType.graduation
+                            ? typeTranslations.graduation
                             : event.type === "PARTY"
-                            ? eventType.party
+                            ? typeTranslations.party
                             : event.type === "CONFERENCE"
-                            ? eventType.conference
+                            ? typeTranslations.conference
                             : event.type === "EXHIBITION"
-                            ? eventType.exhibition
+                            ? typeTranslations.exhibition
                             : event.type === "CUSTOM"
-                            ? eventType.custom
+                            ? typeTranslations.custom
                             : ""
                         }
                         name={event.name}
@@ -196,11 +177,19 @@ export const generateList = (
                     return (
                       <Card
                         id={location.id}
-                        description={location.type ?? ""}
-                        location={location.price?.toString()}
+                        description={
+                          location.type === "INTERIOR"
+                            ? typeTranslations.interior
+                            : location.type === "EXTERIOR"
+                            ? typeTranslations.exterior
+                            : location.type === "BOTH"
+                            ? typeTranslations.both
+                            : ""
+                        }
                         name={location.name}
                         type="location"
                         goTo={paths.location + location.id}
+                        location={location.address.city}
                         icon="location"
                         key={location.id}
                       />

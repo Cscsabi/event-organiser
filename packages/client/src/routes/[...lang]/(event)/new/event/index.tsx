@@ -42,7 +42,7 @@ export default component$(() => {
 
       const controller = new AbortController();
       cleanup(() => controller.abort());
-      return client.getLocations.query({ email: user.userEmail });
+      return client.getLocations.query({ email: user.userEmail ?? "" });
     }
   );
 
@@ -62,7 +62,7 @@ export default component$(() => {
               headcount: store.headcount ?? undefined,
               name: store.name,
               type: store.type,
-              userEmail: user.userEmail,
+              userEmail: user.userEmail ?? "",
               locationId: store.locationId,
             });
 
@@ -71,7 +71,7 @@ export default component$(() => {
                 generateRoutingLink(
                   location.params.lang,
                   paths.event + result.event.id
-                )
+                ), true
               );
             }
           }}

@@ -31,9 +31,9 @@ export default component$((card: CardProps) => {
           >
             <div class="relative text-black dark:text-slate-200">
               {card.icon === "event" ? (
-                <i class="fa-regular fa-calendar-days fa-xl"></i>
+                <i class="fa-regular fa-calendar-days fa-xl fa-beat"></i>
               ) : (
-                <i class="fa-solid fa-building fa-xl"></i>
+                <i class="fa-solid fa-building fa-xl fa-beat"></i>
               )}
             </div>
             <h2 class="font-bold text-xl">{card.name}</h2>

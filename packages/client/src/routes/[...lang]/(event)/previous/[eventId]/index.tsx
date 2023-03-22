@@ -34,7 +34,8 @@ export default component$(() => {
     if (event) {
       if (event.endDate != null && event.endDate >= new Date()) {
         navigate(
-          generateRoutingLink(params.lang, paths.event + params.eventId)
+          generateRoutingLink(params.lang, paths.event + params.eventId),
+          true
         );
       }
 
@@ -57,7 +58,7 @@ export default component$(() => {
     const controller = new AbortController();
     cleanup(() => controller.abort());
     return client.getGuests.query({
-      userEmail: user.userEmail,
+      userEmail: user.userEmail ?? "",
       filteredByEvent: true,
       eventId: params.eventId,
     });
@@ -314,7 +315,8 @@ export default component$(() => {
             generateRoutingLink(
               params.lang,
               paths.location + newEventStore.value?.locationId
-            )
+            ),
+            true
           );
         }}
       >
@@ -327,7 +329,7 @@ export default component$(() => {
 export const onStaticGenerate: StaticGenerateHandler = async () => {
   const user = useContext(CTX);
   const result = await client.getEvents.query({
-    email: user.userEmail,
+    email: user.userEmail ?? "",
   });
 
   return {

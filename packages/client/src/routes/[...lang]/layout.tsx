@@ -34,9 +34,7 @@ export default component$(() => {
   const locale = useSpeakLocale();
   const location = useLocation();
   const navigate = useNavigate();
-  const user = useStore<UserContext>({
-    userEmail: "",
-  });
+  const user = useStore<UserContext>({});
 
   useContextProvider<UserContext>(CTX, user);
 
@@ -56,8 +54,7 @@ export default component$(() => {
       pathname = `/${newLocale.lang}${pathname}`;
     }
 
-    // No full-page reload
-    navigate(pathname);
+    navigate(pathname, true);
   });
 
   useVisibleTask$(async ({ track }) => {
@@ -65,11 +62,13 @@ export default component$(() => {
 
     console.log(user.userEmail);
 
-    if (user.userEmail === "") {
+    if (user.userEmail === undefined) {
       user.userEmail = (await getUser()).data.user?.email ?? "";
     }
 
-    const userData = await client.getUser.query({ email: user.userEmail });
+    const userData = await client.getUser.query({
+      email: user.userEmail ?? "",
+    });
 
     user.privateHeader = user.userEmail !== "";
     user.darkModeEnabled = userData.user?.darkModeEnabled;
@@ -98,7 +97,7 @@ export default component$(() => {
 
     console.log(user.userEmail);
 
-    if (user.userEmail === "") {
+    if (user.userEmail === undefined) {
       const userResponse = await getUser();
       user.privateHeader = user.userEmail !== "";
 
@@ -109,10 +108,11 @@ export default component$(() => {
             path.endsWith("/login/") ||
             path.endsWith("/register/") ||
             path === "/hu-HU/" ||
+            path.includes("/feedback/") ||
             path === "/"
           )
         ) {
-          navigate(generateRoutingLink(location.params.lang, paths.login));
+          navigate(generateRoutingLink(location.params.lang, paths.login), true);
         }
       } else {
         user.userEmail = userResponse.data.user?.email ?? "";

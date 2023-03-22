@@ -1,7 +1,7 @@
 {
   "budgetPlanning": {
-    "amount": "Mennyiség",
     "contactName": "Szolgáltató neve",
+    "cost": "Költség",
     "paid": "Fizetve",
     "percent": "%",
     "remaining": "Fennmaradó:",

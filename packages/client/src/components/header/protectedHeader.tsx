@@ -48,7 +48,7 @@ export const ProtectedHeader = component$(() => {
                   onClick$={() => {
                     user.darkModeEnabled = !user.darkModeEnabled;
                     client.updateUser.mutate({
-                      params: { email: user.userEmail },
+                      params: { email: user.userEmail ?? "" },
                       body: {
                         darkModeEnabled: user.darkModeEnabled,
                       },
@@ -148,11 +148,11 @@ export const ProtectedHeader = component$(() => {
                 <button
                   onClick$={async () => {
                     navigate(
-                      generateRoutingLink(location.params.lang, paths.logout)
+                      generateRoutingLink(location.params.lang, paths.logout), true
                     );
                     await logoutUser();
 
-                    user.userEmail = "";
+                    user.userEmail = undefined;
                   }}
                 >
                   <i class="fa-solid fa-right-from-bracket"></i>{" "}

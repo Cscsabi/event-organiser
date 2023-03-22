@@ -1,5 +1,12 @@
-import { component$, Resource, useContext, useResource$, useStore } from "@builder.io/qwik";
+import {
+  component$,
+  Resource,
+  useContext,
+  useResource$,
+  useStore,
+} from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import type { LocationType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
 import Toast from "~/components/toast/toast";
@@ -26,7 +33,7 @@ export default component$(() => {
     street: "",
     state: "",
     zipCode: 0,
-    type: "",
+    type: "INTERIOR",
     price: 0,
     phone: "",
     link: "",
@@ -49,7 +56,7 @@ export default component$(() => {
             price: store.price,
             phone: store.phone,
             link: store.link,
-            userEmail: user.userEmail,
+            userEmail: user.userEmail ?? "",
             addressId: store.addressId,
             address: {
               city: store.city,
@@ -65,7 +72,8 @@ export default component$(() => {
 
           if (result.status === Status.SUCCESS) {
             navigate(
-              generateRoutingLink(location.params.lang, paths.locations)
+              generateRoutingLink(location.params.lang, paths.locations),
+              true
             );
           } else {
             const toast = document.getElementById("failedToast");
@@ -123,17 +131,27 @@ export default component$(() => {
             >
               {t("location.locationType@@Location Type:")}
             </label>
-            <input
+            <select
               class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
-              onInput$={(event) =>
-                (store.type = (event.target as HTMLInputElement).value)
+              name="country"
+              onChange$={(event) =>
+                (store.type = (event.target as unknown as HTMLInputElement)
+                  .value as LocationType)
               }
-              type="text"
-              name="locationType"
-              placeholder={t(
-                "location.locationTypePlaceholder@@Type of Location"
-              )}
-            ></input>
+            >
+              <option value="" selected disabled hidden>
+                {store.chooseHere}
+              </option>
+              <option value="INTERIOR">
+                {t("location.interior@@Interior")}
+              </option>
+              <option value="EXTERIOR">
+                {t("location.exterior@@Exterior")}
+              </option>
+              <option value="BOTH">
+                {t("location.both@@Interior and Exterior")}
+              </option>
+            </select>
           </div>
           <div>
             <label

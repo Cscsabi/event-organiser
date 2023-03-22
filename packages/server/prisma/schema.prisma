@@ -51,7 +51,7 @@ model Location {
   description String?
   address     Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
   addressId   String  @unique
-  type        String?
+  type        LocationType
   price       Decimal?
   phone       String?
   link        String?
@@ -155,4 +155,10 @@ enum EventType {
   CONFERENCE
   EXHIBITION
   CUSTOM
+}
+
+enum LocationType {
+  INTERIOR
+  EXTERIOR
+  BOTH
 }

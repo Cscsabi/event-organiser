@@ -10,11 +10,16 @@
     "createEventTitle": "Create an Event",
     "createLocation": "Go to the Locations tab, click the Add Location button and create a new location",
     "createLocationTitle": "Create a location",
+    "justLogin": "Click here if you already have an account",
+    "login": "Login",
     "manageEvents": "Now you can manage your ongoing events. Plan your budget, have your guests fill out a generated form etc.",
     "manageEventsTitle": "Manage your events",
     "manageProfile": "You can manage your profile under the Profile tab (change password/language, check out your calendar)",
     "manageProfileTitle": "Manage your profile",
+    "newAccount": "Click here to create a new account",
+    "pleaseLogin": "To be able to start organising event first you need to create a new profile",
     "possibilities": "Start organising! Check out your possibilities:",
+    "register": "Register",
     "welcome": "Welcome to Event Organiser!"
   }
 }

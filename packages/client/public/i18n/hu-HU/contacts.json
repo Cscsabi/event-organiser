@@ -3,7 +3,7 @@
     "addContact": "Szolgáltató hozzáadása",
     "contactNamePlaceholder": "Minta Kft.",
     "contacts": "Szolgáltató neve:",
-    "descriptionPlaceholder": "Something important about this contact...",
+    "descriptionPlaceholder": "Valami fontos információ...",
     "noContacts": "Még nincs felvéve egy szolgáltatód sem."
   }
 }

@@ -51,13 +51,13 @@ export default component$(() => {
       pathname = `/${newLocale.lang}${pathname}`;
     }
 
-    navigate(pathname);
+    navigate(pathname, true);
   });
 
   useVisibleTask$(async ({ track }) => {
     track(() => user.userEmail);
 
-    const userData = await getUserData(user.userEmail);
+    const userData = await getUserData(user.userEmail ?? "");
 
     if (userData.user) {
       store.firstname = userData.user.firstname;
@@ -65,7 +65,7 @@ export default component$(() => {
       store.language = userData.user.language ?? undefined;
     }
 
-    store.events = await getEvents(user.userEmail);
+    store.events = await getEvents(user.userEmail ?? "");
   });
 
   return (
@@ -130,7 +130,7 @@ export default component$(() => {
             </label>
             <div class="inline-block w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
               <select
-                class="mx-6 my-4 bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="mx-6 my-4 bg-gray-200 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange$={(event) => {
                   store.language = (
                     event.target as unknown as HTMLInputElement
@@ -200,7 +200,7 @@ export default component$(() => {
                     ?.classList.add("hidden");
                   const userResponse = await changePassword({
                     sendEmailInput: {
-                      recieverEmail: user.userEmail,
+                      recieverEmail: user.userEmail ?? "",
                       html: `<div><h1>${t("profile.passwordUpdated1@@Dear,")} ${
                         store.firstname
                       }!</h1><h2>${t(
@@ -324,7 +324,7 @@ export async function getEvents(email: string) {
 
 export function save(store: ProfilStore, user: UserContext) {
   return client.updateUser.mutate({
-    params: { email: user.userEmail },
+    params: { email: user.userEmail ?? "" },
     body: {
       firstname: store.firstname,
       lastname: store.lastname,
