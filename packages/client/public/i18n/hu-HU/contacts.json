@@ -1,6 +1,7 @@
 {
   "contacts": {
     "addContact": "Szolgáltató hozzáadása",
+    "contactLinkPlaceholder": "Minta URL",
     "contactNamePlaceholder": "Minta Kft.",
     "contacts": "Szolgáltató neve:",
     "descriptionPlaceholder": "Valami fontos információ...",

@@ -1,5 +1,8 @@
 import {
-  component$, useContext, useStore, useVisibleTask$
+  component$,
+  useContext,
+  useStore,
+  useVisibleTask$,
 } from "@builder.io/qwik";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
@@ -10,19 +13,9 @@ import { client } from "~/utils/trpc";
 import type {
   GuestListProps,
   GuestListStore,
-  GuestType,
-  UserContext
+  UserContext,
 } from "~/utils/types";
 import Toast from "../toast/toast";
-
-export const EMPTY_ROW = {
-  id: "",
-  email: "",
-  userEmail: "",
-  firstname: "",
-  lastname: "",
-  description: "",
-} as GuestType;
 
 export enum ExecuteUseClientEffect {
   INITIAL,
@@ -39,14 +32,13 @@ export const GuestList = component$((props: GuestListProps) => {
     selectedGuests: [],
     unselectedGuests: [],
     useClientEffectHook: ExecuteUseClientEffect.INITIAL,
-    empty: undefined,
     lastpage: 0,
     currentCursor: undefined,
     oldCursor: undefined,
     nextButtonClicked: undefined,
     endOfList: false,
     searchInput: "",
-    searchInput2: ""
+    searchInput2: "",
   });
 
   useVisibleTask$(async ({ track }) => {
@@ -99,13 +91,6 @@ export const GuestList = component$((props: GuestListProps) => {
     store.tableRows = [...result.guests];
     store.unselectedGuests = [...store.connectableGuests];
     store.endOfList = store.tableRows.length !== 10;
-    console.log("e", store.endOfList);
-
-    if (store.tableRows.length > 0) {
-      store.empty = false;
-    } else {
-      store.empty = true;
-    }
   });
 
   return (
@@ -124,15 +109,6 @@ export const GuestList = component$((props: GuestListProps) => {
         />
       </div>
       <div class="relative overflow-x-auto sm:rounded-lg">
-        {store.empty === undefined ? (
-          ""
-        ) : !store.empty ? (
-          ""
-        ) : (
-          <h1 class="mt-6 mb-6 text-3xl font-bold text-black dark:text-white text-center">
-            {t("guestlist.noGuests@@You have no guests yet!")} &#128563;
-          </h1>
-        )}
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
@@ -155,10 +131,12 @@ export const GuestList = component$((props: GuestListProps) => {
         </table>
         <div class="mt-6">
           <button
-            disabled={
+            style={`${
               store.lastpage === 0 ||
               (store.searchInput !== "" && store.endOfList)
-            }
+                ? "pointer-events:none"
+                : ""
+            }`}
             onClick$={() => {
               store.nextButtonClicked = false;
               store.lastpage--;
@@ -184,7 +162,7 @@ export const GuestList = component$((props: GuestListProps) => {
             </svg>
           </button>
           <button
-            disabled={store.endOfList}
+            style={`${store.endOfList ? "pointer-events:none" : ""}`}
             onClick$={() => {
               store.nextButtonClicked = true;
               store.lastpage++;
@@ -254,9 +232,7 @@ export const GuestList = component$((props: GuestListProps) => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {generateSelectableGuestTable(store)}
-                  </tbody>
+                  <tbody>{generateSelectableGuestTable(store)}</tbody>
                 </table>
               </div>
               <button
@@ -290,16 +266,7 @@ export const GuestList = component$((props: GuestListProps) => {
         } mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600`}
         type="button"
       >
-        {t("guestlist.existingGuests@@Show Existing Guests")}
-      </button>
-      <button
-        preventdefault:click
-        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-        onClick$={() => {
-          store.tableRows = [...store.tableRows, EMPTY_ROW];
-        }}
-      >
-        {t("common.addRow@@Add Row")}
+        {t("guestlist.existingGuests@@Show uninvited Guests")}
       </button>
       <button
         class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
@@ -325,9 +292,7 @@ export const GuestList = component$((props: GuestListProps) => {
   );
 });
 
-export const generateSelectableGuestTable = (
-  store: GuestListStore,
-) => {
+export const generateSelectableGuestTable = (store: GuestListStore) => {
   return store.connectableGuests
     .filter((guest) => {
       if (store.searchInput.length > 0) {
@@ -370,7 +335,7 @@ export const generateSelectableGuestTable = (
           </td>
           <td
             scope="row"
-            class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
+            class="px-6 py-4 text-lg font-medium text-gray-900 dark:text-white"
           >
             <input
               class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
@@ -410,64 +375,34 @@ export const generateEventGuestTable = (
   return store.tableRows.map((guest) => {
     return (
       <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
-        <td scope="row">
-          <input
-            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            type="text"
-            onChange$={(event) =>
-              store.tableRows.map((row) => {
-                if (row.id === guest.id) {
-                  row.firstname = (event.target as HTMLInputElement).value;
-                }
-              })
-            }
-            value={guest.firstname}
-          ></input>
+        <td
+          scope="row"
+          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.firstname}
         </td>
-        <td scope="row">
-          <input
-            type="text"
-            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            onChange$={(event) =>
-              store.tableRows.map((row) => {
-                if (row.id === guest.id) {
-                  row.lastname = (event.target as HTMLInputElement).value;
-                }
-              })
-            }
-            value={guest.lastname}
-          ></input>
+        <td
+          scope="row"
+          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.lastname}
         </td>
-        <td scope="row">
-          <input
-            type="email"
-            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-            onChange$={(event) =>
-              store.tableRows.map((row) => {
-                if (row.id === guest.id) {
-                  row.email = (event.target as HTMLInputElement).value;
-                }
-              })
-            }
-            value={guest.email}
-          ></input>
+        <td
+          scope="row"
+          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.email}
         </td>
-        <td scope="row">
-          <input
-            class="block w-full py-4 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-green-600 focus:border-green-600 dark:bg-inherit dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            type="text"
-            onChange$={(event) =>
-              store.tableRows.map((row) => {
-                if (row.id === guest.id) {
-                  row.description = (event.target as HTMLInputElement).value;
-                }
-              })
-            }
-            value={guest.description}
-          ></input>
+        <td
+          scope="row"
+          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          {guest.description}
         </td>
-        <td scope="row" class="text-center">
+        <td
+          scope="row"
+          class="text-center px-6  text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           <button
             class="font-bold py-4 text-sm text-indigo-600 dark:text-indigo-500 hover:underline"
             preventdefault:click
@@ -532,23 +467,17 @@ export const addSelectedGuestsToEvent = (
   store: GuestListStore,
   eventId: string
 ) => {
-  let guestAdded;
   store.selectedGuests.forEach((selectedGuest) => {
     client.connectGuestToEvent.mutate({
       eventId: eventId,
       guestId: selectedGuest.id,
     });
-    guestAdded = true;
   });
 
   store.tableRows = [...store.tableRows, ...store.selectedGuests];
   store.selectedGuests = [];
   store.connectableGuests = [];
   store.connectableGuests = [...store.unselectedGuests];
-
-  if (guestAdded) {
-    store.empty = false;
-  }
 
   const checkboxes = document.getElementsByName("checkbox");
   for (const checkbox of checkboxes) {

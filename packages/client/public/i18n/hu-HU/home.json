@@ -2,7 +2,7 @@
   "home": {
     "addContacts": "A Szolgáltatók fül alatt nyomd meg a Szolgáltató hozzáadása gombot",
     "addContactsTitle": "Adj hozzá szolgáltatókat",
-    "addGuests": "A Vendégek fül alatt adj hozzá közvetlenül új vendégeket. Nyomd meg a sor hozzáadása gombot, hogy több vendéget vehess fel egyszerre",
+    "addGuests": "A Vendégek fül alatt nyomd meg a Vendég hozzáadása gombot",
     "addGuestsTitle": "Vegyél fel vendégeket",
     "browsePreviousEvents": "Miután megtörténtek az események, azok átkerülnek az Előző események fül alá",
     "browsePreviousEventsTitle": "Böngészd előző eseményeidet",

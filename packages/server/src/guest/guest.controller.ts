@@ -112,6 +112,34 @@ export const getGuestsController = async ({
   }
 };
 
+export const getPreviousGuestsController = async ({
+  getGuestsInput,
+}: {
+  getGuestsInput: GetGuestsInput;
+}) => {
+  try {
+    const guests = await prisma.guest.findMany({
+      where: {
+        userEmail: getGuestsInput.userEmail,
+        eventGuest: {
+          some: {
+            eventId: getGuestsInput.eventId,
+          },
+        },
+      },
+      orderBy: { id: "asc" },
+    });
+
+    return {
+      status: Status.SUCCESS,
+      guests,
+    };
+  } catch (error) {
+    console.error("Invalid input!");
+    throw error;
+  }
+};
+
 export const getConnectableGuestsController = async ({
   getGuestsInput,
 }: {
@@ -127,7 +155,6 @@ export const getConnectableGuestsController = async ({
             eventId: getGuestsInput.eventId,
           },
         },
-      
       },
       orderBy: { id: "asc" },
     });

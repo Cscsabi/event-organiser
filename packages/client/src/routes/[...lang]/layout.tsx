@@ -112,7 +112,10 @@ export default component$(() => {
             path === "/"
           )
         ) {
-          navigate(generateRoutingLink(location.params.lang, paths.login), true);
+          navigate(
+            generateRoutingLink(location.params.lang, paths.login),
+            true
+          );
         }
       } else {
         user.userEmail = userResponse.data.user?.email ?? "";

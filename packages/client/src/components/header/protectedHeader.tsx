@@ -148,7 +148,8 @@ export const ProtectedHeader = component$(() => {
                 <button
                   onClick$={async () => {
                     navigate(
-                      generateRoutingLink(location.params.lang, paths.logout), true
+                      generateRoutingLink(location.params.lang, paths.logout),
+                      true
                     );
                     await logoutUser();
 

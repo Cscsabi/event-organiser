@@ -2,6 +2,9 @@
   "event": {
     "activeEvents": "Aktív események",
     "additional": "További hasznos információk",
+    "attachmentText": "Szia!",
+    "attachmentText2": "meghívott téged erre az eseményre. Kérlek töltsd ki az erről szóló űrlapot: ",
+    "bestWishes": "Üdvözlettel, a rendezvényszervező csapata!",
     "budget": "Költségvetési keret:",
     "budgetPlanning": "Költségvetés-tervezés:",
     "cannotBeModified": "Az előző események már nem módosíthatóak!",
@@ -34,6 +37,7 @@
     "party": "Buli",
     "plusOne": "Plusz egy",
     "previousEvent": "Előző Esemény",
+    "sendEventDataToGuests": "Emailben küldés vendégeknek",
     "showFeedbacks": "Visszajelzések megnyitása",
     "showGuestlist": "Vendéglista megnyitása",
     "showInGoogleMaps": "Google Maps megnyitása",

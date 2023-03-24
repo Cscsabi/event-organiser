@@ -14,6 +14,7 @@ export const contactInput = z.object({
   phone: z.string().optional(),
   email: z.string().optional(),
   description: z.string().optional(),
+  link: z.string().optional(),
   userEmail: z.string(),
 });
 

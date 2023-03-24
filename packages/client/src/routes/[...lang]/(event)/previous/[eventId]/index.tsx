@@ -5,11 +5,16 @@ import {
   useResource$,
   useSignal,
   useContext,
+  useStore,
 } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
-import type { NewEventStore, GetGuestReturnType } from "~/utils/types";
+import type {
+  NewEventStore,
+  GetGuestReturnType,
+  GuestTranslations,
+} from "~/utils/types";
 import { paths } from "~/utils/paths";
 import {
   generateRoutingLink,
@@ -28,6 +33,13 @@ export default component$(() => {
   const navigate = useNavigate();
   const user = useContext(CTX);
   const loading = useSignal<string>(t("common.loading@@Loading..."));
+  const guestTranslations = useStore<GuestTranslations>({
+    email: t("common.email@@Email"),
+    firstname: t("common.firstname@@First name"),
+    guestlist: t("event.guestlist@@Guestlist:"),
+    lastname: t("common.lastname@@Last name"),
+    specialNeeds: t("event.specialNeeds@@Special needs"),
+  });
 
   useVisibleTask$(async () => {
     const event = await getCurrentEvent(params.eventId);
@@ -57,7 +69,7 @@ export default component$(() => {
     track(() => user.userEmail);
     const controller = new AbortController();
     cleanup(() => controller.abort());
-    return client.getGuests.query({
+    return client.getPreviousGuests.query({
       userEmail: user.userEmail ?? "",
       filteredByEvent: true,
       eventId: params.eventId,
@@ -208,6 +220,8 @@ export default component$(() => {
             value={resource}
             onPending={() => <div>{loading.value}</div>}
             onResolved={(result: GetGuestReturnType) => {
+              console.log(result.guests);
+
               return (
                 <div>
                   {result.guests.length === 0 ? (
@@ -218,22 +232,22 @@ export default component$(() => {
                         class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
                         for="guestlist"
                       >
-                        {t("event.guestlist@@Guestlist:")}
+                        {guestTranslations.guestlist}
                       </label>
-                      <table class="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400">
+                      <table class="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                           <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
                             <th scope="col" class="px-6 py-4">
-                              {t("common.firstname@@First name")}
+                              {guestTranslations.firstname}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                              {t("common.lastname@@Last name")}
+                              {guestTranslations.lastname}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                              {t("common.email@@Email")}
+                              {guestTranslations.email}
                             </th>
                             <th scope="col" class="px-6 py-4">
-                              {t("event.specialNeeds@@Special needs")}
+                              {guestTranslations.specialNeeds}
                             </th>
                           </tr>
                         </thead>

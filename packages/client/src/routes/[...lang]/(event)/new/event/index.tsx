@@ -71,7 +71,8 @@ export default component$(() => {
                 generateRoutingLink(
                   location.params.lang,
                   paths.event + result.event.id
-                ), true
+                ),
+                true
               );
             }
           }}
@@ -113,7 +114,7 @@ export default component$(() => {
                 }
               >
                 <option value="" selected disabled hidden>
-                  {t("event.chooseHere@@Choose here")}
+                  {store.chooseHere}
                 </option>
                 <option value="WEDDING">{t("event.wedding@@Wedding")}</option>
                 <option value="GRADUATION">

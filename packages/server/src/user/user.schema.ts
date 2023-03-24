@@ -44,8 +44,24 @@ export const sendEmailInput = z.object({
   name: z.string().optional(),
 });
 
+export const sendEmailWithAttachmentInput = z.object({
+  senderFirstname: z.string(),
+  senderLastname: z.string(),
+  subject: z.string(),
+  text: z.string(),
+  html: z.string(),
+  email: z.string(),
+  name: z.string().optional(),
+  filename: z.string(),
+  contentType: z.string(),
+  base64Content: z.string(),
+});
+
 export type ParamsInput = z.TypeOf<typeof params>;
 export type FilterQueryInput = z.TypeOf<typeof filterQuery>;
 export type CreateUserInput = z.TypeOf<typeof createUserSchema>;
 export type UpdateUserInput = z.TypeOf<typeof updateUserSchema>;
 export type SendEmailInput = z.TypeOf<typeof sendEmailInput>;
+export type SendEmailWithAttachmentInput = z.TypeOf<
+  typeof sendEmailWithAttachmentInput
+>;

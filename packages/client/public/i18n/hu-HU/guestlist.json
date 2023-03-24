@@ -1,7 +1,10 @@
 {
   "guestlist": {
+    "addGuest": "Vendég hozzáadása",
     "addSelectedGuests": "Kiválasztott vendégek eseményhez rendelése",
-    "existingGuests": "Létező vendégek listája",
+    "existingGuests": "Meghívatlan vendégek listája",
+    "guestFirstnamePlaceholder": "Sarah",
+    "guestLastnamePlaceholder": "Smith",
     "noGuests": "Még egy vendéged sincs!",
     "noMoreToAdd": "Nincs több eseményhez rendelhető vendéged!",
     "saveGuestlist": "Vendéglista mentése",

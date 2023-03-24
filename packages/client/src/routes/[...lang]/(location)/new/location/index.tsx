@@ -201,7 +201,7 @@ export default component$(() => {
               onInput$={(event) =>
                 (store.link = (event.target as HTMLInputElement).value)
               }
-              type="text"
+              type="url"
               name="link"
               placeholder={t("location.linkPlaceholder@@www.example.com")}
             ></input>

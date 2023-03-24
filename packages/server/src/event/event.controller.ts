@@ -166,6 +166,7 @@ export const getEventController = async ({
             address: true,
           },
         },
+        user: true,
       },
     });
 

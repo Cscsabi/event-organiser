@@ -34,6 +34,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       phone: "",
       email: "",
       description: "",
+      link: "",
       userEmail: "",
     },
   };
@@ -71,6 +72,7 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
               id: row.contact.id,
               name: row.contact.name,
               phone: row.contact.phone,
+              link: row.contact.link,
               userEmail: row.contact.userEmail,
             },
           });
@@ -139,17 +141,6 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
         type="button"
         hidden={!props.active}
         onClick$={() => {
-          console.log(store.budgetPlanning);
-          store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW];
-        }}
-      >
-        {t("common.addRow@@Add Row")}
-      </button>
-      <button
-        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-        type="button"
-        hidden={!props.active}
-        onClick$={() => {
           saveRows(store);
           const toast = document.getElementById("successToast2");
           if (toast) {
@@ -206,6 +197,7 @@ export const generateBudgetPlanningBody = async (
                             id: selectedContact.contact.id,
                             name: selectedContact.contact.name,
                             phone: selectedContact.contact.phone,
+                            link: row.contact.link,
                             userEmail: selectedContact.contact.userEmail,
                           };
                           row.contact.name = store.contact.name;

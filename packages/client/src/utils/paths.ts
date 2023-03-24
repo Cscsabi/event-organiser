@@ -18,4 +18,5 @@ export const paths = {
   newContact: "/new/contact",
   feedback: "/feedback/",
   hungarian: "/hu-HU",
+  newGuest: "/new/guest",
 };

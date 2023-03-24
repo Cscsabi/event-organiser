@@ -125,6 +125,7 @@ model Contact {
   phone            String?
   email            String?
   description      String?
+  link             String?
   budgetPlanning   BudgetPlanning[]
   user             User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   userEmail        String

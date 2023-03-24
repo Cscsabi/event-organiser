@@ -1,12 +1,38 @@
-import { component$, useVisibleTask$, useSignal } from "@builder.io/qwik";
+import { component$, useVisibleTask$, useSignal, $ } from "@builder.io/qwik";
 import { paths } from "~/utils/paths";
-import { useLocation } from "@builder.io/qwik-city";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { generateRoutingLink } from "~/utils/common.functions";
-import { $translate as t, Speak } from "qwik-speak";
+import {
+  $translate as t,
+  Speak,
+  useSpeakConfig,
+  type SpeakLocale,
+} from "qwik-speak";
 
 export const PublicHeader = component$(() => {
+  const isEnglish = useSignal<boolean>();
   const darkMode = useSignal<boolean>();
   const location = useLocation();
+  const navigate = useNavigate();
+  const config = useSpeakConfig();
+
+  const localizeUrl$ = $((newLocale: SpeakLocale) => {
+    let pathname = location.url.pathname;
+    if (location.params.lang) {
+      if (newLocale.lang !== config.defaultLocale.lang) {
+        pathname = pathname.replace(location.params.lang, newLocale.lang);
+      } else {
+        pathname = pathname.replace(
+          new RegExp(`(/${location.params.lang}/)|(/${location.params.lang}$)`),
+          "/"
+        );
+      }
+    } else if (newLocale.lang !== config.defaultLocale.lang) {
+      pathname = `/${newLocale.lang}${pathname}`;
+    }
+
+    navigate(pathname, true);
+  });
 
   useVisibleTask$(({ track }) => {
     track(() => darkMode.value);
@@ -50,11 +76,40 @@ export const PublicHeader = component$(() => {
                 >
                   {!darkMode.value ? (
                     <div>
-                      <i class="fa-regular fa-moon "></i> {t("header.dark@@Dark mode")}
+                      <i class="fa-regular fa-moon "></i>{" "}
+                      {t("header.dark@@Dark mode")}
                     </div>
                   ) : (
                     <div>
-                      <i class="fa-regular fa-sun "></i> {t("header.light@@Light mode")}
+                      <i class="fa-regular fa-sun "></i>{" "}
+                      {t("header.light@@Light mode")}
+                    </div>
+                  )}
+                </button>
+              </div>
+            </li>
+            <li>
+              <div class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+                <button
+                  onClick$={async () => {
+                    isEnglish.value = !isEnglish.value;
+                    const speakLocale: SpeakLocale = isEnglish.value
+                      ? { lang: "en-US" }
+                      : { lang: "hu-HU" };
+
+                    localizeUrl$(speakLocale);
+                  }}
+                  type="button"
+                >
+                  {!isEnglish.value ? (
+                    <div>
+                      <i class="fa-solid fa-language"></i>{" "}
+                      {t("header.english@@English")}
+                    </div>
+                  ) : (
+                    <div>
+                      <i class="fa-solid fa-language"></i>{" "}
+                      {t("header.hungarian@@Hungarian")}
                     </div>
                   )}
                 </button>
@@ -68,7 +123,8 @@ export const PublicHeader = component$(() => {
                   class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                   href={generateRoutingLink(location.params.lang, paths.login)}
                 >
-                  <i class="fa-solid fa-right-to-bracket"></i> {t("common.login@@Login")}
+                  <i class="fa-solid fa-right-to-bracket"></i>{" "}
+                  {t("common.login@@Login")}
                 </a>
               </li>
               <li>
@@ -79,7 +135,8 @@ export const PublicHeader = component$(() => {
                     paths.register
                   )}
                 >
-                  <i class="fa-solid fa-user-plus"></i> {t("common.register@@Register")}
+                  <i class="fa-solid fa-user-plus"></i>{" "}
+                  {t("common.register@@Register")}
                 </a>
               </li>
             </ul>

@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const getFeedbackInput = z.object({
-    guestEmail: z.string(),
-    eventId: z.string(),
-  });
+  guestEmail: z.string(),
+  eventId: z.string(),
+});
 
 export const addFeedbackInput = z.object({
   eventId: z.string(),

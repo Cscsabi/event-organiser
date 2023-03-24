@@ -10,7 +10,6 @@ import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import * as ics from "ics";
 import { $translate as t, Speak } from "qwik-speak";
 import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
 import { GuestList } from "~/components/guestlist/guestlist";
@@ -24,6 +23,7 @@ import {
   getDateOrUndefined,
   getProperDateFormat,
   getProperTimeFormat,
+  sendEmailWithAttachment,
 } from "~/utils/common.functions";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
@@ -34,6 +34,8 @@ import type {
   NewEventStore,
   UserContext,
 } from "~/utils/types";
+import * as ics from "ics";
+import { Buffer } from "buffer";
 
 export default component$(() => {
   const location = useLocation();
@@ -80,6 +82,15 @@ export default component$(() => {
       ),
     },
     loading: t("common.loading@@Loading..."),
+    attachmentTranslation: {
+      attachmentText: t("event.attachmentText@@Hi!"),
+      attachmentText2: t(
+        "event.attachmentText2@@invited you to this event. Please fill out the following form: "
+      ),
+      bestWishes: t(
+        "event.bestWishes@@Best wishes from the event organiser team!"
+      ),
+    },
   });
 
   useVisibleTask$(async () => {
@@ -193,7 +204,7 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-lg font-medium text-gray-900F dark:text-white"
                 for="eventType"
               >
                 {t("event.eventType@@Event Type:")}
@@ -413,10 +424,18 @@ export default component$(() => {
                   class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   preventdefault:click
                   onClick$={() => {
-                    exportToCalendar(store, user);
+                    sendDataToGuestsViaEmail(
+                      store,
+                      user,
+                      location.params.eventId,
+                      location.params.lang
+                    );
+                    console.log("meg");
                   }}
                 >
-                  {t("event.exportToCalendar@@Export to Calendar")}
+                  {t(
+                    "event.sendEventDataToGuests@@Send event to Guests via email"
+                  )}
                 </button>
               </td>
               <td>
@@ -693,14 +712,64 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
   };
 };
 
-export const exportToCalendar = async (
+export const sendDataToGuestsViaEmail = async (
   store: EventStore,
-  user: UserContext
+  user: UserContext,
+  eventId: string,
+  lang: string
 ) => {
+  const event = await createICSFile(store, user);
+  if (event === undefined) {
+    return;
+  }
+
+  const content = await event.text();
+  const base64Content = Buffer.from(content).toString("base64");
+
+  const guests = await client.getGuests.query({
+    userEmail: user.userEmail ?? "",
+    eventId: eventId,
+    filteredByEvent: true,
+    filter: "",
+  });
+
+  guests.guests
+    .filter((guest) => guest.email !== null)
+    .forEach((guest) => {
+      console.log(guest);
+
+      sendEmailWithAttachment({
+        base64Content: base64Content,
+        contentType: "data:text/calendar",
+        filename: store.event.name + ".ics",
+        firstname: user.firstname ?? "",
+        lastname: user.lastname ?? "",
+        html: `<div><h1>${
+          store.attachmentTranslation?.attachmentText
+        }</h1><h2>${user.firstname} ${user.lastname} ${
+          store.attachmentTranslation?.attachmentText2
+        }${
+          store.origin + generateRoutingLink(lang, paths.feedback) + eventId
+        }</h2><h1>${store.attachmentTranslation?.bestWishes}</h1></div>`,
+        subject: `${store.event.name}`,
+        text: `${store.attachmentTranslation?.attachmentText} ${
+          user.firstname
+        } ${user.lastname} ${store.attachmentTranslation?.attachmentText2}${
+          store.origin + generateRoutingLink(lang, paths.feedback) + eventId
+        }${store.attachmentTranslation?.bestWishes}`,
+        recieverName: guest.firstname + " " + guest.lastname,
+        recieverEmail: guest.email as string,
+      });
+    });
+};
+
+export const createICSFile = async (store: EventStore, user: UserContext) => {
   if (!store.event?.startDate || !store.event?.endDate) {
     // TODO: tell the user to fill date field
     return;
   }
+
+  const filename = store.event.name + ".ics";
 
   const event: ics.EventAttributes = {
     start: [
@@ -735,32 +804,23 @@ export const exportToCalendar = async (
     productId: store.event.name + "/ics",
   };
 
-  await handleDownload(event, store.event?.name ?? "");
-};
-
-export async function handleDownload(
-  event: ics.EventAttributes,
-  eventName: string
-) {
-  const filename = eventName + ".ics";
   const file: Blob = await new Promise((resolve, reject) => {
     ics.createEvent(event, (error, value) => {
       if (error) {
         reject(error);
       }
 
-      resolve(new File([value], filename, { type: "plain/text" }));
+      resolve(new File([value], filename, { type: "text/calendar" }));
     });
   });
-  const url = URL.createObjectURL(file);
 
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
+  return file;
+};
 
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-
-  URL.revokeObjectURL(url);
-}
+export const toBase64 = (event: Blob) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(event);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });

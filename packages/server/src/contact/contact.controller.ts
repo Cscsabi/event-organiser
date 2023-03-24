@@ -1,9 +1,5 @@
 import { prisma } from "../app";
-import {
-  ByIdInput,
-  ByNoInput,
-  GetByEmailInput,
-} from "../general/general.schema";
+import { ByIdInput, ByNoInput } from "../general/general.schema";
 import { Status } from "../status.enum";
 import {
   BudgetPlanningInput,
@@ -283,6 +279,7 @@ export const addContactController = async ({
         phone: contactInput.phone,
         email: contactInput.email,
         description: contactInput.description,
+        link: contactInput.link,
         userEmail: contactInput.userEmail,
       },
     });

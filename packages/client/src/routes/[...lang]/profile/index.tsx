@@ -1,24 +1,24 @@
 import {
-  component$,
-  useVisibleTask$,
-  useStore,
   $,
+  component$,
   useContext,
+  useStore,
+  useVisibleTask$,
 } from "@builder.io/qwik";
-import { useNavigate, useLocation } from "@builder.io/qwik-city";
-import { changePassword, getUserData } from "~/utils/supabase.client";
-import { QwikCalendar } from "~/integrations/react/calendar";
-import { client } from "~/utils/trpc";
-import type { CalendarEvent, ProfilStore, UserContext } from "~/utils/types";
-import Toast from "~/components/toast/toast";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import Modal from "~/components/modal/modal";
 import {
   $translate as t,
   Speak,
   useSpeakConfig,
   type SpeakLocale,
 } from "qwik-speak";
+import Modal from "~/components/modal/modal";
+import Toast from "~/components/toast/toast";
+import { QwikCalendar } from "~/integrations/react/calendar";
+import { changePassword, getUserData } from "~/utils/supabase.client";
+import { client } from "~/utils/trpc";
+import type { CalendarEvent, ProfilStore, UserContext } from "~/utils/types";
 import { CTX } from "../layout";
 
 export default component$(() => {

@@ -6,40 +6,38 @@ import { CTX } from "~/routes/[...lang]/layout";
 import { generateRoutingLink } from "~/utils/common.functions";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
-import type { NewContact } from "~/utils/types";
+import type { NewGuest } from "~/utils/types";
 
 export default component$(() => {
   const location = useLocation();
   const user = useContext(CTX);
-  const store = useStore<NewContact>({
+  const store = useStore<NewGuest>({
     description: "",
     email: "",
-    name: "",
-    phone: "",
-    link: "",
+    firstname: "",
+    lastname: "",
   });
   const navigate = useNavigate();
 
   return (
-    <Speak assets={["contacts", "common"]}>
+    <Speak assets={["guestlist", "common"]}>
       <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
-        {t("contacts.addContact@@Add Contact")}
+        {t("guestlist.addGuest@@Add Guest")}
       </h1>
       <form
         preventdefault:submit
         onSubmit$={async () => {
-          const result = await client.addContact.mutate({
+          const result = await client.createGuest.mutate({
             description: store.description,
             email: store.email,
-            name: store.name,
-            phone: store.phone,
-            link: store.link,
+            firstname: store.firstname,
+            lastname: store.lastname,
             userEmail: user.userEmail ?? "",
           });
 
           if (result.status === Status.SUCCESS) {
             navigate(
-              generateRoutingLink(location.params.lang, paths.contacts),
+              generateRoutingLink(location.params.lang, paths.guests),
               true
             );
           }
@@ -48,18 +46,18 @@ export default component$(() => {
         <div>
           <label
             class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
-            for="contactName"
+            for="firstname"
           >
-            {t("contacts.contacts@@Contact Name:")}
+            {t("common.firstname@@First name:")}
           </label>
           <input
             class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-1/2 p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
             onInput$={(event) =>
-              (store.name = (event.target as HTMLInputElement).value)
+              (store.firstname = (event.target as HTMLInputElement).value)
             }
             type="text"
-            name="contactName"
-            placeholder={t("contacts.contactNamePlaceholder@@Example Ltd.")}
+            name="firstname"
+            placeholder={t("guestlist.guestFirstnamePlaceholder@@Sarah")}
             required
             minLength={3}
           ></input>
@@ -67,18 +65,18 @@ export default component$(() => {
         <div>
           <label
             class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
-            for="phone"
+            for="lastname"
           >
-            {t("common.phone@@Phone:")}
+            {t("common.lastname@@Last name:")}
           </label>
           <input
             class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-1/2 p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
             onChange$={(event) => {
-              store.phone = (event.target as HTMLInputElement).value;
+              store.lastname = (event.target as HTMLInputElement).value;
             }}
             type="tel"
             name="phone"
-            placeholder={t("common.phonePlaceholder@@123-456-7890")}
+            placeholder={t("guestlist.guestLastnamePlaceholder@@Smith")}
           ></input>
         </div>
         <div class="mb-6">
@@ -119,29 +117,11 @@ export default component$(() => {
             )}
           ></input>
         </div>
-        <div>
-          <label
-            class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
-            for="link"
-          >
-            {t("common.link@@Link:")}
-          </label>
-          <input
-            class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-1/2 p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
-            onInput$={(event) =>
-              (store.link = (event.target as HTMLInputElement).value)
-            }
-            type="url"
-            name="link"
-            placeholder={t("contacts.contactLinkPlaceholder@@Website url")}
-            minLength={3}
-          ></input>
-        </div>
         <button
           class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-1/2 sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
           type="submit"
         >
-          {t("contacts.addContact@@Add Contact")}
+          {t("guestlist.addGuest@@Add Guest")}
         </button>
       </form>
     </Speak>

@@ -11,6 +11,7 @@ import {
   filterQuery,
   params,
   sendEmailInput,
+  sendEmailWithAttachmentInput,
   updateUserSchema,
 } from "./user/user.schema";
 import {
@@ -19,6 +20,7 @@ import {
   findAllUsersController,
   findUserController,
   sendEmailController,
+  sendEmailWithAttachmentController,
   updateUserController,
 } from "./user/user.controller";
 import SuperJSON from "superjson";
@@ -70,6 +72,7 @@ import {
   getGuestByEmailController,
   getGuestController,
   getGuestsController,
+  getPreviousGuestsController,
   updateGuestController,
 } from "./guest/guest.controller";
 import {
@@ -130,6 +133,11 @@ const appRouter = t.router({
     .input(connectGuestToEventInput)
     .query(({ input }) =>
       getEventGuestController({ getEventGuestInput: input })
+    ),
+  getPreviousGuests: t.procedure
+    .input(getGuestsInput)
+    .query(({ input }) =>
+      getPreviousGuestsController({ getGuestsInput: input })
     ),
   getGuestByEmails: t.procedure
     .input(getGuestByEmails)
@@ -274,6 +282,11 @@ const appRouter = t.router({
   sendEmail: t.procedure
     .input(sendEmailInput)
     .query(({ input }) => sendEmailController({ sendEmailInput: input })),
+  sendEmailWithAttachment: t.procedure
+    .input(sendEmailWithAttachmentInput)
+    .query(({ input }) =>
+      sendEmailWithAttachmentController({ sendEmailWithAttachmentInput: input })
+    ),
 });
 
 export type AppRouter = typeof appRouter;

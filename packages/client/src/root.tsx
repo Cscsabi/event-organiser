@@ -7,7 +7,7 @@ import {
 import { QwikSpeakProvider } from "qwik-speak";
 import { RouterHead } from "./components/router-head/router-head";
 import globalStyles from "./global.css?inline";
-import {config, translationFn} from "./speak-config";
+import { config, translationFn } from "./speak-config";
 
 export default component$(() => {
   /**
@@ -32,7 +32,10 @@ export default component$(() => {
           />
           <RouterHead />
         </head>
-        <body lang="en" class="px-5 pt-5 pb-10 bg-gray-300 dark:bg-gray-900 rounded-md">
+        <body
+          lang="en"
+          class="px-5 pt-5 pb-10 bg-gray-300 dark:bg-gray-900 rounded-md"
+        >
           <RouterOutlet />
           <ServiceWorkerRegister />
           <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>

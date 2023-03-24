@@ -6,6 +6,7 @@ import {
   FilterQueryInput,
   ParamsInput,
   SendEmailInput,
+  SendEmailWithAttachmentInput,
   UpdateUserInput,
 } from "./user.schema";
 import { Status } from "../status.enum";
@@ -173,6 +174,44 @@ export async function sendEmailController({
         Subject: sendEmailInput.subject,
         TextPart: sendEmailInput.text,
         HTMLPart: sendEmailInput.html,
+      },
+    ],
+  };
+
+  return mailjet.post("send", { version: "v3.1" }).request(data);
+}
+
+export async function sendEmailWithAttachmentController({
+  sendEmailWithAttachmentInput,
+}: {
+  sendEmailWithAttachmentInput: SendEmailWithAttachmentInput;
+}) {
+  const data: SendEmailV3_1.Body = {
+    Messages: [
+      {
+        From: {
+          Email: process.env.MJ_SENDER_EMAIL ?? "",
+          Name:
+            sendEmailWithAttachmentInput.senderFirstname +
+            " " +
+            sendEmailWithAttachmentInput.senderLastname,
+        },
+        To: [
+          {
+            Email: sendEmailWithAttachmentInput.email,
+            Name: sendEmailWithAttachmentInput.name,
+          },
+        ],
+        Subject: sendEmailWithAttachmentInput.subject,
+        TextPart: sendEmailWithAttachmentInput.text,
+        HTMLPart: sendEmailWithAttachmentInput.html,
+        Attachments: [
+          {
+            Filename: sendEmailWithAttachmentInput.filename,
+            ContentType: sendEmailWithAttachmentInput.contentType,
+            Base64Content: sendEmailWithAttachmentInput.base64Content,
+          },
+        ],
       },
     ],
   };

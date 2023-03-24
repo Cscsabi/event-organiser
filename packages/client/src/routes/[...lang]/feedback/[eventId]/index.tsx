@@ -1,9 +1,4 @@
-import {
-  component$,
-  useSignal,
-  useStore,
-  useVisibleTask$,
-} from "@builder.io/qwik";
+import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
@@ -15,10 +10,11 @@ import type {
   FeedbackStore,
   LocationStore,
   NewEventStore,
+  UserContext,
 } from "~/utils/types";
 
 export default component$(() => {
-  const userEmail = useSignal<string>("");
+  const user = useStore<UserContext>({});
   const { params } = useLocation();
   const store = useStore<FeedbackStore>({
     event: {
@@ -68,6 +64,9 @@ export default component$(() => {
     const event = await getCurrentEvent(params.eventId);
 
     if (event) {
+      user.userEmail = event.userEmail;
+      user.firstname = event.user.firstname;
+      user.lastname = event.user.lastname;
       const currentEvent: NewEventStore = {
         budget: +event.budget,
         startDate: event.startDate ?? undefined,
@@ -110,7 +109,7 @@ export default component$(() => {
               preventdefault:submit
               class="text-center"
               onSubmit$={() =>
-                submitForm(store, params.eventId, userEmail.value)
+                submitForm(store, params.eventId, user.userEmail ?? "")
               }
             >
               <h1 class="mb-6 text-2xl font-semibold text-black dark:text-white">
@@ -118,7 +117,7 @@ export default component$(() => {
               </h1>
               <h2 class="mb-6 text-lg font-semibold text-black dark:text-white">
                 {t("feedback.organiser@@Organiser:")}
-                {userEmail.value}
+                {user.firstname + " " + user.lastname}
               </h2>
               <div>
                 <label
@@ -183,7 +182,7 @@ export default component$(() => {
                   required
                 ></input>
               </div>
-              <div>
+              <div class="mt-4">
                 <label
                   class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
                   for="lactose"

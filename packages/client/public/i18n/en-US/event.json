@@ -2,6 +2,9 @@
   "event": {
     "activeEvents": "Active Events",
     "additional": "Additional information",
+    "attachmentText": "Hi!",
+    "attachmentText2": "invited you to this event. Please fill out the following form: ",
+    "bestWishes": "Best wishes from the event organiser team!",
     "budget": "Budget:",
     "budgetPlanning": "Budget Planning:",
     "cannotBeModified": "Previous events cannot be modified!",
@@ -34,6 +37,7 @@
     "party": "Party",
     "plusOne": "Plus one",
     "previousEvent": "Previous Event",
+    "sendEventDataToGuests": "Send to Guests via email",
     "showFeedbacks": "Show Feedbacks",
     "showGuestlist": "Show Guestlist",
     "showInGoogleMaps": "Show in Google Maps",

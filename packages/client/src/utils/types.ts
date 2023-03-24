@@ -42,9 +42,9 @@ export interface GetLocationsReturnType {
   results: number;
   locations: (Location & {
     address: {
-        city: string;
+      city: string;
     };
-})[];
+  })[];
 }
 
 export interface Event {
@@ -96,7 +96,6 @@ export interface GuestListStore {
   selectedGuests: GuestType[];
   unselectedGuests: GuestType[];
   useClientEffectHook: number;
-  empty: boolean | undefined;
   lastpage: number;
   currentCursor: string | undefined;
   oldCursor: string | undefined;
@@ -130,6 +129,7 @@ export interface EventStore {
   origin: string;
   feedbackTranslations: FeedbackTranslations;
   loading?: string;
+  attachmentTranslation?: AttachmentTranslation;
 }
 
 export interface FeedbackStore {
@@ -227,11 +227,11 @@ export interface ContactType {
   phone?: string;
   email?: string;
   description?: string;
+  link?: string;
 }
 
 export interface ContactStore {
   contacts: ContactType[];
-  empty: boolean | undefined;
   lastpage: number;
   currentCursor: string | undefined;
   oldCursor: string | undefined;
@@ -250,6 +250,7 @@ export interface NewContact {
   phone?: string;
   email?: string;
   description?: string;
+  link?: string;
 }
 
 export interface ContactReturnType {
@@ -273,6 +274,19 @@ export interface SendEmailInput {
   html: string;
   recieverEmail: string;
   recieverName?: string;
+}
+
+export interface SendEmailWithAttachmentInput {
+  firstname: string;
+  lastname: string;
+  text: string;
+  subject: string;
+  html: string;
+  recieverEmail: string;
+  recieverName?: string;
+  filename: string;
+  contentType: string;
+  base64Content: string;
 }
 
 export interface UserAttributes {
@@ -307,4 +321,25 @@ export interface InformationCardProps {
   icon: string;
   goTo: string;
   textCenter?: boolean;
+}
+
+export interface GuestTranslations {
+  guestlist: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  specialNeeds: string;
+}
+
+export interface NewGuest {
+  firstname: string;
+  lastname: string;
+  email: string;
+  description: string;
+}
+
+export interface AttachmentTranslation {
+  attachmentText: string;
+  attachmentText2: string;
+  bestWishes: string;
 }

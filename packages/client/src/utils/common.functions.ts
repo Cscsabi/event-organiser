@@ -1,6 +1,6 @@
 import { paths } from "./paths";
 import { client } from "./trpc";
-import type { SendEmailInput } from "./types";
+import type { SendEmailInput, SendEmailWithAttachmentInput } from "./types";
 
 export const getProperDateFormat = (date?: Date) => {
   let usedDate = date;
@@ -99,12 +99,28 @@ export function sendEmail(sendEmailInput: SendEmailInput) {
   });
 }
 
+export function sendEmailWithAttachment(
+  sendEmailWithAttachmentInput: SendEmailWithAttachmentInput
+) {
+  client.sendEmailWithAttachment.query({
+    senderFirstname: sendEmailWithAttachmentInput.firstname,
+    senderLastname: sendEmailWithAttachmentInput.lastname,
+    text: sendEmailWithAttachmentInput.text,
+    subject: sendEmailWithAttachmentInput.subject,
+    html: sendEmailWithAttachmentInput.html,
+    email: sendEmailWithAttachmentInput.recieverEmail,
+    name: sendEmailWithAttachmentInput.recieverName,
+    base64Content: sendEmailWithAttachmentInput.base64Content,
+    filename: sendEmailWithAttachmentInput.filename,
+    contentType: sendEmailWithAttachmentInput.contentType,
+  });
+}
+
 export async function getCurrentEvent(eventId: string) {
   const result = await client.getEvent.query({ id: eventId });
   return result.event;
 }
 
 export function generateRoutingLink(lang: string, path: string) {
-
   return lang !== "hu-HU" ? path : paths.hungarian + path;
 }

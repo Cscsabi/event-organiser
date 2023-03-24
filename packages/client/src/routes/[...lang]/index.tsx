@@ -83,7 +83,7 @@ export default component$(() => {
             />
             <InformationCard
               description={t(
-                "home.addGuests@@Go to the Guests tab, then you can add guests directly. Click the add row button to add an empty row to the end of the table"
+                "home.addGuests@@Go to the Guests tab, then click the Add Guest button to add a new guest"
               )}
               name={t("home.addGuestsTitle@@Add guests")}
               icon="fa-solid fa-person-circle-plus fa-beat-fade fa-xl"

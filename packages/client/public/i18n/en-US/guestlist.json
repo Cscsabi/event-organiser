@@ -1,7 +1,10 @@
 {
   "guestlist": {
+    "addGuest": "Add Guest",
     "addSelectedGuests": "Add selected guests to event",
     "existingGuests": "Show Existing Guests",
+    "guestFirstnamePlaceholder": "Sarah",
+    "guestLastnamePlaceholder": "Smith",
     "noGuests": "You have no guests yet!",
     "noMoreToAdd": "You have no more guests to add!",
     "saveGuestlist": "Save Guestlist",
