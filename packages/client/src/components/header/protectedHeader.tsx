@@ -34,11 +34,12 @@ export const ProtectedHeader = component$(() => {
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                role="button"
                 href={generateRoutingLink(location.params.lang, paths.index)}
               >
-                <button>
+                <div>
                   <i class="fa-solid fa-house"></i> {t("header.home@@Home")}
-                </button>
+                </div>
               </a>
             </li>
             <li>
@@ -74,77 +75,83 @@ export const ProtectedHeader = component$(() => {
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                role="button"
                 href={generateRoutingLink(
                   location.params.lang,
                   paths.previousEvents
                 )}
               >
-                <button>
+                <div>
                   <i class="fa-regular fa-calendar-xmark"></i>{" "}
                   {t("header.previous@@Previous Events")}
-                </button>
+                </div>
               </a>
             </li>
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                role="button"
                 href={generateRoutingLink(location.params.lang, paths.events)}
               >
-                <button>
+                <div>
                   <i class="fa-solid fa-calendar-days"></i>{" "}
                   {t("header.active@@Active Events")}
-                </button>
+                </div>
               </a>
             </li>
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                role="button"
                 href={generateRoutingLink(location.params.lang, paths.guests)}
               >
-                <button>
+                <div>
                   <i class="fa-solid fa-person"></i>{" "}
                   {t("header.guests@@Guests")}
-                </button>
+                </div>
               </a>
             </li>
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                role="button"
                 href={generateRoutingLink(
                   location.params.lang,
                   paths.locations
                 )}
               >
-                <button>
+                <div>
                   <i class="fa-solid fa-location-pin"></i>{" "}
                   {t("header.locations@@Locations")}
-                </button>
+                </div>
               </a>
             </li>
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                role="button"
                 href={generateRoutingLink(location.params.lang, paths.contacts)}
               >
-                <button>
+                <div>
                   <i class="fa-solid fa-address-card"></i>{" "}
-                  {t("header.contacts@@Contacts")}
-                </button>
+                  {t("header.contact@@Contacts")}
+                </div>
               </a>
             </li>
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                role="button"
                 href={generateRoutingLink(location.params.lang, paths.profile)}
               >
-                <button>
+                <div>
                   <i class="fa-regular fa-user"></i>{" "}
                   {t("header.profile@@Profile")}
-                </button>
+                </div>
               </a>
             </li>
             <li>
-              <a class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+              <div class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
                 <button
                   onClick$={async () => {
                     navigate(
@@ -156,10 +163,10 @@ export const ProtectedHeader = component$(() => {
                     user.userEmail = undefined;
                   }}
                 >
-                  <i class="fa-solid fa-right-from-bracket"></i>{" "}
+                  <i class="fa-solid fa-right-from-bracket"></i>
                   {t("header.logout@@Logout")}
                 </button>
-              </a>
+              </div>
             </li>
           </ul>
         </div>

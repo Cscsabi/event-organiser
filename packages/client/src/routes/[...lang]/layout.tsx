@@ -99,7 +99,7 @@ export default component$(() => {
 
     if (user.userEmail === undefined) {
       const userResponse = await getUser();
-      user.privateHeader = user.userEmail !== "";
+      user.privateHeader = user.userEmail !== undefined;
 
       if (userResponse.data.user === null) {
         const path = window.location.pathname;

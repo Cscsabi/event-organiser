@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
+import HintCard from "~/components/hint-card/hint.card";
 import { CTX } from "~/routes/[...lang]/layout";
 import {
   generateRoutingLink,
@@ -21,25 +22,29 @@ import { client } from "~/utils/trpc";
 import type { GetLocationsReturnType, NewEventStore } from "~/utils/types";
 
 export default component$(() => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
   const user = useContext(CTX);
   const location = useLocation();
   const navigate = useNavigate();
   const store = useStore<NewEventStore>({
     name: "",
     type: EventType.CUSTOM,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: tomorrow,
+    endDate: tomorrow,
     budget: 0,
     locationId: "",
     headcount: 0,
-    chooseHere: t("event.chooseHere@@Choose here"),
-    loading: t("common.loading@@Loading..."),
+    chooseHere: "",
+    loading: "",
   });
+
+  store.chooseHere = t("event.chooseHere@@Choose here");
+  store.loading = t("common.loading@@Loading...");
 
   const resource = useResource$<GetLocationsReturnType>(
     ({ track, cleanup }) => {
       track(() => user.userEmail);
-
       const controller = new AbortController();
       cleanup(() => controller.abort());
       return client.getLocations.query({ email: user.userEmail ?? "" });
@@ -50,11 +55,13 @@ export default component$(() => {
     <Speak assets={["event"]}>
       <h1 class="mb-6 text-3xl text-center font-semibold text-black dark:text-white">
         {t("event.createNewEvent@@Create New Event")}
-      </h1>
-      <div>
+      </h1>{" "}
+      <div class="grid gap-4 mb-6 md:grid-cols-2 w-full place-content-between">
         <form
           preventdefault:submit
           onSubmit$={async () => {
+            console.log(store);
+
             const result = await client.addEvent.mutate({
               budget: store.budget,
               startDate: store.startDate,
@@ -85,7 +92,7 @@ export default component$(() => {
               {t("event.eventName@@Event Name:")}
             </label>
             <input
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-1/2 p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
               onInput$={(event) =>
                 (store.name = (event.target as HTMLInputElement).value)
               }
@@ -96,7 +103,7 @@ export default component$(() => {
               minLength={3}
             ></input>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
+          <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -168,7 +175,7 @@ export default component$(() => {
               />
             </div>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2">
+          <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -193,7 +200,6 @@ export default component$(() => {
                 type="date"
                 name="startDate"
                 min={getProperDateFormat()}
-                // max={getProperDateFormat(store.endDate)}
               ></input>
             </div>
             <div>
@@ -275,7 +281,7 @@ export default component$(() => {
               ></input>
             </div>
           </div>
-          <div class="grid gap-6 mb-6 md:grid-cols-2 w-1/2 self-center items-center">
+          <div class="grid gap-6 mb-6 md:grid-cols-2 w-full self-center items-center">
             <div>
               <label
                 class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
@@ -313,12 +319,20 @@ export default component$(() => {
             </div>
           </div>
           <button
-            class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+            class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
             type="submit"
           >
             {t("event.createEvent@@Create Event")}
           </button>
         </form>
+        <HintCard
+          hint1={t(
+            "hint.newEventHint1@@Having at least one location added is the prerequisite of creating an event"
+          )}
+          hint2={t(
+            "hint.newEventHint2@@To be able to plan your budget first you need to add contacts"
+          )}
+        />
       </div>
     </Speak>
   );

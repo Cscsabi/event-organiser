@@ -11,7 +11,7 @@ export interface ModalProps {
   size: string;
   type: string;
   listTypeId?: string;
-  listType: "location" | "previous-event" | "active-event" | "";
+  listType: "location" | "previous-event" | "active-event" | "contact" | "guest" | "";
 }
 
 export default component$((props: ModalProps) => {
@@ -95,6 +95,20 @@ export default component$((props: ModalProps) => {
                           client.deleteEvent.mutate({
                             id: props.listTypeId ?? "",
                           });
+                          break;
+                        }
+                        case "contact": {
+                          path = paths.contacts;
+                          client.deleteContact.mutate({
+                            id: props.listTypeId ?? ""
+                          })
+                          break;
+                        }
+                        case "guest": {
+                          path = paths.guests;
+                          client.deleteGuest.mutate({
+                            guestId: props.listTypeId ?? ""
+                          })
                           break;
                         }
                       }

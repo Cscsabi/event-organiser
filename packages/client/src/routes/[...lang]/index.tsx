@@ -87,7 +87,7 @@ export default component$(() => {
               )}
               name={t("home.addGuestsTitle@@Add guests")}
               icon="fa-solid fa-person-circle-plus fa-beat-fade fa-xl"
-              goTo={paths.guests}
+              goTo={paths.newGuest}
             />
             <InformationCard
               description={t(

@@ -7,11 +7,21 @@ import {
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
 import { CTX } from "~/routes/[...lang]/layout";
+import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import type { ContactStore } from "~/utils/types";
+import {
+  type RouteNavigate,
+  useNavigate,
+  type RouteLocation,
+  useLocation,
+} from "@builder.io/qwik-city";
+import { generateRoutingLink } from "~/utils/common.functions";
 
 export const Contact = component$(() => {
   const user = useContext(CTX);
+  const navigate = useNavigate();
+  const location = useLocation();
   const store = useStore<ContactStore>({
     contacts: [],
     lastpage: 0,
@@ -58,7 +68,7 @@ export const Contact = component$(() => {
   });
 
   return (
-    <Speak assets={["contacts", "common"]}>
+    <Speak assets={["contact", "common"]}>
       <div class="m-auto w-1/2 p-2.5">
         <input
           preventdefault:change
@@ -92,10 +102,9 @@ export const Contact = component$(() => {
                 <th scope="col" class="px-6 py-4 text-base">
                   {t("common.link@@Link")}
                 </th>
-                <th scope="col" class="px-6 py-4 text-base"></th>
               </tr>
             </thead>
-            <tbody>{generateContactList(store)}</tbody>
+            <tbody>{generateContactList(store, navigate, location)}</tbody>
           </table>
           <div class="mt-6">
             <button
@@ -161,12 +170,25 @@ export const Contact = component$(() => {
   );
 });
 
-export const generateContactList = async (store: ContactStore) => {
+export const generateContactList = async (
+  store: ContactStore,
+  navigate: RouteNavigate,
+  location: RouteLocation
+) => {
   return (
     <>
       {store.contacts.map((row) => {
         return (
-          <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
+          <tr
+            class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700 cursor-pointer"
+            onClick$={() => {
+              navigate(
+                generateRoutingLink(location.params.lang, paths.contact) +
+                  row.id,
+                true
+              );
+            }}
+          >
             <td
               scope="row"
               class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -196,53 +218,8 @@ export const generateContactList = async (store: ContactStore) => {
               class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               <a href={row.link} target="_blank">
-                {" "}
                 {row.link}
               </a>
-            </td>
-            <td>
-              <button
-                class="font-bold text-sm text-indigo-600 dark:text-indigo-500 hover:underline"
-                onClick$={async () => {
-                  let rowFound = false;
-                  if (
-                    row.id === "" &&
-                    row.description === "" &&
-                    row.email === "" &&
-                    row.name === "" &&
-                    row.phone === ""
-                  ) {
-                    store.contacts.forEach((allRows, index) => {
-                      if (row.id === allRows.id && !rowFound) {
-                        store.contacts.splice(index, 1);
-                        rowFound = true;
-                        store.contacts = [...store.contacts];
-                      }
-                    });
-                  } else {
-                    const isNewRow = await client.getContact.query({
-                      id: row.id,
-                    });
-
-                    if (isNewRow.status === Status.SUCCESS) {
-                      await client.deleteContact.mutate({
-                        id: row.id,
-                      });
-                    }
-
-                    store.contacts.forEach((allRows, index) => {
-                      if (row.id === allRows.id && !rowFound) {
-                        store.contacts.splice(index, 1);
-                        rowFound = true;
-                      }
-                    });
-
-                    store.contacts = [...store.contacts];
-                  }
-                }}
-              >
-                {t("common.deleteRow@@Delete Row")}
-              </button>
             </td>
           </tr>
         );

@@ -1,0 +1,9 @@
+{
+  "contact": {
+    "addContact": "Szolgáltató hozzáadása",
+    "contact": "Szolgáltató",
+    "contactLinkPlaceholder": "Link",
+    "contactNamePlaceholder": "Minta Kft.",
+    "deleteContact": "Biztosan törölni szeretnéd ezt a szolgálatót?"
+  }
+}

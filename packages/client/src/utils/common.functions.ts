@@ -13,6 +13,24 @@ export const getProperDateFormat = (date?: Date) => {
     .substring(0, 10);
 };
 
+export const getProperNewDateFormat = (date?: Date) => {
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  let usedDate = date;
+  if (!usedDate) {
+    usedDate = new Date();
+    usedDate.setDate(usedDate.getDate() + 1);
+  } else if (isSameDay(usedDate, today)) {
+    usedDate.setDate(usedDate.getDate() + 1);
+  }
+  return usedDate
+    .toISOString()
+    .replace(/:\d{2}\.\d{3}Z$/, "")
+    .substring(0, 10);
+};
+
 export const getProperTimeFormat = (time?: Date) => {
   let usedTime = time;
   if (!usedTime) {

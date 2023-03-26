@@ -13,14 +13,15 @@ import { CTX } from "~/routes/[...lang]/layout";
 import { client } from "~/utils/trpc";
 import type {
   BudgetPlanningProps,
+  BudgetPlanningRow,
   BudgetPlanningStore,
+  BudgetPlanningType,
   ContactsReturnType,
 } from "~/utils/types";
-import Toast from "../toast/toast";
 
 export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
   const user = useContext(CTX);
-  const EMPTY_ROW = {
+  const EMPTY_ROW: BudgetPlanningRow = {
     id: 0,
     amount: 0,
     contactName: "",
@@ -38,16 +39,18 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
       userEmail: "",
     },
   };
-
   const store = useStore<BudgetPlanningStore>({
     budgetPlanning: [],
     amountAltogether: 0,
     percentAltogether: 0,
     modalContactId: "",
     modalOpen: false,
-    chooseHere: t("event.chooseHere@@Choose here"),
-    loading: t("common.loading@@Loading..."),
+    chooseHere: "",
+    loading: "",
   });
+
+  store.chooseHere = t("event.chooseHere@@Choose here");
+  store.loading = t("common.loading@@Loading...");
 
   useVisibleTask$(async ({ track }) => {
     track(() => props.budget);
@@ -121,7 +124,12 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
             </tr>
           </thead>
           <tbody>
-            {generateBudgetPlanningBody(store, props, contactsResource)}
+            {generateBudgetPlanningBody(
+              store,
+              props,
+              contactsResource,
+              EMPTY_ROW
+            )}
             <tr class="text-base text-center bg-gray-300 text-gray-900 dark:text-white dark:bg-slate-900">
               <td scope="row" class="px-6 py-3 font-bold text-base">
                 {t("budgetPlanning.summary@@Summary:")}
@@ -136,26 +144,6 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
           </tbody>
         </table>
       </div>
-      <button
-        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-        type="button"
-        hidden={!props.active}
-        onClick$={() => {
-          saveRows(store);
-          const toast = document.getElementById("successToast2");
-          if (toast) {
-            toast.classList.remove("hidden");
-          }
-        }}
-      >
-        {t("common.save@@Save")}
-      </button>
-      <Toast
-        id="successToast2"
-        text={t("toast.operationSuccessful@@Operation Successful!")}
-        type="success"
-        position="bottom-right"
-      ></Toast>
     </Speak>
   );
 });
@@ -163,7 +151,8 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
 export const generateBudgetPlanningBody = async (
   store: BudgetPlanningStore,
   props: BudgetPlanningProps,
-  resource: ResourceReturn<ContactsReturnType>
+  resource: ResourceReturn<ContactsReturnType>,
+  EMPTY_ROW: BudgetPlanningRow
 ) => {
   return (
     <>
@@ -206,6 +195,7 @@ export const generateBudgetPlanningBody = async (
                         row.description = store.contact?.description ?? "";
 
                         store.budgetPlanning = [...store.budgetPlanning];
+                        saveRow(row, store, EMPTY_ROW);
                       }}
                     >
                       <option
@@ -221,7 +211,6 @@ export const generateBudgetPlanningBody = async (
                           : store.chooseHere}
                       </option>
                       {result.contacts?.map((contact) => {
-                        console.log(contact);
                         return (
                           <option value={contact.id}>{contact.name}</option>
                         );
@@ -246,6 +235,7 @@ export const generateBudgetPlanningBody = async (
                     (store.amountAltogether / props.budget) * 100;
                   row.amount = +(event.target as HTMLInputElement).value;
                   store.budgetPlanning = [...store.budgetPlanning];
+                  saveRow(row, store, EMPTY_ROW);
                 }}
               ></input>
             </td>
@@ -263,9 +253,10 @@ export const generateBudgetPlanningBody = async (
                 type="text"
                 disabled={!props.active ? true : row.isPaid}
                 value={row.description}
-                onChange$={(event) =>
-                  (row.description = (event.target as HTMLInputElement).value)
-                }
+                onChange$={(event) => {
+                  row.description = (event.target as HTMLInputElement).value;
+                  saveRow(row, store, EMPTY_ROW);
+                }}
               ></input>
             </td>
             <td>
@@ -281,6 +272,7 @@ export const generateBudgetPlanningBody = async (
                 onChange$={(event) => {
                   row.isPaid = (event.target as HTMLInputElement).checked;
                   store.budgetPlanning = [...store.budgetPlanning];
+                  saveRow(row, store, EMPTY_ROW);
                 }}
               ></input>
             </td>
@@ -291,54 +283,30 @@ export const generateBudgetPlanningBody = async (
   );
 };
 
-export const saveRows = async (store: BudgetPlanningStore) => {
-  store.budgetPlanning
-    .filter((row) => {
-      return row.contactId != "";
-    })
-    .forEach(async (row) => {
-      const result = await client.getBudgetPlanning.query({
-        eventId: row.eventId,
-        contactId: row.contactId,
-      });
-      const existingRow = result.budgetPlanning;
-      if (result.status === Status.SUCCESS) {
-        if (
-          store.budgetPlanning.filter(
-            (budgetPlanning) => budgetPlanning.contactId === row.contactId
-          ).length === 1 &&
-          (existingRow?.contactId.toLowerCase() !==
-            row.contact.name.toLowerCase() ||
-            (existingRow?.amount as unknown as number) !== row.amount ||
-            existingRow?.isPaid !== row.isPaid)
-        ) {
-          client.updateBudgetPlanning.mutate({
-            id: row.id,
-            description: row.description,
-            amount: row.amount,
-            eventId: row.eventId,
-            isPaid: row.isPaid,
-            contactId: row.contactId,
-          });
-        } else {
-          client.addBudgetPlanning.mutate({
-            id: row.id,
-            description: row.description ?? undefined,
-            amount: row?.amount as unknown as number,
-            eventId: row.eventId,
-            isPaid: row.isPaid,
-            contactId: row.contactId,
-          });
-        }
-      } else {
-        client.addBudgetPlanning.mutate({
-          id: row.id,
-          description: row.description ?? undefined,
-          amount: row?.amount as unknown as number,
-          eventId: row.eventId,
-          isPaid: row.isPaid,
-          contactId: row.contactId,
-        });
-      }
+export const saveRow = async (
+  budgetPlanningRow: BudgetPlanningType,
+  store: BudgetPlanningStore,
+  EMPTY_ROW: BudgetPlanningRow
+) => {
+  if (budgetPlanningRow.id !== 0) {
+    client.updateBudgetPlanning.mutate({
+      id: budgetPlanningRow.id,
+      description: budgetPlanningRow.description,
+      amount: budgetPlanningRow.amount,
+      eventId: budgetPlanningRow.eventId,
+      isPaid: budgetPlanningRow.isPaid,
+      contactId: budgetPlanningRow.contactId,
     });
+  } else {
+    const newRow = await client.addBudgetPlanning.mutate({
+      id: budgetPlanningRow.id,
+      description: budgetPlanningRow.description ?? undefined,
+      amount: budgetPlanningRow?.amount as unknown as number,
+      eventId: budgetPlanningRow.eventId,
+      isPaid: budgetPlanningRow.isPaid,
+      contactId: budgetPlanningRow.contactId,
+    });
+    budgetPlanningRow.id = newRow.budgetPlanning?.id ?? 0;
+    store.budgetPlanning = [...store.budgetPlanning, EMPTY_ROW];
+  }
 };

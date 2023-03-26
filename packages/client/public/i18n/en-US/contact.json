@@ -1,0 +1,9 @@
+{
+  "contact": {
+    "addContact": "Add Contact",
+    "contact": "Contact",
+    "contactLinkPlaceholder": "Website url",
+    "contactNamePlaceholder": "Example Ltd.",
+    "deleteContact": "Are you sure you want to delete this contact?"
+  }
+}

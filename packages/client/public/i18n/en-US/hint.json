@@ -1,0 +1,17 @@
+{
+  "hint": {
+    "contactHint1": "Be careful when deleting contacts",
+    "contactHint2": "If you delete a contact that is used in the budget planning, then those budget planning rows will be deleted as well",
+    "guestHint1": "Be careful when deleting guests",
+    "guestHint2": "If you delete a guest that is assigned to an event, then they get unassigned from that event",
+    "newContactHint1": "After adding contacts you can use them when you are planning your budget",
+    "newContactHint2": "You can simply select the contacts that you added earlier on the event's budget planning section",
+    "newEventHint1": "Having at least one location added is the prerequisite of creating an event",
+    "newEventHint2": "To be able to plan your budget first you need to add contacts",
+    "newGuestHint1": "After adding guests you can assign them directly to your events",
+    "newGuestHint2": "When your guestlist is complete, you can send them an invitation, by pressing the Send event to Guests via email button on the event's page",
+    "newLocationHint1": "Locations are essential at organising events, without a location you cannot create events",
+    "newLocationHint2": "After you added the location, you can browse it on Google Maps",
+    "title": "HINT"
+  }
+}

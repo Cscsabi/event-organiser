@@ -80,6 +80,7 @@ import {
   addContactController,
   deleteBudgetPlanningController,
   deleteContactController,
+  getBudgetPlanningByIdController,
   getBudgetPlanningController,
   getBudgetPlanningsController,
   getContactController,
@@ -173,6 +174,11 @@ const appRouter = t.router({
     .input(getBudgetPlanningInput)
     .query(({ input }) =>
       getBudgetPlanningController({ getBudgetPlanningInput: input })
+    ),
+  getBudgetPlanningById: t.procedure
+    .input(byNoInput)
+    .query(({ input }) =>
+      getBudgetPlanningByIdController({ getBudgetPlanningInput: input })
     ),
   getBudgetPlannings: t.procedure
     .input(byIdInput)

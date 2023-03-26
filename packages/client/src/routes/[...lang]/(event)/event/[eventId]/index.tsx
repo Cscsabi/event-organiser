@@ -21,7 +21,7 @@ import {
   generateRoutingLink,
   getCurrentEvent,
   getDateOrUndefined,
-  getProperDateFormat,
+  getProperNewDateFormat,
   getProperTimeFormat,
   sendEmailWithAttachment,
 } from "~/utils/common.functions";
@@ -271,7 +271,7 @@ export default component$(() => {
                     store.event.startDate?.getMinutes()
                   );
                 }}
-                value={getProperDateFormat(store.event?.startDate)}
+                value={getProperNewDateFormat(store.event?.startDate)}
               ></input>
             </div>
             <div>
@@ -322,7 +322,7 @@ export default component$(() => {
                     store.event.endDate?.getMinutes()
                   );
                 }}
-                value={getProperDateFormat(store.event?.endDate)}
+                value={getProperNewDateFormat(store.event?.endDate)}
               ></input>
             </div>
             <div>
@@ -370,7 +370,7 @@ export default component$(() => {
         </div>
       </div>
       {/* Buttons */}
-      <div class="p-6 relative overflow-x-auto sm:rounded-lg">
+      <div class="relative overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-center">
           <tbody>
             <tr>
@@ -456,6 +456,8 @@ export default component$(() => {
               </td>
               <td>
                 <a
+                  role="button"
+                  class="inline-block mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   target="_blank"
                   href={
                     store.origin +
@@ -463,17 +465,14 @@ export default component$(() => {
                     location.params.eventId
                   }
                 >
-                  <button
-                    type="button"
-                    class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-                  >
-                    {t("event.openFeedback@@Open Feedback Page")}
-                  </button>
+                  {t("event.openFeedback@@Open Feedback Page")}
                 </a>
               </td>
               <td>
                 <a
                   target="_blank"
+                  role="button"
+                  class="inline-block mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
                   href={generateGoogleMapsLink(
                     false,
                     store.location.city,
@@ -482,12 +481,7 @@ export default component$(() => {
                     store.location.street
                   )}
                 >
-                  <button
-                    type="button"
-                    class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-                  >
-                    {t("event.showInGoogleMaps@@Show in Google Maps")}
-                  </button>
+                  {t("event.showInGoogleMaps@@Show in Google Maps")}
                 </a>
               </td>
               <td>
@@ -526,7 +520,7 @@ export default component$(() => {
         <Modal
           id="guestlistModal"
           name={t("event.guestlist@@Guestlist")}
-          size=""
+          size="max-w-8xl"
           listType="active-event"
           type=""
         >
@@ -722,6 +716,7 @@ export const sendDataToGuestsViaEmail = async (
   if (event === undefined) {
     return;
   }
+  console.log("itt");
 
   const content = await event.text();
   const base64Content = Buffer.from(content).toString("base64");
@@ -750,13 +745,13 @@ export const sendDataToGuestsViaEmail = async (
           store.attachmentTranslation?.attachmentText2
         }${
           store.origin + generateRoutingLink(lang, paths.feedback) + eventId
-        }</h2><h1>${store.attachmentTranslation?.bestWishes}</h1></div>`,
+        }</h2></div>`,
         subject: `${store.event.name}`,
         text: `${store.attachmentTranslation?.attachmentText} ${
           user.firstname
         } ${user.lastname} ${store.attachmentTranslation?.attachmentText2}${
           store.origin + generateRoutingLink(lang, paths.feedback) + eventId
-        }${store.attachmentTranslation?.bestWishes}`,
+        }`,
         recieverName: guest.firstname + " " + guest.lastname,
         recieverEmail: guest.email as string,
       });
@@ -768,6 +763,7 @@ export const createICSFile = async (store: EventStore, user: UserContext) => {
     // TODO: tell the user to fill date field
     return;
   }
+  console.log("anyád");
 
   const filename = store.event.name + ".ics";
 
@@ -790,11 +786,12 @@ export const createICSFile = async (store: EventStore, user: UserContext) => {
     ],
     title: store.event?.name,
     description: store.event?.type,
-    location: store.location?.name,
-    url: store.location.link?.startsWith("http")
-      ? store.location?.link
-      : "http://" + store.location?.link,
-    // geo: { lat: 40.0095, lon: 105.2669 },
+    location:
+      store.location?.name +
+      " " +
+      store.location.city +
+      " " +
+      store.location.street,
     status: "CONFIRMED",
     busyStatus: "BUSY",
     organizer: {
@@ -813,6 +810,7 @@ export const createICSFile = async (store: EventStore, user: UserContext) => {
       resolve(new File([value], filename, { type: "text/calendar" }));
     });
   });
+  console.log("he");
 
   return file;
 };

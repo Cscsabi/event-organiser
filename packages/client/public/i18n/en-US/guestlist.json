@@ -2,12 +2,14 @@
   "guestlist": {
     "addGuest": "Add Guest",
     "addSelectedGuests": "Add selected guests to event",
+    "deleteGuest": "Are you sure you want to delete this guest?",
     "existingGuests": "Show Existing Guests",
     "guestFirstnamePlaceholder": "Sarah",
     "guestLastnamePlaceholder": "Smith",
     "noGuests": "You have no guests yet!",
     "noMoreToAdd": "You have no more guests to add!",
     "saveGuestlist": "Save Guestlist",
-    "select": "Select"
+    "select": "Select",
+    "uninvitedGuests": "Uninvited guests"
   }
 }

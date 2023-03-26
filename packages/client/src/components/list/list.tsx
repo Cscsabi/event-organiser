@@ -103,6 +103,8 @@ export const generateList = (
           value={eventResource}
           onPending={() => <div>{loading.value}</div>}
           onResolved={(result: GetEventsReturnType) => {
+            console.log(result.events);
+            
             return (
               <div class="flex flex-wrap justify-center">
                 {result.events
@@ -121,6 +123,8 @@ export const generateList = (
                     }
                   })
                   .map((event) => {
+                    console.log(event);
+                    
                     return (
                       <Card
                         id={event.id}

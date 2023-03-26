@@ -26,15 +26,18 @@ export default component$(() => {
     name: "",
     street: "",
     type: "INTERIOR",
-    chooseHere: t("location.chooseHere@@Choose here"),
+    chooseHere: "",
     description: "",
     link: "",
-    loading: t("location.loading@@Loading..."),
+    loading: "",
     phone: "",
     price: 0,
     state: "",
     zipCode: 0,
   });
+
+  store.chooseHere = t("location.chooseHere@@Choose here");
+  store.loading = t("location.loading@@Loading...");
 
   useVisibleTask$(async () => {
     const location = await getCurrentLocation(params.locationId);

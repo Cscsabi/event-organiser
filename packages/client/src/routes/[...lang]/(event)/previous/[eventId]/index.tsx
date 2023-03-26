@@ -50,7 +50,8 @@ export default component$(() => {
           true
         );
       }
-
+      console.log(event);
+      
       const currentEvent: NewEventStore = {
         budget: +event.budget,
         startDate: event.startDate ?? undefined,
@@ -292,17 +293,6 @@ export default component$(() => {
           />
         </div>
       </div>
-      <label
-        class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
-        for="budgetPlanning"
-      >
-        {t("event.budgetPlanning@@Budget Planning:")}
-      </label>
-      <BudgetPlanning
-        active={false}
-        budget={newEventStore.value?.budget ?? 0}
-        eventId={params.eventId}
-      />
       <button
         data-modal-target="deleteModal"
         data-modal-toggle="deleteModal"
@@ -336,6 +326,17 @@ export default component$(() => {
       >
         {t("event.locationCard@@Location Card")}
       </button>
+      <label
+        class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+        for="budgetPlanning"
+      >
+        {t("event.budgetPlanning@@Budget Planning:")}
+      </label>
+      <BudgetPlanning
+        active={false}
+        budget={newEventStore.value?.budget ?? 0}
+        eventId={params.eventId}
+      />
     </Speak>
   );
 });

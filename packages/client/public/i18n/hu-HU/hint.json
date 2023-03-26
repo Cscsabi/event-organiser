@@ -1,0 +1,17 @@
+{
+  "hint": {
+    "contactHint1": "Légy óvatos a szolgáltatók törlése során",
+    "contactHint2": "Ha egy olyan szolgálatót törölsz ki, aki a költségvetés-tervezés során kiválasztottál, akkor azok a költségvetés sorok is törlődnek",
+    "guestHint1": "Légy óvatos a vendégek törlése során",
+    "guestHint2": "Ha egy olyan vendéget törölsz aki, akit már hozzárendeltél egy eseményhez, akkor eltávolításra kerül arról az eseményről",
+    "newContactHint1": "Miután felvettél szolgáltatókat, használhatod őket a költségvetés-tervezésnél",
+    "newContactHint2": "Egyszerűen kiválaszthatod a szolgáltatókat, amelyeket előzetesen felvettél az esemény költségvetés-tervezés részlegén",
+    "newEventHint1": "Legalább egy helyszín az előfeltétele új esemény létrehozásának",
+    "newEventHint2": "A költségvetés-tervezéshez szükséges szolgáltatókat felvenni előbb",
+    "newGuestHint1": "Miután felvettél vendégeket, hozzárendelheted őket közvetlenül eseményekhez",
+    "newGuestHint2": "Amikor elkészültél a vendéglistával küldhetsz nekik egy meghívót, az Emailben küldés vendégeknek gomb megnyomásával az esemény oldalán",
+    "newLocationHint1": "A helyszínek a szervezés alapvető elemei, nélkülük nem tudsz létrehozni eseményt",
+    "newLocationHint2": "Miután hozzáadtál egy helyszínt a Google Maps-en is böngészheted",
+    "title": "TIPP"
+  }
+}

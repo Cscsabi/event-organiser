@@ -343,3 +343,27 @@ export interface AttachmentTranslation {
   attachmentText2: string;
   bestWishes: string;
 }
+
+export interface BudgetPlanningRow {
+  id: number;
+  amount: number;
+  contactName: string;
+  isPaid: boolean;
+  eventId: string;
+  description: string;
+  contactId: string;
+  contact: {
+      id: string;
+      name: string;
+      phone: string;
+      email: string;
+      description: string;
+      link: string;
+      userEmail: string;
+  };
+}
+
+export interface TipCardProps {
+  hint1: string;
+  hint2: string;
+}

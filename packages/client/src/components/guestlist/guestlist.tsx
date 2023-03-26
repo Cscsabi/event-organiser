@@ -4,17 +4,19 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import { Status } from "event-organiser-api-server/src/status.enum";
+import {
+  useLocation,
+  useNavigate,
+  type RouteLocation,
+  type RouteNavigate,
+} from "@builder.io/qwik-city";
 import { $translate as t, Speak } from "qwik-speak";
 import Modal from "~/components/modal/modal";
 import { CTX } from "~/routes/[...lang]/layout";
-import { capitalize } from "~/utils/common.functions";
+import { generateRoutingLink } from "~/utils/common.functions";
+import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
-import type {
-  GuestListProps,
-  GuestListStore,
-  UserContext,
-} from "~/utils/types";
+import type { GuestListProps, GuestListStore } from "~/utils/types";
 import Toast from "../toast/toast";
 
 export enum ExecuteUseClientEffect {
@@ -25,6 +27,8 @@ export enum ExecuteUseClientEffect {
 }
 
 export const GuestList = component$((props: GuestListProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const user = useContext(CTX);
   const store = useStore<GuestListStore>({
     tableRows: [],
@@ -124,10 +128,11 @@ export const GuestList = component$((props: GuestListProps) => {
               <th scope="col" class="px-6 py-4">
                 {t("common.description@@Description")}
               </th>
-              <th scope="col" class="px-6 py-4"></th>
             </tr>
           </thead>
-          <tbody>{generateEventGuestTable(store, props)}</tbody>
+          <tbody>
+            {generateEventGuestTable(store, props, navigate, location)}
+          </tbody>
         </table>
         <div class="mt-6">
           <button
@@ -190,8 +195,8 @@ export const GuestList = component$((props: GuestListProps) => {
       </div>
       <Modal
         id="selectableGuestlistModal"
-        name="Existing Guests"
-        size="max-w-8xl max-h-6xl max-h-fit overflow-auto"
+        name={t("guestlist.uninvitedGuests@@Uninvited guests")}
+        size="max-w-8xl max-h-3xl overflow-auto"
         listType=""
         type=""
       >
@@ -268,20 +273,6 @@ export const GuestList = component$((props: GuestListProps) => {
       >
         {t("guestlist.existingGuests@@Show uninvited Guests")}
       </button>
-      <button
-        class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
-        type="submit"
-        preventdefault:click
-        onClick$={async () => {
-          saveGuestList(store, props, user);
-          const toast = document.getElementById("successToast");
-          if (toast) {
-            toast.classList.remove("hidden");
-          }
-        }}
-      >
-        {t("guestlist.saveGuestlist@@Save Guestlist")}
-      </button>
       <Toast
         id="successToast"
         text={t("toast.operationSuccessful@@Operation Successful!")}
@@ -295,12 +286,12 @@ export const GuestList = component$((props: GuestListProps) => {
 export const generateSelectableGuestTable = (store: GuestListStore) => {
   return store.connectableGuests
     .filter((guest) => {
-      if (store.searchInput.length > 0) {
+      if (store.searchInput2.length > 0) {
         return (
-          guest.firstname?.toLowerCase().includes(store.searchInput) ||
-          guest.lastname?.toLowerCase().includes(store.searchInput) ||
-          guest.email?.toLowerCase().includes(store.searchInput) ||
-          guest.description?.toLowerCase().includes(store.searchInput)
+          guest.firstname?.toLowerCase().includes(store.searchInput2) ||
+          guest.lastname?.toLowerCase().includes(store.searchInput2) ||
+          guest.email?.toLowerCase().includes(store.searchInput2) ||
+          guest.description?.toLowerCase().includes(store.searchInput2)
         );
       } else {
         return guest;
@@ -370,93 +361,47 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
 
 export const generateEventGuestTable = (
   store: GuestListStore,
-  props: GuestListProps
+  props: GuestListProps,
+  navigate: RouteNavigate,
+  location: RouteLocation
 ) => {
+  console.log(store);
+  console.log(props);
+
   return store.tableRows.map((guest) => {
     return (
-      <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
+      <tr
+        class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700 cursor-pointer"
+        onClick$={() => {
+          navigate(
+            generateRoutingLink(location.params.lang, paths.guest) + guest.id,
+            true
+          );
+        }}
+      >
         <td
           scope="row"
-          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.firstname}
         </td>
         <td
           scope="row"
-          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.lastname}
         </td>
         <td
           scope="row"
-          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.email}
         </td>
         <td
           scope="row"
-          class="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.description}
-        </td>
-        <td
-          scope="row"
-          class="text-center px-6  text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <button
-            class="font-bold py-4 text-sm text-indigo-600 dark:text-indigo-500 hover:underline"
-            preventdefault:click
-            onClick$={async () => {
-              let rowFound = false;
-              if (
-                guest.id === "" &&
-                guest.description === "" &&
-                guest.email === "" &&
-                guest.firstname === "" &&
-                guest.lastname === ""
-              ) {
-                store.tableRows.forEach((row, index) => {
-                  if (row.id === guest.id && !rowFound) {
-                    store.tableRows.splice(index, 1);
-                    rowFound = true;
-                    store.tableRows = [...store.tableRows];
-                  }
-                });
-              } else {
-                const isNewRow = await client.getGuest.query({
-                  guestId: guest.id,
-                });
-
-                if (isNewRow.status === Status.SUCCESS) {
-                  if (props.openedFromEvent) {
-                    await client.deleteEventGuest.mutate({
-                      eventId: props.eventId ?? "",
-                      guestId: guest.id,
-                    });
-                  } else {
-                    await client.deleteGuest.mutate({
-                      guestId: guest.id,
-                    });
-                  }
-                  store.useClientEffectHook = ExecuteUseClientEffect.DELETE_ROW;
-                }
-
-                store.tableRows.forEach((row, index) => {
-                  if (row.id === guest.id && !rowFound) {
-                    store.tableRows.splice(index, 1);
-                    rowFound = true;
-                  }
-                });
-
-                store.tableRows = [...store.tableRows];
-                store.connectableGuests = [...store.connectableGuests, guest];
-                store.unselectedGuests = [...store.connectableGuests];
-                store.selectedGuests = [];
-              }
-            }}
-          >
-            {t("common.deleteRow@@Delete Row")}
-          </button>
         </td>
       </tr>
     );
@@ -484,59 +429,4 @@ export const addSelectedGuestsToEvent = (
     // @ts-ignore Property 'checked' does not exist on type 'HTMLElement'
     checkbox.checked = false;
   }
-};
-
-export const saveGuestList = async (
-  store: GuestListStore,
-  props: GuestListProps,
-  user: UserContext
-) => {
-  store.tableRows
-    .filter((guest) => {
-      return guest.firstname && guest.lastname;
-    })
-    .forEach(async (guest) => {
-      const result = await client.getGuest.query({
-        guestId: guest.id,
-      });
-      const existingGuest = result.guest;
-      if (result.status === Status.SUCCESS) {
-        if (
-          existingGuest?.firstname?.toLowerCase() !==
-            guest.firstname?.toLowerCase() ||
-          existingGuest?.lastname?.toLowerCase() !==
-            guest.lastname?.toLowerCase() ||
-          existingGuest?.email?.toLowerCase() !== guest.email ||
-          existingGuest?.description?.toLowerCase() !==
-            guest.description?.toLowerCase()
-        ) {
-          await client.updateGuest.mutate({
-            guestId: guest.id,
-            email: guest.email?.toLowerCase(),
-            firstname: capitalize(guest.firstname ?? ""),
-            lastname: capitalize(guest.lastname ?? ""),
-            description: guest.description ?? undefined,
-            userEmail: user.userEmail ?? "",
-          });
-        }
-      } else if (props.openedFromEvent) {
-        await client.createGuestAndConnectToEvent.mutate({
-          guestId: guest.id,
-          email: guest.email?.toLowerCase(),
-          firstname: capitalize(guest.firstname ?? ""),
-          lastname: capitalize(guest.lastname ?? ""),
-          description: guest.description ?? undefined,
-          userEmail: user.userEmail ?? "",
-          eventId: props.eventId ?? "",
-        });
-      } else if (!props.openedFromEvent) {
-        await client.createGuest.mutate({
-          firstname: capitalize(guest.firstname ?? ""),
-          lastname: capitalize(guest.lastname ?? ""),
-          email: guest.email?.toLowerCase(),
-          description: guest.description ?? undefined,
-          userEmail: user.userEmail ?? "",
-        });
-      }
-    });
 };

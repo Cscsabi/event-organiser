@@ -27,7 +27,7 @@ export default component$(() => {
           <meta charSet="utf-8" />
           <link rel="manifest" href="/manifest.json" />
           <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.css"
             rel="stylesheet"
           />
           <RouterHead />
@@ -38,7 +38,7 @@ export default component$(() => {
         >
           <RouterOutlet />
           <ServiceWorkerRegister />
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
         </body>
       </QwikCityProvider>
     </QwikSpeakProvider>

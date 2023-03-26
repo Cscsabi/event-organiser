@@ -40,6 +40,36 @@ export const getBudgetPlanningController = async ({
   }
 };
 
+export const getBudgetPlanningByIdController = async ({
+  getBudgetPlanningInput,
+}: {
+  getBudgetPlanningInput: ByNoInput;
+}) => {
+  try {
+    const budgetPlanning = await prisma.budgetPlanning.findFirst({
+      where: {
+        id: getBudgetPlanningInput.id,
+      },
+      include: {
+        contact: true,
+      },
+    });
+
+    if (!budgetPlanning) {
+      return {
+        status: Status.NOT_FOUND,
+      };
+    }
+
+    return {
+      status: Status.SUCCESS,
+      budgetPlanning,
+    };
+  } catch (error) {
+    return { status: Status.FAILED };
+  }
+};
+
 export const getBudgetPlanningsController = async ({
   getByIdInput,
 }: {
@@ -299,17 +329,21 @@ export const updateContactController = async ({
   updateContactInput: UpdateContactInput;
 }) => {
   try {
-    await prisma.contact.update({
+    console.log(updateContactInput);
+
+    const contact = await prisma.contact.update({
       data: {
         name: updateContactInput.name,
         phone: updateContactInput.phone,
         email: updateContactInput.email,
+        link: updateContactInput.link,
         userEmail: updateContactInput.userEmail,
       },
       where: {
         id: updateContactInput.id,
       },
     });
+    console.log(contact);
 
     return {
       status: Status.SUCCESS,

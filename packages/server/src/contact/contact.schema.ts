@@ -21,7 +21,7 @@ export const contactInput = z.object({
 export const updateContactInput = z.object({
   id: z.string(),
   name: z.string(),
-  cost: z.number(),
+  link: z.string(),
   phone: z.string(),
   email: z.string(),
   description: z.string(),
