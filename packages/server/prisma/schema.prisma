@@ -11,7 +11,8 @@ model User {
   email           String     @id
   firstname       String
   lastname        String
-  darkModeEnabled Boolean
+  darkModeEnabled Boolean    @default(false)
+  turnOffHints    Boolean    @default(false)
   language        String?
   events          Event[]
   locations       Location[]

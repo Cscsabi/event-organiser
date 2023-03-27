@@ -57,7 +57,7 @@ export default component$(() => {
             </label>
             <input
               minLength={3}
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.name = (event.target as HTMLInputElement).value;
               }}
@@ -73,7 +73,7 @@ export default component$(() => {
             </label>
             <input
               type="tel"
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.phone = (event.target as HTMLInputElement).value;
               }}
@@ -91,7 +91,7 @@ export default component$(() => {
               type="email"
               pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               minLength={6}
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.email = (event.target as HTMLInputElement).value;
               }}
@@ -108,7 +108,7 @@ export default component$(() => {
             <input
               minLength={3}
               type="url"
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.link = (event.target as HTMLInputElement).value;
               }}
@@ -123,7 +123,7 @@ export default component$(() => {
               {t("common.description@@Description:")}
             </label>
             <input
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.description = (event.target as HTMLInputElement).value;
               }}
@@ -131,7 +131,7 @@ export default component$(() => {
             ></input>
           </div>
           <button
-            class="text-white mr-2 bg-indigo-600 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-400 dark:focus:ring-indigo-500"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             preventdefault:click
             onClick$={async () => {
               save(store, user);
@@ -142,7 +142,7 @@ export default component$(() => {
           <button
             data-modal-target="deleteContactModal"
             data-modal-toggle="deleteContactModal"
-            class="text-white mr-2 mt-6 bg-indigo-600 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-400 dark:focus:ring-indigo-500"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             type="button"
           >
             {t("common.delete@@Delete")}
@@ -214,8 +214,6 @@ export async function getCurrentContact(contactId: string) {
 }
 
 export async function save(store: Contact, user: UserContext) {
-  console.log(store);
-
   const result = await client.updateContact.mutate({
     description: store.description ?? "",
     email: store.email ?? "",

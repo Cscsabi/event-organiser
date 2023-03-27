@@ -11,35 +11,11 @@
 @tailwind utilities;
 
 @layer utilities {
-  .card-loc-light {
-    background: radial-gradient(#ffffff2c, #00a7bdb0);
+  .card-light {
+    background: radial-gradient(#0ea5e9, #0284c7);
   }
 
-  .card-loc-dark {
-    background: radial-gradient(#4d5eff, #2b40ff);
-  }
-
-  .card-ev-light {
-    background: radial-gradient(#ffffff5d, #eeff00ad);
-  }
-
-  .card-ev-dark {
-    background: radial-gradient(#ffffff60, #5005ff);
-  }
-
-  .card-prev-light {
-    background: radial-gradient(#ffffff00, #00802ba4);
-  }
-
-  .card-prev-dark {
-    background: radial-gradient(#6ebbe7, #00a2ff);
-  }
-
-  .card-home-light {
-    background: radial-gradient(#5dffe9, #00e1ff);
-  }
-
-  .card-home-dark {
-    background: radial-gradient(#7e39ff, #5900ff);
+  .card-dark {
+    background: radial-gradient(#404dff, #1905cf);
   }
 }

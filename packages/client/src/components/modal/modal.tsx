@@ -11,7 +11,13 @@ export interface ModalProps {
   size: string;
   type: string;
   listTypeId?: string;
-  listType: "location" | "previous-event" | "active-event" | "contact" | "guest" | "";
+  listType:
+    | "location"
+    | "previous-event"
+    | "active-event"
+    | "contact"
+    | "guest"
+    | "";
 }
 
 export default component$((props: ModalProps) => {
@@ -57,7 +63,7 @@ export default component$((props: ModalProps) => {
                 <div class="p-6 text-center">
                   <svg
                     aria-hidden="true"
-                    class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"
+                    class="mx-auto mb-4 text-black w-14 h-14 dark:text-gray-200"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -100,15 +106,15 @@ export default component$((props: ModalProps) => {
                         case "contact": {
                           path = paths.contacts;
                           client.deleteContact.mutate({
-                            id: props.listTypeId ?? ""
-                          })
+                            id: props.listTypeId ?? "",
+                          });
                           break;
                         }
                         case "guest": {
                           path = paths.guests;
                           client.deleteGuest.mutate({
-                            guestId: props.listTypeId ?? ""
-                          })
+                            guestId: props.listTypeId ?? "",
+                          });
                           break;
                         }
                       }
@@ -117,14 +123,14 @@ export default component$((props: ModalProps) => {
                         true
                       );
                     }}
-                    class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
                   >
                     {t("modal.yes@@Yes, I'm sure")}
                   </button>
                   <button
                     data-modal-hide={props.id}
                     type="button"
-                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                    class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   >
                     {t("modal.no@@No, cancel")}
                   </button>

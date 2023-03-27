@@ -13,7 +13,7 @@ export default component$((props: InformationCardProps) => {
         } overflow-auto`}
       >
         <a href={generateRoutingLink(location.params.lang, props.goTo)}>
-          <div class="hover:shadow-md hover:scale-105 m-3 p-5 h-[16.5rem] w-[21rem] grid grid-rows-4 rounded-xl shadow-sm transition-all card-home-light dark:card-home-dark">
+          <div class="hover:shadow-md hover:scale-105 m-3 p-5 h-[16.5rem] w-[21rem] grid grid-rows-4 rounded-xl shadow-sm transition-all card-light dark:card-dark">
             <h1 class="font-bold text-center text-xl">{props.name}</h1>
             <h2 class="text-center">
               <i class={props.icon}></i>

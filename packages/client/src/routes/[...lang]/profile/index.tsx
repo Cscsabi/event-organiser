@@ -32,6 +32,7 @@ export default component$(() => {
     lastname: "",
     newPassword1: "",
     newPassword2: "",
+    hints: false,
     date: new Date(),
     events: [],
   });
@@ -63,6 +64,7 @@ export default component$(() => {
       store.firstname = userData.user.firstname;
       store.lastname = userData.user.lastname;
       store.language = userData.user.language ?? undefined;
+      store.hints = userData.user.turnOffHints;
     }
 
     store.events = await getEvents(user.userEmail ?? "");
@@ -83,7 +85,7 @@ export default component$(() => {
               {t("common.firstname@@First name:")}
             </label>
             <input
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.firstname = (event.target as HTMLInputElement).value)
               }
@@ -99,7 +101,7 @@ export default component$(() => {
               {t("common.lastname@@Last name:")}
             </label>
             <input
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.lastname = (event.target as HTMLInputElement).value)
               }
@@ -115,7 +117,7 @@ export default component$(() => {
               {t("common.email@@Email:")}
             </label>
             <input
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               type="email"
               value={user.userEmail}
               readOnly
@@ -128,14 +130,13 @@ export default component$(() => {
             >
               {t("profile.language@@Language: ")}
             </label>
-            <div class="inline-block w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+            <div class="inline-block w-full py-2 pl-3 pr-4 font-semibold text-black rounded md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
               <select
-                class="mx-6 my-4 bg-gray-200 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="mx-6 my-4 bg-gray-300 border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-slate-500 dark:focus:ring-green-600 dark:focus:border-indigo-600 text-sm rounded-lg w-10/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   store.language = (
                     event.target as unknown as HTMLInputElement
                   ).value;
-                  console.log(store.language);
                 }}
               >
                 <option selected={store.language === "en-US"} value="en-US">
@@ -146,9 +147,23 @@ export default component$(() => {
                 </option>
               </select>
             </div>
+            <label
+              for="hints"
+              class="mb-2 mt-6 mr-6 ml-6 text-lg font-medium text-gray-900 dark:text-white"
+            >
+              {t("profile.turnOffHints@@Turn off hints:")}
+            </label>
+            <div class="inline-block w-full py-2 pl-3 pr-4 font-semibold text-black rounded md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+              <input
+                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                type="checkbox"
+                onChange$={() => (store.hints = !store.hints)}
+                checked={store.hints}
+              ></input>
+            </div>
           </div>
           <button
-            class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             onClick$={() =>
               save(store, user).then((result) => {
                 const speakLocale: SpeakLocale = {
@@ -176,7 +191,7 @@ export default component$(() => {
           <button
             data-modal-target="changePasswordModal"
             data-modal-toggle="changePasswordModal"
-            class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             type="button"
           >
             {t("profile.changePassword@@Change Password")}
@@ -234,7 +249,7 @@ export default component$(() => {
                   {t("common.password@@Password:")}
                 </label>
                 <input
-                  class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                  class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   onInput$={(event) =>
                     (store.newPassword1 = (
                       event.target as HTMLInputElement
@@ -254,7 +269,7 @@ export default component$(() => {
                   {t("profile.passwordAgain@@Password again:")}
                 </label>
                 <input
-                  class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                  class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   onInput$={(event) =>
                     (store.newPassword2 = (
                       event.target as HTMLInputElement
@@ -271,7 +286,7 @@ export default component$(() => {
               </div>
               <button
                 type="submit"
-                class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
               >
                 {t("profile.changePassword@@Change")}
               </button>
@@ -329,6 +344,7 @@ export function save(store: ProfilStore, user: UserContext) {
       firstname: store.firstname,
       lastname: store.lastname,
       language: store.language,
+      turnOffHints: store.hints,
     },
   });
 }

@@ -27,6 +27,7 @@ export const updateUserSchema = z.object({
       email: z.string(),
       darkModeEnabled: z.boolean(),
       language: z.string(),
+      turnOffHints: z.boolean(),
     })
     .partial(),
 });

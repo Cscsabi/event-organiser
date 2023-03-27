@@ -50,8 +50,7 @@ export default component$(() => {
           true
         );
       }
-      console.log(event);
-      
+
       const currentEvent: NewEventStore = {
         budget: +event.budget,
         startDate: event.startDate ?? undefined,
@@ -94,7 +93,7 @@ export default component$(() => {
             {t("event.eventName@@Event Name:")}
           </label>
           <input
-            class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+            class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             readOnly
             type="text"
             value={newEventStore.value?.name}
@@ -108,7 +107,7 @@ export default component$(() => {
                 {t("event.eventType@@Event Type:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 readOnly
                 type="text"
                 value={
@@ -136,7 +135,7 @@ export default component$(() => {
                 {t("event.budget@@Budget:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="number"
                 readOnly
                 value={newEventStore.value?.budget}
@@ -150,7 +149,7 @@ export default component$(() => {
                 {t("event.headcount@@Headcount:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 readOnly
                 type="number"
                 value={newEventStore.value?.headcount}
@@ -166,7 +165,7 @@ export default component$(() => {
                 {t("common.startDate@@Start Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 readOnly
                 type="date"
                 value={getProperDateFormat(newEventStore.value?.startDate)}
@@ -180,7 +179,7 @@ export default component$(() => {
                 {t("common.startTime@@Start Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 readOnly
                 type="time"
                 value={getProperTimeFormat(newEventStore.value?.startDate)}
@@ -194,7 +193,7 @@ export default component$(() => {
                 {t("common.endDate@@End Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 readOnly
                 type="date"
                 value={getProperDateFormat(newEventStore.value?.endDate)}
@@ -208,7 +207,7 @@ export default component$(() => {
                 {t("common.endTime@@End Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 readOnly
                 type="time"
                 value={getProperTimeFormat(newEventStore.value?.endDate)}
@@ -221,8 +220,6 @@ export default component$(() => {
             value={resource}
             onPending={() => <div>{loading.value}</div>}
             onResolved={(result: GetGuestReturnType) => {
-              console.log(result.guests);
-
               return (
                 <div>
                   {result.guests.length === 0 ? (
@@ -235,9 +232,9 @@ export default component$(() => {
                       >
                         {guestTranslations.guestlist}
                       </label>
-                      <table class="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                          <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+                      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
+                        <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                          <tr class="text-neutral-50 dark:bg-black">
                             <th scope="col" class="px-6 py-4">
                               {guestTranslations.firstname}
                             </th>
@@ -255,7 +252,7 @@ export default component$(() => {
                         <tbody>
                           {result.guests.map((guest) => {
                             return (
-                              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                              <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
                                 <td
                                   scope="row"
                                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -296,7 +293,7 @@ export default component$(() => {
       <button
         data-modal-target="deleteModal"
         data-modal-toggle="deleteModal"
-        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+        class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
         type="button"
       >
         {t("common.delete@@Delete")}
@@ -312,7 +309,7 @@ export default component$(() => {
         )}
       />
       <button
-        class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-1/2 sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+        class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
         preventdefault:click
         onClick$={() => {
           navigate(

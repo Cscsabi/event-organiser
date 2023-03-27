@@ -248,8 +248,6 @@ export const getContactsPaginationController = async ({
       },
     });
 
-    console.log(getContactsInput);
-
     if (!contacts) {
       return {
         status: Status.NOT_FOUND,
@@ -278,8 +276,6 @@ export const getContactsController = async ({
         userEmail: getContactsInput.userEmail,
       },
     });
-
-    console.log(getContactsInput);
 
     if (!contacts) {
       return {
@@ -329,8 +325,6 @@ export const updateContactController = async ({
   updateContactInput: UpdateContactInput;
 }) => {
   try {
-    console.log(updateContactInput);
-
     const contact = await prisma.contact.update({
       data: {
         name: updateContactInput.name,
@@ -343,7 +337,6 @@ export const updateContactController = async ({
         id: updateContactInput.id,
       },
     });
-    console.log(contact);
 
     return {
       status: Status.SUCCESS,

@@ -78,92 +78,91 @@ export const Contact = component$(() => {
             ).value.toLowerCase();
           }}
           type="search"
-          class="mb-6 p-4 bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+          class="w-full p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           placeholder={t("common.search@@Search..")}
         />
       </div>
       <div class="relative overflow-x-auto sm:rounded-lg">
-        <div>
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
-                <th scope="col" class="px-6 py-4 text-base">
-                  {t("common.name@@Name")}
-                </th>
-                <th scope="col" class="px-6 py-4 text-base">
-                  {t("common.description@@Description")}
-                </th>
-                <th scope="col" class="px-6 py-4 text-base">
-                  {t("common.email@@Email")}
-                </th>
-                <th scope="col" class="px-6 py-4 text-base">
-                  {t("common.phone@@Phone")}
-                </th>
-                <th scope="col" class="px-6 py-4 text-base">
-                  {t("common.link@@Link")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>{generateContactList(store, navigate, location)}</tbody>
-          </table>
-          <div class="mt-6">
-            <button
-              style={`${
-                store.lastpage === 0 ||
-                (store.searchInput !== "" && store.endOfList)
-                  ? "pointer-events:none"
-                  : ""
-              }`}
-              onClick$={() => {
-                store.nextButtonClicked = false;
-                store.lastpage--;
-                const oldCursor = store.oldCursor;
-                store.oldCursor = store.currentCursor;
-                store.currentCursor = oldCursor;
-              }}
-              type="button"
-              class="float-left px-4 py-2 mr-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
+          <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+            <tr class="text-neutral-50 dark:bg-black">
+              <th scope="col" class="px-6 py-4">
+                {t("common.name@@Name")}
+              </th>
+              <th scope="col" class="px-6 py-4">
+                {t("common.description@@Description")}
+              </th>
+              <th scope="col" class="px-6 py-4">
+                {t("common.email@@Email")}
+              </th>
+              <th scope="col" class="px-6 py-4">
+                {t("common.phone@@Phone")}
+              </th>
+              <th scope="col" class="px-6 py-4">
+                {t("common.link@@Link")}
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{generateContactList(store, navigate, location)}</tbody>
+        </table>
+        <div class="mt-6">
+          <button
+            style={`${
+              store.lastpage === 0 ||
+              (store.searchInput !== "" && store.endOfList)
+                ? "pointer-events:none"
+                : ""
+            }`}
+            onClick$={() => {
+              store.nextButtonClicked = false;
+              store.lastpage--;
+              const oldCursor = store.oldCursor;
+              store.oldCursor = store.currentCursor;
+              store.currentCursor = oldCursor;
+            }}
+            type="button"
+            class="float-left mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-5 h-5 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                aria-hidden="true"
-                class="w-5 h-5 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-            <button
-              style={`${store.endOfList ? "pointer-events:none" : ""}`}
-              onClick$={() => {
-                store.nextButtonClicked = true;
-                store.lastpage++;
-                store.oldCursor = store.currentCursor;
-                store.currentCursor = store.contacts.at(-1)?.id;
-              }}
-              type="button"
-              class="float-right px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              <path
+                fill-rule="evenodd"
+                d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+          <button
+            style={`${store.endOfList ? "pointer-events:none" : ""}`}
+            onClick$={() => {
+              store.nextButtonClicked = true;
+              store.lastpage++;
+              store.oldCursor = store.currentCursor;
+              store.currentCursor = store.contacts.at(-1)?.id;
+            }}
+            type="button"
+            class="float-right mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-5 h-5 ml-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                aria-hidden="true"
-                class="w-5 h-5 ml-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div>
+              <path
+                fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
         </div>
       </div>
     </Speak>
@@ -179,16 +178,7 @@ export const generateContactList = async (
     <>
       {store.contacts.map((row) => {
         return (
-          <tr
-            class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700 cursor-pointer"
-            onClick$={() => {
-              navigate(
-                generateRoutingLink(location.params.lang, paths.contact) +
-                  row.id,
-                true
-              );
-            }}
-          >
+          <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
             <td
               scope="row"
               class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -220,6 +210,21 @@ export const generateContactList = async (
               <a href={row.link} target="_blank">
                 {row.link}
               </a>
+            </td>
+            <td
+              scope="row"
+              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <i
+                class="fa-solid fa-pen-to-square fa-xl cursor-pointer"
+                onClick$={() => {
+                  navigate(
+                    generateRoutingLink(location.params.lang, paths.contact) +
+                      row.id,
+                    true
+                  );
+                }}
+              ></i>
             </td>
           </tr>
         );

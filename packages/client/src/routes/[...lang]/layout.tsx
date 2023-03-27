@@ -60,8 +60,6 @@ export default component$(() => {
   useVisibleTask$(async ({ track }) => {
     track(() => location.params.lang);
 
-    console.log(user.userEmail);
-
     if (user.userEmail === undefined) {
       user.userEmail = (await getUser()).data.user?.email ?? "";
     }
@@ -75,6 +73,7 @@ export default component$(() => {
     user.language = userData.user?.language ?? "";
     user.firstname = userData.user?.firstname;
     user.lastname = userData.user?.lastname;
+    user.turnOffHints = userData.user?.turnOffHints;
 
     if (user.language === "hu-HU" && location.params.lang === "") {
       await localizeUrl$({ lang: "hu-HU" });
@@ -94,8 +93,6 @@ export default component$(() => {
 
   useVisibleTask$(async ({ track }) => {
     track(() => user.userEmail);
-
-    console.log(user.userEmail);
 
     if (user.userEmail === undefined) {
       const userResponse = await getUser();
@@ -125,15 +122,15 @@ export default component$(() => {
 
   return (
     <>
-      <main class="bg-green-300 dark:bg-indigo-900 overflow-hidden rounded-3xl">
+      <main class="bg-slate-200 dark:bg-slate-800 overflow-hidden rounded-3xl">
         {user.privateHeader === undefined ? (
-          <nav class="px-2 min-h-[3.5rem] bg-green-200 border-gray-200 dark:bg-gray-800 dark:border-gray-700"></nav>
+          <nav class="px-2 min-h-[3.5rem] bg-slate-300 border-gray-200 dark:bg-black dark:border-gray-700"></nav>
         ) : user.privateHeader ? (
           <ProtectedHeader />
         ) : (
           <PublicHeader />
         )}
-        <section class="border-b-green-800 dark:border-b-indigo-300 border-solid border-b-8 p-6">
+        <section class="border-b-slate-300 dark:border-b-black border-solid border-b-8 p-6">
           <Slot />
         </section>
         <script

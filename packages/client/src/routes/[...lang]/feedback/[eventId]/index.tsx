@@ -116,7 +116,7 @@ export default component$(() => {
                 {store.event.name}
               </h1>
               <h2 class="mb-6 text-lg font-semibold text-black dark:text-white">
-                {t("feedback.organiser@@Organiser:")}
+                {t("feedback.organiser@@Organiser:")}{" "}
                 {user.firstname + " " + user.lastname}
               </h2>
               <div>
@@ -127,7 +127,7 @@ export default component$(() => {
                   {t("common.firstname@@First name:")}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center w-1/2 bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.firstname = (
                       event.target as HTMLInputElement
@@ -147,7 +147,7 @@ export default component$(() => {
                   {t("common.lastname@@Last name:")}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center w-1/2 bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.lastname = (
                       event.target as HTMLInputElement
@@ -167,7 +167,7 @@ export default component$(() => {
                   {t("common.email@@Email:")}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center w-1/2 bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.email = (
                       event.target as HTMLInputElement
@@ -190,7 +190,7 @@ export default component$(() => {
                   {t("feedback.lactose@@Are you lactose intolerant?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.lactose = (
@@ -207,7 +207,7 @@ export default component$(() => {
                   {t("feedback.gluten@@Are you gluten intolerant?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.gluten = (
@@ -224,7 +224,7 @@ export default component$(() => {
                   {t("feedback.diabetes@@Are you suffering from diabetes?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.diabetes = (
@@ -241,7 +241,7 @@ export default component$(() => {
                   {t("feedback.plusOne@@Do you intend to bring a plus one?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.plusOne = (
@@ -260,7 +260,7 @@ export default component$(() => {
                   )}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center w-1/2 bg-gray-300 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.additional = (
                       event.target as HTMLInputElement
@@ -275,7 +275,7 @@ export default component$(() => {
               </div>
               <button
                 type="submit"
-                class="ml-auto mr-auto mt-6 mr-2 min-w-[10rem] text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                class="ml-auto mr-auto mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
               >
                 {t("feedback.submit@@Submit Form")}
               </button>

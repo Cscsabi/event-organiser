@@ -108,14 +108,14 @@ export const GuestList = component$((props: GuestListProps) => {
             ).value.toLowerCase();
           }}
           type="search"
-          class="mb-6 p-4 bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+          class="w-full p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           placeholder={t("common.search@@Search..")}
         />
       </div>
       <div class="relative overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
+          <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+            <tr class="text-neutral-50 dark:bg-black">
               <th scope="col" class="px-6 py-4">
                 {t("common.firstname@@First name")}
               </th>
@@ -128,6 +128,7 @@ export const GuestList = component$((props: GuestListProps) => {
               <th scope="col" class="px-6 py-4">
                 {t("common.description@@Description")}
               </th>
+              <th scope="col" class="px-6 py-4"></th>
             </tr>
           </thead>
           <tbody>
@@ -150,7 +151,7 @@ export const GuestList = component$((props: GuestListProps) => {
               store.currentCursor = oldCursor;
             }}
             type="button"
-            class="float-left px-4 py-2 mr-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            class="float-left mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <svg
               aria-hidden="true"
@@ -175,7 +176,7 @@ export const GuestList = component$((props: GuestListProps) => {
               store.currentCursor = store.tableRows.at(-1)?.id;
             }}
             type="button"
-            class="float-right px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            class="float-right mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <svg
               aria-hidden="true"
@@ -212,14 +213,14 @@ export const GuestList = component$((props: GuestListProps) => {
                     ).value.toLowerCase();
                   }}
                   type="search"
-                  class="mb-6 p-4 bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                  class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   placeholder={t("common.search@@Search..")}
                 />
               </div>
               <div class="relative overflow-x-auto overflow-y-auto sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 max-h-fit overflow-auto">
-                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr class="border-b border-neutral-700 bg-green-800 text-neutral-50 dark:border-neutral-600 dark:bg-indigo-400 dark:text-black">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
+                  <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                    <tr class="text-neutral-50 dark:bg-black">
                       <th scope="col" class="px-6 py-4">
                         {t("common.firstname@@First name")}
                       </th>
@@ -242,12 +243,9 @@ export const GuestList = component$((props: GuestListProps) => {
               </div>
               <button
                 type="button"
-                class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                 onClick$={() => {
                   addSelectedGuestsToEvent(store, props.eventId ?? "");
-                  console.log("conn2:", store.connectableGuests);
-                  console.log("sel2:", store.selectedGuests);
-                  console.log("unsel:2", store.unselectedGuests);
                 }}
               >
                 {t("guestlist.addSelectedGuests@@Add selected guests to event")}
@@ -266,9 +264,9 @@ export const GuestList = component$((props: GuestListProps) => {
       <button
         data-modal-target="selectableGuestlistModal"
         data-modal-toggle="selectableGuestlistModal"
-        class={`${
+        class={`mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600 ${
           props.openedFromEvent ? "" : "hidden"
-        } mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600`}
+        }`}
         type="button"
       >
         {t("guestlist.existingGuests@@Show uninvited Guests")}
@@ -299,7 +297,7 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
     })
     .map((guest) => {
       return (
-        <tr class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700">
+        <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
           <td
             scope="row"
             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -329,7 +327,7 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
             class="px-6 py-4 text-lg font-medium text-gray-900 dark:text-white"
           >
             <input
-              class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+              class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
               type="checkbox"
               name="checkbox"
               checked={false}
@@ -348,9 +346,6 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
                   });
                   store.unselectedGuests = [...store.unselectedGuests, guest];
                 }
-                console.log("conn:", store.connectableGuests);
-                console.log("sel:", store.selectedGuests);
-                console.log("unsel:", store.unselectedGuests);
               }}
             />
           </td>
@@ -365,20 +360,9 @@ export const generateEventGuestTable = (
   navigate: RouteNavigate,
   location: RouteLocation
 ) => {
-  console.log(store);
-  console.log(props);
-
   return store.tableRows.map((guest) => {
     return (
-      <tr
-        class="bg-green-100 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-green-200 dark:hover:bg-gray-700 cursor-pointer"
-        onClick$={() => {
-          navigate(
-            generateRoutingLink(location.params.lang, paths.guest) + guest.id,
-            true
-          );
-        }}
-      >
+      <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
         <td
           scope="row"
           class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -402,6 +386,48 @@ export const generateEventGuestTable = (
           class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.description}
+        </td>
+        <td scope="row" class="text-center">
+          {props.openedFromEvent ? (
+            <button
+              class="font-bold py-4 text-sm text-sky-700 dark:text-blue-700 hover:underline"
+              preventdefault:click
+              onClick$={() => {
+                let rowFound = false;
+                client.deleteEventGuest.mutate({
+                  eventId: props.eventId ?? "",
+                  guestId: guest.id,
+                });
+
+                store.tableRows.forEach((row, index) => {
+                  if (row.id === guest.id && !rowFound) {
+                    store.tableRows.splice(index, 1);
+                    rowFound = true;
+                  }
+                });
+
+                store.tableRows = [...store.tableRows];
+                store.connectableGuests = [...store.connectableGuests, guest];
+                store.unselectedGuests = [...store.connectableGuests];
+                store.selectedGuests = [];
+              }}
+            >
+              <i class="fa-solid fa-trash-can fa-xl"></i>
+            </button>
+          ) : (
+            <i
+              class="fa-solid fa-pen-to-square fa-xl cursor-pointer"
+              onClick$={() => {
+                if (!props.openedFromEvent) {
+                  navigate(
+                    generateRoutingLink(location.params.lang, paths.guest) +
+                      guest.id,
+                    true
+                  );
+                }
+              }}
+            ></i>
+          )}
         </td>
       </tr>
     );

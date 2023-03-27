@@ -71,7 +71,7 @@ export const List = component$((props: ListProps) => {
               ).value.toLowerCase();
             }}
             type="search"
-            class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl bg-gray-300 border border-gray-300 text-gray-900 text-md focus:ring-green-600 focus:border-green-600 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+            class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder={t("common.search@@Search..")}
           />
         </div>
@@ -103,8 +103,6 @@ export const generateList = (
           value={eventResource}
           onPending={() => <div>{loading.value}</div>}
           onResolved={(result: GetEventsReturnType) => {
-            console.log(result.events);
-            
             return (
               <div class="flex flex-wrap justify-center">
                 {result.events
@@ -123,8 +121,6 @@ export const generateList = (
                     }
                   })
                   .map((event) => {
-                    console.log(event);
-                    
                     return (
                       <Card
                         id={event.id}
@@ -144,7 +140,6 @@ export const generateList = (
                             : ""
                         }
                         name={event.name}
-                        type={props.isActive ? "event" : "previous"}
                         goTo={
                           props.isActive
                             ? paths.event + event.id
@@ -191,7 +186,6 @@ export const generateList = (
                             : ""
                         }
                         name={location.name}
-                        type="location"
                         goTo={paths.location + location.id}
                         location={location.address.city}
                         icon="location"

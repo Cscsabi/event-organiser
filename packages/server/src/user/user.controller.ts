@@ -82,7 +82,6 @@ export const findUserController = async ({
   paramsInput: ParamsInput;
 }) => {
   try {
-    console.log(paramsInput);
     const user = await prisma.user.findFirst({
       where: { email: paramsInput.email },
     });

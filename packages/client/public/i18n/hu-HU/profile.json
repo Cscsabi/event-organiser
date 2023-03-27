@@ -7,6 +7,7 @@
     "passwordUpdated1": "Kedves,",
     "passwordUpdated2": "Jelezni szeretnénk, hogy a jelszavad az imént megváltozott!",
     "passwordUpdatedSubject": "A jelszó frissült!",
-    "profile": "Fiók"
+    "profile": "Fiók",
+    "turnOffHints": "Tippek kikapcsolása:"
   }
 }

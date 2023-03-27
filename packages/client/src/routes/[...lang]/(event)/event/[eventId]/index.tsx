@@ -159,7 +159,7 @@ export default component$(() => {
               {t("event.name@@Name:")}
             </label>
             <input
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               type="text"
               onChange$={(event) =>
                 (store.event.name = (event.target as HTMLInputElement).value)
@@ -176,7 +176,7 @@ export default component$(() => {
                 {t("event.budget@@Budget:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="number"
                 onChange$={(event) =>
                   (store.event.budget = +(event.target as HTMLInputElement)
@@ -193,7 +193,7 @@ export default component$(() => {
                 {t("event.headcount@@Headcount:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="number"
                 onChange$={(event) =>
                   (store.event.headcount = +(event.target as HTMLInputElement)
@@ -210,7 +210,7 @@ export default component$(() => {
                 {t("event.eventType@@Event Type:")}
               </label>
               <select
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 id="eventType"
                 name="eventType"
                 onClick$={(event) =>
@@ -257,7 +257,7 @@ export default component$(() => {
                 {t("common.startDate@@Start Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="date"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -282,7 +282,7 @@ export default component$(() => {
                 {t("common.startTime@@Start Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="time"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -308,7 +308,7 @@ export default component$(() => {
                 {t("common.endDate@@End Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="date"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -333,7 +333,7 @@ export default component$(() => {
                 {t("common.endTime@@End Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="time"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -376,7 +376,7 @@ export default component$(() => {
             <tr>
               <td>
                 <button
-                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   preventdefault:click
                   onClick$={async () => {
                     if (store.event) {
@@ -413,7 +413,7 @@ export default component$(() => {
                 <button
                   data-modal-target="deleteEventModal"
                   data-modal-toggle="deleteEventModal"
-                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   type="button"
                 >
                   {t("common.delete@@Delete")}
@@ -421,7 +421,7 @@ export default component$(() => {
               </td>
               <td>
                 <button
-                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   preventdefault:click
                   onClick$={() => {
                     sendDataToGuestsViaEmail(
@@ -430,7 +430,10 @@ export default component$(() => {
                       location.params.eventId,
                       location.params.lang
                     );
-                    console.log("meg");
+                    const toast = document.getElementById("successToast3");
+                    if (toast) {
+                      toast.classList.remove("hidden");
+                    }
                   }}
                 >
                   {t(
@@ -440,7 +443,7 @@ export default component$(() => {
               </td>
               <td>
                 <button
-                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   onClick$={() =>
                     navigate(
                       generateRoutingLink(
@@ -457,7 +460,7 @@ export default component$(() => {
               <td>
                 <a
                   role="button"
-                  class="inline-block mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="inline-block mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   target="_blank"
                   href={
                     store.origin +
@@ -472,7 +475,7 @@ export default component$(() => {
                 <a
                   target="_blank"
                   role="button"
-                  class="inline-block mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="inline-block mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   href={generateGoogleMapsLink(
                     false,
                     store.location.city,
@@ -488,7 +491,7 @@ export default component$(() => {
                 <button
                   data-modal-target="guestlistModal"
                   data-modal-toggle="guestlistModal"
-                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   type="button"
                 >
                   {t("event.showGuestlist@@Show Guestlist")}
@@ -498,7 +501,7 @@ export default component$(() => {
                 <button
                   data-modal-target="feedbackModal"
                   data-modal-toggle="feedbackModal"
-                  class="mt-6 mr-2 text-white dark:text-black bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-600 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-300 dark:hover:bg-indigo-600 dark:focus:ring-indigo-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   type="button"
                 >
                   {t("event.showFeedbacks@@Show Feedbacks")}
@@ -540,9 +543,9 @@ export default component$(() => {
               return (
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                   {result.feedbacks.length > 0 ? (
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr class="border-b border-neutral-700 bg-violet-900 text-neutral-50 dark:border-neutral-600 dark:bg-neutral-700">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
+                      <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                        <tr class="text-neutral-50 dark:bg-black">
                           <th scope="col" class="px-6 py-4">
                             {store.feedbackTranslations.firstname}
                           </th>
@@ -572,7 +575,7 @@ export default component$(() => {
                       <tbody>
                         {result.feedbacks.map((feedback) => {
                           return (
-                            <tr class="border-b dark:bg-gray-800 bg-slate-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
                               <td
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -596,7 +599,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
-                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.diabetes}
@@ -607,7 +610,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
-                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.gluten}
@@ -618,7 +621,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
-                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.lactose}
@@ -629,7 +632,7 @@ export default component$(() => {
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                               >
                                 <input
-                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-green-800 focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                                   type="checkbox"
                                   disabled
                                   checked={feedback.plusOne}
@@ -716,7 +719,6 @@ export const sendDataToGuestsViaEmail = async (
   if (event === undefined) {
     return;
   }
-  console.log("itt");
 
   const content = await event.text();
   const base64Content = Buffer.from(content).toString("base64");
@@ -731,8 +733,6 @@ export const sendDataToGuestsViaEmail = async (
   guests.guests
     .filter((guest) => guest.email !== null)
     .forEach((guest) => {
-      console.log(guest);
-
       sendEmailWithAttachment({
         base64Content: base64Content,
         contentType: "data:text/calendar",
@@ -763,7 +763,6 @@ export const createICSFile = async (store: EventStore, user: UserContext) => {
     // TODO: tell the user to fill date field
     return;
   }
-  console.log("anyád");
 
   const filename = store.event.name + ".ics";
 
@@ -810,7 +809,6 @@ export const createICSFile = async (store: EventStore, user: UserContext) => {
       resolve(new File([value], filename, { type: "text/calendar" }));
     });
   });
-  console.log("he");
 
   return file;
 };

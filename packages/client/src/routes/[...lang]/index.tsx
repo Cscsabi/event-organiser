@@ -8,8 +8,6 @@ export default component$(() => {
   const user = useContext(CTX);
 
   useVisibleTask$(async () => {
-    console.log(user.userEmail);
-
     const authToken: string = import.meta.env.VITE_AUTH_TOKEN;
     let authTokenValue = "";
 

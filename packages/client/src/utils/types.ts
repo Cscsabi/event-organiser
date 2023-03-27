@@ -162,6 +162,7 @@ export interface ProfilStore {
   date: Date;
   newPassword1: string;
   newPassword2: string;
+  hints: boolean;
   events: CalendarEvent[];
   language?: string;
 }
@@ -187,7 +188,6 @@ export interface CardProps {
   name: string;
   description: string;
   location?: string;
-  type: string;
   goTo: string;
   icon: string;
 }
@@ -301,6 +301,7 @@ export interface UserContext {
   privateHeader?: boolean;
   firstname?: string;
   lastname?: string;
+  turnOffHints?: boolean;
 }
 
 export interface TypeTranslations {
@@ -353,13 +354,13 @@ export interface BudgetPlanningRow {
   description: string;
   contactId: string;
   contact: {
-      id: string;
-      name: string;
-      phone: string;
-      email: string;
-      description: string;
-      link: string;
-      userEmail: string;
+    id: string;
+    name: string;
+    phone: string;
+    email: string;
+    description: string;
+    link: string;
+    userEmail: string;
   };
 }
 

@@ -32,10 +32,7 @@ export default component$(() => {
           />
           <RouterHead />
         </head>
-        <body
-          lang="en"
-          class="px-5 pt-5 pb-10 bg-gray-300 dark:bg-gray-900 rounded-md"
-        >
+        <body lang="en" class="px-5 pt-5 pb-10 bg-neutral-50 dark:bg-gray-900">
           <RouterOutlet />
           <ServiceWorkerRegister />
           <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>

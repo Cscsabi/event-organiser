@@ -60,8 +60,6 @@ export default component$(() => {
         <form
           preventdefault:submit
           onSubmit$={async () => {
-            console.log(store);
-
             const result = await client.addEvent.mutate({
               budget: store.budget,
               startDate: store.startDate,
@@ -92,7 +90,7 @@ export default component$(() => {
               {t("event.eventName@@Event Name:")}
             </label>
             <input
-              class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.name = (event.target as HTMLInputElement).value)
               }
@@ -112,7 +110,7 @@ export default component$(() => {
                 {t("event.eventType@@Event Type:")}
               </label>
               <select
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 id="eventType"
                 name="eventType"
                 onClick$={(event) =>
@@ -151,7 +149,7 @@ export default component$(() => {
                   return (
                     <div>
                       <select
-                        class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                        class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                         name="location"
                         onChange$={(event) => {
                           store.locationId = (
@@ -184,7 +182,7 @@ export default component$(() => {
                 {t("common.startDate@@Start Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     "-"
@@ -210,7 +208,7 @@ export default component$(() => {
                 {t("common.startTime@@Start Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     ":"
@@ -236,7 +234,7 @@ export default component$(() => {
                 {t("common.endDate@@End Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     "-"
@@ -262,7 +260,7 @@ export default component$(() => {
                 {t("common.endTime@@End Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     ":"
@@ -290,7 +288,7 @@ export default component$(() => {
                 {t("event.eventBudget@@Event Budget:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onInput$={(event) =>
                   (store.budget = +(event.target as HTMLInputElement).value)
                 }
@@ -308,7 +306,7 @@ export default component$(() => {
                 {t("event.headcount@@Headcount:")}
               </label>
               <input
-                class="bg-gray-300 border border-green-500 text-gray-900 text-md rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onInput$={(event) =>
                   (store.headcount = +(event.target as HTMLInputElement).value)
                 }
@@ -319,7 +317,7 @@ export default component$(() => {
             </div>
           </div>
           <button
-            class="mt-6 mr-2 text-white bg-green-700 hover:bg-green-800 dark:bg-blue-700 dark:hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-centerdark:focus:ring-green-800"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             type="submit"
           >
             {t("event.createEvent@@Create Event")}
