@@ -23,7 +23,7 @@ import { PublicHeader } from "~/components/header/publicHeader";
 import { config } from "~/speak-config";
 import { generateRoutingLink } from "~/utils/common.functions";
 import { paths } from "~/utils/paths";
-import { getUser } from "~/utils/supabase.client";
+import { getSession } from "~/utils/supabase.client";
 import { client } from "~/utils/trpc";
 import type { UserContext } from "~/utils/types";
 
@@ -61,7 +61,7 @@ export default component$(() => {
     track(() => location.params.lang);
 
     if (user.userEmail === undefined) {
-      user.userEmail = (await getUser()).data.user?.email ?? "";
+      user.userEmail = (await getSession())?.user.email ?? "";
     }
 
     const userData = await client.getUser.query({
@@ -95,10 +95,10 @@ export default component$(() => {
     track(() => user.userEmail);
 
     if (user.userEmail === undefined) {
-      const userResponse = await getUser();
+      const session = await getSession();
       user.privateHeader = user.userEmail !== undefined;
 
-      if (userResponse.data.user === null) {
+      if (session?.user === undefined) {
         const path = window.location.pathname;
         if (
           !(
@@ -115,7 +115,7 @@ export default component$(() => {
           );
         }
       } else {
-        user.userEmail = userResponse.data.user?.email ?? "";
+        user.userEmail = session.user.email;
       }
     }
   });

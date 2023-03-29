@@ -14,24 +14,28 @@ const supabaseClient = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY as string
 );
 
-export async function getUser() {
-  const userResponse = await supabaseClient.auth.getUser();
-  if (userResponse.data.user?.email) {
+export async function getSession() {
+  const session = (await supabaseClient.auth.getSession()).data.session;
+  if (session?.user.email !== undefined) {
     const result = await client.getUser.query({
-      email: userResponse.data.user.email,
+      email: session.user.email,
     });
     if (result.status === Status.NOT_FOUND) {
-      const firstName = userResponse.data.user.user_metadata.name.split(" ")[0];
-      const lastName = userResponse.data.user.user_metadata.name.split(" ")[1];
+      let firstName = "";
+      let lastName = "";
+      if (session.user?.user_metadata.name !== undefined) {
+        firstName = session.user?.user_metadata.name.split(" ")[0];
+        lastName = session.user?.user_metadata.name.split(" ")[1];
+      }
       await client.createUser.mutate({
-        email: userResponse.data.user.email,
+        email: session.user.email,
         firstname: firstName,
         lastname: lastName,
         darkModeEnabled: false,
       });
     }
   }
-  return userResponse;
+  return session;
 }
 
 export function getUserData(email: string) {
