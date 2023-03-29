@@ -122,9 +122,9 @@ export default component$(() => {
 
   return (
     <>
-      <main class="bg-slate-200 dark:bg-slate-800 overflow-hidden rounded-3xl">
+      <main class="bg-slate-300 dark:bg-slate-800 overflow-hidden rounded-3xl">
         {user.privateHeader === undefined ? (
-          <nav class="px-2 min-h-[3.5rem] bg-slate-300 border-gray-200 dark:bg-black dark:border-gray-700"></nav>
+          <nav class="px-2 min-h-[3.5rem] bg-slate-400 border-gray-200 dark:bg-black dark:border-gray-700"></nav>
         ) : user.privateHeader ? (
           <ProtectedHeader />
         ) : (
