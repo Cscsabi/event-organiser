@@ -139,6 +139,7 @@ export const updateBudgetPlanningController = async ({
         contactId: budgetPlanningInput.contactId,
         amount: budgetPlanningInput.amount,
         isPaid: budgetPlanningInput.isPaid,
+        description: budgetPlanningInput.description
       },
     });
 
@@ -210,6 +211,7 @@ export const getContactsPaginationController = async ({
   getContactsInput: GetContactsInput;
 }) => {
   try {
+
     const contacts = await prisma.contact.findMany({
       skip: getContactsInput.skip,
       take: getContactsInput.take,
@@ -217,6 +219,8 @@ export const getContactsPaginationController = async ({
       ...(getContactsInput.cursor === undefined
         ? {}
         : { cursor: { id: getContactsInput.cursor } }),
+
+        
       where: {
         userEmail: getContactsInput.userEmail,
         OR: [
@@ -325,13 +329,14 @@ export const updateContactController = async ({
   updateContactInput: UpdateContactInput;
 }) => {
   try {
-    const contact = await prisma.contact.update({
+    await prisma.contact.update({
       data: {
         name: updateContactInput.name,
         phone: updateContactInput.phone,
         email: updateContactInput.email,
         link: updateContactInput.link,
         userEmail: updateContactInput.userEmail,
+        description: updateContactInput.description
       },
       where: {
         id: updateContactInput.id,

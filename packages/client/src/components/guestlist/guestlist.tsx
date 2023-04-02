@@ -19,13 +19,6 @@ import { client } from "~/utils/trpc";
 import type { GuestListProps, GuestListStore } from "~/utils/types";
 import Toast from "../toast/toast";
 
-export enum ExecuteUseClientEffect {
-  INITIAL,
-  DELETE_ROW,
-  OPEN_EXISTING_GUESTS,
-  ADD_EXISTING_GUESTS,
-}
-
 export const GuestList = component$((props: GuestListProps) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,7 +28,6 @@ export const GuestList = component$((props: GuestListProps) => {
     connectableGuests: [],
     selectedGuests: [],
     unselectedGuests: [],
-    useClientEffectHook: ExecuteUseClientEffect.INITIAL,
     lastpage: 0,
     currentCursor: undefined,
     oldCursor: undefined,
@@ -46,7 +38,6 @@ export const GuestList = component$((props: GuestListProps) => {
   });
 
   useVisibleTask$(async ({ track }) => {
-    track(() => store.useClientEffectHook);
     track(() => store.currentCursor);
     track(() => store.searchInput);
     track(() => user.userEmail);
@@ -57,7 +48,7 @@ export const GuestList = component$((props: GuestListProps) => {
         userEmail: user.userEmail ?? "",
         filteredByEvent: true,
         eventId: props.eventId ?? "",
-        skip: store.lastpage > 0 ? 1 : undefined,
+        skip: store.currentCursor !== undefined ? 1 : undefined,
         cursor: store.currentCursor,
         take:
           store.nextButtonClicked ||
@@ -415,18 +406,14 @@ export const generateEventGuestTable = (
               <i class="fa-solid fa-trash-can fa-xl"></i>
             </button>
           ) : (
-            <i
-              class="fa-solid fa-pen-to-square fa-xl cursor-pointer"
-              onClick$={() => {
-                if (!props.openedFromEvent) {
-                  navigate(
-                    generateRoutingLink(location.params.lang, paths.guest) +
-                      guest.id,
-                    true
-                  );
-                }
-              }}
-            ></i>
+            <a
+              href={
+                generateRoutingLink(location.params.lang, paths.guest) +
+                guest.id
+              }
+            >
+              <i class="fa-solid fa-pen-to-square fa-xl cursor-pointer"></i>
+            </a>
           )}
         </td>
       </tr>

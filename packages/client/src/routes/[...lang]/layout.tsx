@@ -27,7 +27,7 @@ import { getSession } from "~/utils/supabase.client";
 import { client } from "~/utils/trpc";
 import type { UserContext } from "~/utils/types";
 
-export const CTX = createContextId<UserContext>("authenticated");
+export const CTX = createContextId<UserContext>("user");
 
 export default component$(() => {
   const ctx = useSpeakContext();
@@ -68,7 +68,7 @@ export default component$(() => {
       email: user.userEmail ?? "",
     });
 
-    user.privateHeader = user.userEmail !== "";
+    user.privateHeader = Boolean(user.userEmail);
     user.darkModeEnabled = userData.user?.darkModeEnabled;
     user.language = userData.user?.language ?? "";
     user.firstname = userData.user?.firstname;
@@ -94,9 +94,9 @@ export default component$(() => {
   useVisibleTask$(async ({ track }) => {
     track(() => user.userEmail);
 
-    if (user.userEmail === undefined) {
+    if (user.userEmail === undefined || user.userEmail === "") {
       const session = await getSession();
-      user.privateHeader = user.userEmail !== undefined;
+      user.privateHeader = Boolean(user.userEmail);
 
       if (session?.user === undefined) {
         const path = window.location.pathname;

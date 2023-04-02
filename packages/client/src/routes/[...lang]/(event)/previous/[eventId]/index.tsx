@@ -7,7 +7,7 @@ import {
   useContext,
   useStore,
 } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { useLocation, useNavigate, type DocumentHead } from "@builder.io/qwik-city";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import type {
@@ -36,7 +36,6 @@ export default component$(() => {
   const guestTranslations = useStore<GuestTranslations>({
     email: t("common.email@@Email"),
     firstname: t("common.firstname@@First name"),
-    guestlist: t("event.guestlist@@Guestlist:"),
     lastname: t("common.lastname@@Last name"),
     specialNeeds: t("event.specialNeeds@@Special needs"),
   });
@@ -215,7 +214,13 @@ export default component$(() => {
             </div>
           </div>
         </div>
-        <div class="place-self-center self-start">
+        <Modal
+          id="previous-event-guests-modal"
+          listType="previous-event"
+          name={t("event.guestlist@@Guestlist")}
+          size="max-w-8xl"
+          type=""
+        >
           <Resource
             value={resource}
             onPending={() => <div>{loading.value}</div>}
@@ -226,12 +231,6 @@ export default component$(() => {
                     ""
                   ) : (
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                      <label
-                        class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
-                        for="guestlist"
-                      >
-                        {guestTranslations.guestlist}
-                      </label>
                       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
                         <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                           <tr class="text-neutral-50 dark:bg-black">
@@ -288,7 +287,7 @@ export default component$(() => {
               );
             }}
           />
-        </div>
+        </Modal>
       </div>
       <button
         data-modal-target="deleteModal"
@@ -323,6 +322,14 @@ export default component$(() => {
       >
         {t("event.locationCard@@Location Card")}
       </button>
+      <button
+        data-modal-target="previous-event-guests-modal"
+        data-modal-toggle="previous-event-guests-modal"
+        class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+        type="button"
+      >
+        {t("event.showGuestlist@@Show Guestlist")}
+      </button>
       <label
         class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
         for="budgetPlanning"
@@ -356,4 +363,8 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
         };
       }),
   };
+};
+
+export const head: DocumentHead = {
+  title: 'Previous Event',
 };

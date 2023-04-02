@@ -13,7 +13,7 @@ model User {
   lastname        String
   darkModeEnabled Boolean    @default(false)
   turnOffHints    Boolean    @default(false)
-  language        String?
+  language        String     @default("en-US")
   events          Event[]
   locations       Location[]
   contacts        Contact[]
@@ -23,35 +23,35 @@ model User {
 }
 
 model Event {
-  id               String           @id @default(uuid())
-  name             String       
-  user             User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
-  userEmail        String
-  type             EventType?
-  startDate        DateTime?
-  endDate          DateTime?
-  budget           Decimal
-  location         Location         @relation(fields: [locationId], references: [id])
-  locationId       String
-  headcount        Int?
-  description      String?
-  eventGuest       EventGuest[]
-  budgetPlanning   BudgetPlanning[]
-  feedback         Feedback[]
+  id             String           @id @default(uuid())
+  name           String       
+  user           User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  userEmail      String
+  type           EventType?
+  startDate      DateTime?
+  endDate        DateTime?
+  budget         Decimal
+  location       Location         @relation(fields: [locationId], references: [id])
+  locationId     String
+  headcount      Int?
+  description    String?
+  eventGuest     EventGuest[]
+  budgetPlanning BudgetPlanning[]
+  feedback       Feedback[]
 
   @@unique([name, userEmail])
   @@map("events")
 }
 
 model Location {
-  id          String  @id @default(uuid())
-  user        User    @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  id          String       @id @default(uuid())
+  user        User         @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   userEmail   String
   name        String 
   events      Event[]
   description String?
-  address     Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
-  addressId   String  @unique
+  address     Address      @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId   String       @unique
   type        LocationType
   price       Decimal?
   phone       String?
@@ -103,7 +103,7 @@ model Guest {
   description   String?
   eventGuest    EventGuest[] 
 
-  @@unique([userEmail, firstname, lastname, email, description])
+  @@unique([userEmail, email])
   @@map("guests")
 }
 
@@ -131,6 +131,7 @@ model Contact {
   user             User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
   userEmail        String
 
+  @@unique([userEmail, email])
   @@map("contacts")
 }
 

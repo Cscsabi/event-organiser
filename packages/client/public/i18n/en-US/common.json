@@ -21,6 +21,7 @@
     "phone": "Phone:",
     "phonePlaceholder": "123-456-7890",
     "register": "Sign Up",
+    "rejected": "Failed to load data",
     "save": "Save",
     "search": "Search..",
     "startDate": "Start Date:",

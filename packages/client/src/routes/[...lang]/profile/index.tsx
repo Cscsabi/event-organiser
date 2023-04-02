@@ -5,7 +5,7 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { useLocation, useNavigate, type DocumentHead } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import {
   $translate as t,
@@ -155,7 +155,7 @@ export default component$(() => {
             </label>
             <div class="inline-block w-full py-2 pl-3 pr-4 font-semibold text-black rounded md:border-0 md:hover:text-green-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-indigo-400 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
               <input
-                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-600 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                 type="checkbox"
                 onChange$={() => (store.hints = !store.hints)}
                 checked={store.hints}
@@ -258,6 +258,9 @@ export default component$(() => {
                   type="password"
                   name="password"
                   placeholder="••••••••"
+                  minLength={8}
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"    
                   required
                 ></input>
               </div>
@@ -278,6 +281,9 @@ export default component$(() => {
                   type="password"
                   name="password"
                   placeholder="••••••••"
+                  minLength={8}
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"    
                   required
                 ></input>
                 <p id="changePasswordFeedback" class="hidden">
@@ -348,3 +354,7 @@ export function save(store: ProfilStore, user: UserContext) {
     },
   });
 }
+
+export const head: DocumentHead = {
+  title: 'Profile',
+};

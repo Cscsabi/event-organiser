@@ -18,6 +18,7 @@ export interface NewEventStore {
   description?: string;
   chooseHere?: string;
   loading?: string;
+  rejected?: string;
 }
 
 export interface LocationStore {
@@ -35,6 +36,7 @@ export interface LocationStore {
   link?: string;
   chooseHere?: string;
   loading?: string;
+  rejected?: string
 }
 
 export interface GetLocationsReturnType {
@@ -95,7 +97,6 @@ export interface GuestListStore {
   connectableGuests: GuestType[];
   selectedGuests: GuestType[];
   unselectedGuests: GuestType[];
-  useClientEffectHook: number;
   lastpage: number;
   currentCursor: string | undefined;
   oldCursor: string | undefined;
@@ -232,7 +233,7 @@ export interface ContactType {
 
 export interface ContactStore {
   contacts: ContactType[];
-  lastpage: number;
+  currentPageNo: number;
   currentCursor: string | undefined;
   oldCursor: string | undefined;
   nextButtonClicked: boolean | undefined;
@@ -325,7 +326,6 @@ export interface InformationCardProps {
 }
 
 export interface GuestTranslations {
-  guestlist: string;
   firstname: string;
   lastname: string;
   email: string;
@@ -367,4 +367,19 @@ export interface BudgetPlanningRow {
 export interface TipCardProps {
   hint1: string;
   hint2: string;
+}
+
+export interface ModalProps {
+  id: string;
+  name: string;
+  size: string;
+  type: string;
+  listTypeId?: string;
+  listType:
+    | "location"
+    | "previous-event"
+    | "active-event"
+    | "contact"
+    | "guest"
+    | "";
 }

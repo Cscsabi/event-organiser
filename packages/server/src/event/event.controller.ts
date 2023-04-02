@@ -106,7 +106,6 @@ export const deleteEventController = async ({
   }
 };
 
-// TODO: Error handling
 export const getCountriesController = async () => {
   try {
     const countries = await prisma.country.findMany();

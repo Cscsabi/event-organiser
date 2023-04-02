@@ -54,7 +54,6 @@ export const addLocationController = async ({
   }
 };
 
-// TODO: Finish
 export const updateLocationController = async ({
   updateLocationInput,
 }: {

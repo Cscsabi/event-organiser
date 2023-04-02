@@ -4,7 +4,7 @@ import {
   useVisibleTask$,
   useStore,
 } from "@builder.io/qwik";
-import type { StaticGenerateHandler } from "@builder.io/qwik-city";
+import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { $translate as t, Speak } from "qwik-speak";
 import Modal from "~/components/modal/modal";
@@ -42,7 +42,7 @@ export default component$(() => {
   return (
     <Speak assets={["guestlist", "common", "hint"]}>
       <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
-        {t("contact.contact@@Contact")}
+        {t("guestlist.guest@@Guest")}
       </h1>
       <div class="grid gap-4 mb-6 mt-8 md:grid-cols-2 w-full">
         <div>
@@ -215,3 +215,7 @@ export async function save(store: Guest, user: UserContext) {
     }
   }
 }
+
+export const head: DocumentHead = {
+  title: 'Guest',
+};

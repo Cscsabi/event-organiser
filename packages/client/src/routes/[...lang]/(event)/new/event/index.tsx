@@ -5,7 +5,11 @@ import {
   useResource$,
   useStore,
 } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import {
+  useLocation,
+  useNavigate,
+  type DocumentHead,
+} from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
@@ -37,10 +41,12 @@ export default component$(() => {
     headcount: 0,
     chooseHere: "",
     loading: "",
+    rejected: "",
   });
 
   store.chooseHere = t("event.chooseHere@@Choose here");
   store.loading = t("common.loading@@Loading...");
+  store.rejected = t("common.rejected@@Failed to load data");
 
   const resource = useResource$<GetLocationsReturnType>(
     ({ track, cleanup }) => {
@@ -55,7 +61,7 @@ export default component$(() => {
     <Speak assets={["event"]}>
       <h1 class="mb-6 text-3xl text-center font-semibold text-black dark:text-white">
         {t("event.createNewEvent@@Create New Event")}
-      </h1>{" "}
+      </h1>
       <div class="grid gap-4 mb-6 md:grid-cols-2 w-full place-content-between">
         <form
           preventdefault:submit
@@ -145,6 +151,7 @@ export default component$(() => {
               <Resource
                 value={resource}
                 onPending={() => <div>{store.loading}</div>}
+                onRejected={() => <div>{store.rejected}</div>} //TODO
                 onResolved={(result: GetLocationsReturnType) => {
                   return (
                     <div>
@@ -335,3 +342,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Create Event",
+};

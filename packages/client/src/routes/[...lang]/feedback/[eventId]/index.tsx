@@ -1,5 +1,5 @@
 import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
-import type { StaticGenerateHandler } from "@builder.io/qwik-city";
+import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
@@ -190,7 +190,7 @@ export default component$(() => {
                   {t("feedback.lactose@@Are you lactose intolerant?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-600 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.lactose = (
@@ -207,7 +207,7 @@ export default component$(() => {
                   {t("feedback.gluten@@Are you gluten intolerant?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-600 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.gluten = (
@@ -224,7 +224,7 @@ export default component$(() => {
                   {t("feedback.diabetes@@Are you suffering from diabetes?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-600 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.diabetes = (
@@ -241,7 +241,7 @@ export default component$(() => {
                   {t("feedback.plusOne@@Do you intend to bring a plus one?")}{" "}
                 </label>
                 <input
-                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
+                  class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-600 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
                   type="checkbox"
                   onChange$={(event) =>
                     (store.guest.plusOne = (
@@ -351,4 +351,8 @@ export const submitForm = async (
   if (contentDiv) {
     contentDiv.innerHTML = newContentDiv;
   }
+};
+
+export const head: DocumentHead = {
+  title: 'Login',
 };

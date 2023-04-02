@@ -4,6 +4,7 @@
     "addSelectedGuests": "Add selected guests to event",
     "deleteGuest": "Are you sure you want to delete this guest?",
     "existingGuests": "Show Existing Guests",
+    "guest": "Guest",
     "guestFirstnamePlaceholder": "Sarah",
     "guestLastnamePlaceholder": "Smith",
     "noGuests": "You have no guests yet!",

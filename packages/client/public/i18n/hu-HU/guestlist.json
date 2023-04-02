@@ -4,6 +4,7 @@
     "addSelectedGuests": "Kiválasztott vendégek eseményhez rendelése",
     "deleteGuest": "Biztosan törölni szeretnéd ezt a vendéget?",
     "existingGuests": "Meghívatlan vendégek listája",
+    "guest": "Vendég",
     "guestFirstnamePlaceholder": "Pista",
     "guestLastnamePlaceholder": "Minta",
     "noGuests": "Még egy vendéged sincs!",

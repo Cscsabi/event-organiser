@@ -4,6 +4,7 @@ import { Contact } from "~/components/contacts/contacts";
 import { paths } from "~/utils/paths";
 import { useLocation } from "@builder.io/qwik-city";
 import { generateRoutingLink } from "~/utils/common.functions";
+import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const location = useLocation();
@@ -30,3 +31,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Contacts",
+};

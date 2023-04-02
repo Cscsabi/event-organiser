@@ -1,5 +1,5 @@
 import { component$, useStore } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { type DocumentHead, useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import type { CreateUserInput } from "event-organiser-api-server/src/user/user.schema";
@@ -190,3 +190,7 @@ export async function handleRegister(
   }
   return false;
 }
+
+export const head: DocumentHead = {
+  title: 'Register',
+};

@@ -3,6 +3,7 @@ import { $translate as t, Speak } from "qwik-speak";
 import InformationCard from "~/components/information-card/information.card";
 import { paths } from "~/utils/paths";
 import { CTX } from "./layout";
+import { type DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const user = useContext(CTX);
@@ -125,3 +126,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Home",
+};

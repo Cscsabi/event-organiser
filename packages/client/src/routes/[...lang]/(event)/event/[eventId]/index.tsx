@@ -6,7 +6,7 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import type { StaticGenerateHandler } from "@builder.io/qwik-city";
+import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
@@ -532,7 +532,7 @@ export default component$(() => {
         <Modal
           id="feedbackModal"
           name={t("event.feedbacks@@Feedbacks")}
-          size="max-w-8xl"
+          size=""
           listType="active-event"
           type=""
         >
@@ -820,3 +820,7 @@ export const toBase64 = (event: Blob) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
+
+export const head: DocumentHead = {
+  title: "Event",
+};

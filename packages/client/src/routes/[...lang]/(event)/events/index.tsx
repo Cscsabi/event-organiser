@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { useLocation, type DocumentHead } from "@builder.io/qwik-city";
 import { List } from "~/components/list/list";
 import { $translate as t, Speak } from "qwik-speak";
 import { paths } from "~/utils/paths";
@@ -30,3 +30,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Events',
+};

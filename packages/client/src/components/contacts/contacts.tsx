@@ -24,7 +24,7 @@ export const Contact = component$(() => {
   const location = useLocation();
   const store = useStore<ContactStore>({
     contacts: [],
-    lastpage: 0,
+    currentPageNo: 0,
     currentCursor: undefined,
     oldCursor: undefined,
     nextButtonClicked: undefined,
@@ -40,7 +40,7 @@ export const Contact = component$(() => {
 
     const result = await client.getContactsPagination.query({
       userEmail: user.userEmail ?? "",
-      skip: store.lastpage > 0 ? 1 : undefined,
+      skip: store.currentCursor !== undefined ? 1 : undefined,
       cursor: store.currentCursor,
       take:
         store.nextButtonClicked ||
@@ -109,14 +109,14 @@ export const Contact = component$(() => {
         <div class="mt-6">
           <button
             style={`${
-              store.lastpage === 0 ||
+              store.currentPageNo === 0 ||
               (store.searchInput !== "" && store.endOfList)
                 ? "pointer-events:none"
                 : ""
             }`}
             onClick$={() => {
               store.nextButtonClicked = false;
-              store.lastpage--;
+              store.currentPageNo--;
               const oldCursor = store.oldCursor;
               store.oldCursor = store.currentCursor;
               store.currentCursor = oldCursor;
@@ -142,7 +142,7 @@ export const Contact = component$(() => {
             style={`${store.endOfList ? "pointer-events:none" : ""}`}
             onClick$={() => {
               store.nextButtonClicked = true;
-              store.lastpage++;
+              store.currentPageNo++;
               store.oldCursor = store.currentCursor;
               store.currentCursor = store.contacts.at(-1)?.id;
             }}
@@ -215,16 +215,14 @@ export const generateContactList = async (
               scope="row"
               class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              <i
-                class="fa-solid fa-pen-to-square fa-xl cursor-pointer"
-                onClick$={() => {
-                  navigate(
-                    generateRoutingLink(location.params.lang, paths.contact) +
-                      row.id,
-                    true
-                  );
-                }}
-              ></i>
+              <a
+                href={
+                  generateRoutingLink(location.params.lang, paths.contact) +
+                  row.id
+                }
+              >
+                <i class="fa-solid fa-pen-to-square fa-xl cursor-pointer"></i>
+              </a>
             </td>
           </tr>
         );

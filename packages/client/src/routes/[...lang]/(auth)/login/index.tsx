@@ -1,5 +1,5 @@
 import { component$, useStore } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { type DocumentHead, useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { SignInWithPasswordCredentials } from "@supabase/supabase-js";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
@@ -140,3 +140,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Login',
+};

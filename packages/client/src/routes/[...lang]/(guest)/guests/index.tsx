@@ -2,7 +2,7 @@ import { component$ } from "@builder.io/qwik";
 import { $translate as t, Speak } from "qwik-speak";
 import { GuestList } from "~/components/guestlist/guestlist";
 import { paths } from "~/utils/paths";
-import { useLocation } from "@builder.io/qwik-city";
+import { useLocation, type DocumentHead } from "@builder.io/qwik-city";
 import { generateRoutingLink } from "~/utils/common.functions";
 
 export default component$(() => {
@@ -30,3 +30,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Guests',
+};

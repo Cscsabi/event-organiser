@@ -1,5 +1,5 @@
 import { component$, useContext, useStore } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { useLocation, useNavigate, type DocumentHead } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
 import HintCard from "~/components/hint-card/hint.card";
@@ -160,3 +160,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Add Contact',
+};

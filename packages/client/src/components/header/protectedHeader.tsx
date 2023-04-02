@@ -9,10 +9,11 @@ import { client } from "~/utils/trpc";
 
 export const ProtectedHeader = component$(() => {
   const user = useContext(CTX);
+  
   const navigate = useNavigate();
   const location = useLocation();
 
-  useVisibleTask$(async ({ track }) => {
+  useVisibleTask$(({ track }) => {
     track(() => user.darkModeEnabled);
 
     const rootTag = document.getElementsByTagName("html")[0];
@@ -47,13 +48,15 @@ export const ProtectedHeader = component$(() => {
                 <button
                   type="button"
                   onClick$={() => {
-                    user.darkModeEnabled = !user.darkModeEnabled;
-                    client.updateUser.mutate({
-                      params: { email: user.userEmail ?? "" },
-                      body: {
-                        darkModeEnabled: user.darkModeEnabled,
-                      },
-                    });
+                    if (user.userEmail) {
+                      user.darkModeEnabled = !user.darkModeEnabled;
+                      client.updateUser.mutate({
+                        params: { email: user.userEmail },
+                        body: {
+                          darkModeEnabled: user.darkModeEnabled,
+                        },
+                      });
+                    }
                   }}
                 >
                   {!user.darkModeEnabled ? (

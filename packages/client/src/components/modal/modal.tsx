@@ -4,21 +4,7 @@ import { generateRoutingLink } from "~/utils/common.functions";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import { $translate as t, Speak } from "qwik-speak";
-
-export interface ModalProps {
-  id: string;
-  name: string;
-  size: string;
-  type: string;
-  listTypeId?: string;
-  listType:
-    | "location"
-    | "previous-event"
-    | "active-event"
-    | "contact"
-    | "guest"
-    | "";
-}
+import type { ModalProps } from "~/utils/types";
 
 export default component$((props: ModalProps) => {
   const location = useLocation();

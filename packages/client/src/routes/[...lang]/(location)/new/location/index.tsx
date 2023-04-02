@@ -5,7 +5,7 @@ import {
   useResource$,
   useStore,
 } from "@builder.io/qwik";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { useLocation, useNavigate, type DocumentHead } from "@builder.io/qwik-city";
 import type { LocationType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
@@ -21,6 +21,7 @@ export default component$(() => {
   const user = useContext(CTX);
   const location = useLocation();
   const navigate = useNavigate();
+
   const resource = useResource$(() => {
     return client.getCountries.query();
   });
@@ -40,10 +41,12 @@ export default component$(() => {
     link: "",
     chooseHere: "",
     loading: "",
+    rejected: "",
   });
 
   store.chooseHere = t("event.chooseHere@@Choose here");
   store.loading = t("common.loading@@Loading...");
+  store.rejected = t("common.rejected@@Failed to load data");
 
   return (
     <Speak assets={["location", "toast", "common", "hint"]}>
@@ -222,29 +225,25 @@ export default component$(() => {
             <Resource
               value={resource}
               onPending={() => <div>{store.loading}</div>}
+              onRejected={() => <div>{store.rejected}</div>}
               onResolved={(result) => {
                 return (
-                  <div>
-                    <select
-                      class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
-                      name="country"
-                      onChange$={(event) =>
-                        (store.countryId = +(
-                          event.target as unknown as HTMLInputElement
-                        ).value)
-                      }
-                    >
-                      <option value="" selected disabled hidden>
-                        {store.chooseHere}
-                      </option>
-                      {result.countries.map((country) => {
-                        return (
-                          <option value={country.id}>{country.name}</option>
-                        );
-                      })}
-                      ;
-                    </select>
-                  </div>
+                  <select
+                    class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                    name="country"
+                    onChange$={(event) =>
+                      (store.countryId = +(
+                        event.target as unknown as HTMLInputElement
+                      ).value)
+                    }
+                  >
+                    <option value="" selected disabled hidden>
+                      {store.chooseHere}
+                    </option>
+                    {result.countries.map((country) => {
+                      return <option value={country.id}>{country.name}</option>;
+                    })}
+                  </select>
                 );
               }}
             />
@@ -348,3 +347,7 @@ export default component$(() => {
     </Speak>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Add Location',
+};

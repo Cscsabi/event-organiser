@@ -4,7 +4,7 @@ import {
   useVisibleTask$,
   useStore,
 } from "@builder.io/qwik";
-import type { StaticGenerateHandler } from "@builder.io/qwik-city";
+import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import { $translate as t, Speak } from "qwik-speak";
 import Modal from "~/components/modal/modal";
@@ -133,7 +133,7 @@ export default component$(() => {
           <button
             class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             preventdefault:click
-            onClick$={async () => {
+            onClick$={() => {
               save(store, user);
             }}
           >
@@ -236,3 +236,7 @@ export async function save(store: Contact, user: UserContext) {
     }
   }
 }
+
+export const head: DocumentHead = {
+  title: 'Contact',
+};
