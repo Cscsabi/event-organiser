@@ -343,6 +343,7 @@ export interface AttachmentTranslation {
   attachmentText: string;
   attachmentText2: string;
   bestWishes: string;
+  fillDate: string;
 }
 
 export interface BudgetPlanningRow {

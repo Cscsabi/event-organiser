@@ -1,4 +1,4 @@
-import { number, z } from "zod";
+import { z } from "zod";
 
 export const getByEmailInput = z.object({
   email: z.string(),
@@ -9,7 +9,7 @@ export const byIdInput = z.object({
 });
 
 export const byNoInput = z.object({
-  id: number(),
+  id: z.number(),
 });
 
 export type ByIdInput = z.TypeOf<typeof byIdInput>;

@@ -1,5 +1,5 @@
-import type { ResourceReturn } from "@builder.io/qwik";
 import {
+  type ResourceReturn,
   component$,
   Resource,
   useContext,

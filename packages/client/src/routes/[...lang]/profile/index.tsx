@@ -5,7 +5,11 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import { useLocation, useNavigate, type DocumentHead } from "@builder.io/qwik-city";
+import {
+  useLocation,
+  useNavigate,
+  type DocumentHead,
+} from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import {
   $translate as t,
@@ -260,7 +264,7 @@ export default component$(() => {
                   placeholder="••••••••"
                   minLength={8}
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"    
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                   required
                 ></input>
               </div>
@@ -283,7 +287,7 @@ export default component$(() => {
                   placeholder="••••••••"
                   minLength={8}
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"    
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                   required
                 ></input>
                 <p id="changePasswordFeedback" class="hidden">
@@ -356,5 +360,5 @@ export function save(store: ProfilStore, user: UserContext) {
 }
 
 export const head: DocumentHead = {
-  title: 'Profile',
+  title: "Profile",
 };

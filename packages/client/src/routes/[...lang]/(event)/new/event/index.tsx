@@ -151,7 +151,7 @@ export default component$(() => {
               <Resource
                 value={resource}
                 onPending={() => <div>{store.loading}</div>}
-                onRejected={() => <div>{store.rejected}</div>} //TODO
+                onRejected={() => <div>{store.rejected}</div>}
                 onResolved={(result: GetLocationsReturnType) => {
                   return (
                     <div>

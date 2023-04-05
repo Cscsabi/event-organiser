@@ -7,8 +7,7 @@ import {
   useContext,
   useStore,
 } from "@builder.io/qwik";
-import { useLocation, useNavigate, type DocumentHead } from "@builder.io/qwik-city";
-import type { StaticGenerateHandler } from "@builder.io/qwik-city";
+import { useLocation, useNavigate, type DocumentHead, type StaticGenerateHandler } from "@builder.io/qwik-city";
 import { client } from "~/utils/trpc";
 import type {
   NewEventStore,
@@ -26,6 +25,7 @@ import { BudgetPlanning } from "~/components/budget-planning/budget.planning";
 import Modal from "~/components/modal/modal";
 import { $translate as t, Speak } from "qwik-speak";
 import { CTX } from "~/routes/[...lang]/layout";
+import HintCard from "~/components/hint-card/hint.card";
 
 export default component$(() => {
   const { params } = useLocation();
@@ -37,7 +37,7 @@ export default component$(() => {
     email: t("common.email@@Email"),
     firstname: t("common.firstname@@First name"),
     lastname: t("common.lastname@@Last name"),
-    specialNeeds: t("event.specialNeeds@@Special needs"),
+    specialNeeds: t("common.description@@Description"),
   });
 
   useVisibleTask$(async () => {
@@ -79,9 +79,6 @@ export default component$(() => {
     <Speak assets={["event", "common"]}>
       <h1 class="mb-6 text-center text-3xl font-semibold text-black dark:text-white">
         {t("event.previousEvent@@Previous Event")}
-      </h1>
-      <h1 class="mb-6 text-xl font-bold text-black dark:text-white">
-        {t("event.cannotBeModified@@Previous events cannot be modified!")}
       </h1>
       <div class="grid grid-cols-2">
         <div>
@@ -213,6 +210,9 @@ export default component$(() => {
               ></input>
             </div>
           </div>
+        </div>
+        <div>
+          <HintCard hint1={t("event.cannotBeModified@@Previous events cannot be modified!")} hint2="" />
         </div>
         <Modal
           id="previous-event-guests-modal"

@@ -108,13 +108,13 @@ model Guest {
 }
 
 model BudgetPlanning {
-  id          Int       @id @default(autoincrement())
-  contact     Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  id          Int      @id @default(autoincrement())
+  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
   contactId   String    
   amount      Decimal?
   isPaid      Boolean
   description String?
-  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId     String    
 
   @@map("budget_planning")

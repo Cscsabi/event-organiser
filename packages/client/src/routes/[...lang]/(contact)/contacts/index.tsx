@@ -2,9 +2,8 @@ import { component$ } from "@builder.io/qwik";
 import { $translate as t, Speak } from "qwik-speak";
 import { Contact } from "~/components/contacts/contacts";
 import { paths } from "~/utils/paths";
-import { useLocation } from "@builder.io/qwik-city";
+import { useLocation, type DocumentHead } from "@builder.io/qwik-city";
 import { generateRoutingLink } from "~/utils/common.functions";
-import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const location = useLocation();

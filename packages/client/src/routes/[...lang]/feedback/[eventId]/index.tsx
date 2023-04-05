@@ -1,6 +1,9 @@
 import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
-import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
-import { useLocation } from "@builder.io/qwik-city";
+import {
+  type StaticGenerateHandler,
+  type DocumentHead,
+  useLocation,
+} from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
@@ -354,5 +357,5 @@ export const submitForm = async (
 };
 
 export const head: DocumentHead = {
-  title: 'Login',
+  title: "Login",
 };

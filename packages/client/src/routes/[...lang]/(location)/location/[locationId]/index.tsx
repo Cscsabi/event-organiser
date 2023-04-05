@@ -4,8 +4,11 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
-import { useLocation } from "@builder.io/qwik-city";
+import {
+  type StaticGenerateHandler,
+  type DocumentHead,
+  useLocation,
+} from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
 import Modal from "~/components/modal/modal";
@@ -380,5 +383,5 @@ export async function getCurrentLocation(locationId: string) {
 }
 
 export const head: DocumentHead = {
-  title: 'Location',
+  title: "Location",
 };

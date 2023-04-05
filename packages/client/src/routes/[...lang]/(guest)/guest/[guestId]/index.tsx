@@ -4,8 +4,11 @@ import {
   useVisibleTask$,
   useStore,
 } from "@builder.io/qwik";
-import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
-import { useLocation } from "@builder.io/qwik-city";
+import {
+  type StaticGenerateHandler,
+  type DocumentHead,
+  useLocation,
+} from "@builder.io/qwik-city";
 import { $translate as t, Speak } from "qwik-speak";
 import Modal from "~/components/modal/modal";
 import Toast from "~/components/toast/toast";
@@ -217,5 +220,5 @@ export async function save(store: Guest, user: UserContext) {
 }
 
 export const head: DocumentHead = {
-  title: 'Guest',
+  title: "Guest",
 };

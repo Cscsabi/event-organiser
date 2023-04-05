@@ -4,23 +4,17 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
+import { useLocation, type RouteLocation } from "@builder.io/qwik-city";
 import { Status } from "event-organiser-api-server/src/status.enum";
-import { $translate as t, Speak } from "qwik-speak";
+import { Speak, $translate as t } from "qwik-speak";
 import { CTX } from "~/routes/[...lang]/layout";
+import { generateRoutingLink } from "~/utils/common.functions";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import type { ContactStore } from "~/utils/types";
-import {
-  type RouteNavigate,
-  useNavigate,
-  type RouteLocation,
-  useLocation,
-} from "@builder.io/qwik-city";
-import { generateRoutingLink } from "~/utils/common.functions";
 
 export const Contact = component$(() => {
   const user = useContext(CTX);
-  const navigate = useNavigate();
   const location = useLocation();
   const store = useStore<ContactStore>({
     contacts: [],
@@ -104,7 +98,7 @@ export const Contact = component$(() => {
               <th></th>
             </tr>
           </thead>
-          <tbody>{generateContactList(store, navigate, location)}</tbody>
+          <tbody>{generateContactList(store, location)}</tbody>
         </table>
         <div class="mt-6">
           <button
@@ -171,7 +165,6 @@ export const Contact = component$(() => {
 
 export const generateContactList = async (
   store: ContactStore,
-  navigate: RouteNavigate,
   location: RouteLocation
 ) => {
   return (

@@ -6,8 +6,12 @@ import {
   useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import type { StaticGenerateHandler, DocumentHead } from "@builder.io/qwik-city";
-import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import {
+  type StaticGenerateHandler,
+  type DocumentHead,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
 import { EventType } from "@prisma/client";
 import { Status } from "event-organiser-api-server/src/status.enum";
 import { $translate as t, Speak } from "qwik-speak";
@@ -90,6 +94,7 @@ export default component$(() => {
       bestWishes: t(
         "event.bestWishes@@Best wishes from the event organiser team!"
       ),
+      fillDate: t("event.fillDate@@Please fill the date fields!"),
     },
   });
 
@@ -760,7 +765,7 @@ export const sendDataToGuestsViaEmail = async (
 
 export const createICSFile = async (store: EventStore, user: UserContext) => {
   if (!store.event?.startDate || !store.event?.endDate) {
-    // TODO: tell the user to fill date field
+    alert(store.attachmentTranslation?.fillDate);
     return;
   }
 

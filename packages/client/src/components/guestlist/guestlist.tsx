@@ -6,21 +6,18 @@ import {
 } from "@builder.io/qwik";
 import {
   useLocation,
-  useNavigate,
   type RouteLocation,
-  type RouteNavigate,
 } from "@builder.io/qwik-city";
-import { $translate as t, Speak } from "qwik-speak";
+import { Speak, $translate as t } from "qwik-speak";
 import Modal from "~/components/modal/modal";
 import { CTX } from "~/routes/[...lang]/layout";
 import { generateRoutingLink } from "~/utils/common.functions";
 import { paths } from "~/utils/paths";
 import { client } from "~/utils/trpc";
 import type { GuestListProps, GuestListStore } from "~/utils/types";
-import Toast from "../toast/toast";
+import Toast from "~/components/toast/toast";
 
 export const GuestList = component$((props: GuestListProps) => {
-  const navigate = useNavigate();
   const location = useLocation();
   const user = useContext(CTX);
   const store = useStore<GuestListStore>({
@@ -123,7 +120,7 @@ export const GuestList = component$((props: GuestListProps) => {
             </tr>
           </thead>
           <tbody>
-            {generateEventGuestTable(store, props, navigate, location)}
+            {generateEventGuestTable(store, props, location)}
           </tbody>
         </table>
         <div class="mt-6">
@@ -348,7 +345,6 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
 export const generateEventGuestTable = (
   store: GuestListStore,
   props: GuestListProps,
-  navigate: RouteNavigate,
   location: RouteLocation
 ) => {
   return store.tableRows.map((guest) => {
