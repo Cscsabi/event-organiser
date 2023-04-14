@@ -90,13 +90,13 @@ export default component$(() => {
         >
           <div>
             <label
-              class="block mb-2 mt-6 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
               for="eventName"
             >
               {t("event.eventName@@Event Name:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.name = (event.target as HTMLInputElement).value)
               }
@@ -110,13 +110,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="eventType"
               >
                 {t("event.eventType@@Event Type:")}
               </label>
               <select
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 id="eventType"
                 name="eventType"
                 onClick$={(event) =>
@@ -143,7 +143,7 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="location"
               >
                 {t("event.location@@Location:")}
@@ -156,7 +156,7 @@ export default component$(() => {
                   return (
                     <div>
                       <select
-                        class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                        class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                         name="location"
                         onChange$={(event) => {
                           store.locationId = (
@@ -183,13 +183,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="startDate"
               >
                 {t("common.startDate@@Start Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     "-"
@@ -209,13 +209,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="startTime"
               >
                 {t("common.startTime@@Start Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     ":"
@@ -235,13 +235,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="endDate"
               >
                 {t("common.endDate@@End Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     "-"
@@ -261,13 +261,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="endTime"
               >
                 {t("common.endTime@@End Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
                     ":"
@@ -289,13 +289,13 @@ export default component$(() => {
           <div class="grid gap-6 mb-6 md:grid-cols-2 w-full self-center items-center">
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="budget"
               >
                 {t("event.eventBudget@@Event Budget:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onInput$={(event) =>
                   (store.budget = +(event.target as HTMLInputElement).value)
                 }
@@ -307,13 +307,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="headcount"
               >
                 {t("event.headcount@@Headcount:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 onInput$={(event) =>
                   (store.headcount = +(event.target as HTMLInputElement).value)
                 }
@@ -324,7 +324,7 @@ export default component$(() => {
             </div>
           </div>
           <button
-            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             type="submit"
           >
             {t("event.createEvent@@Create Event")}

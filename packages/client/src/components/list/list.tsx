@@ -71,7 +71,7 @@ export const List = component$((props: ListProps) => {
               ).value.toLowerCase();
             }}
             type="search"
-            class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+            class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-xl rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder={t("common.search@@Search..")}
           />
         </div>

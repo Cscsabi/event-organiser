@@ -84,12 +84,12 @@ export default component$(() => {
           <div>
             <label
               for="firstname"
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
             >
               {t("common.firstname@@First name:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.firstname = (event.target as HTMLInputElement).value)
               }
@@ -100,12 +100,12 @@ export default component$(() => {
           <div>
             <label
               for="lastname"
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
             >
               {t("common.lastname@@Last name:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.lastname = (event.target as HTMLInputElement).value)
               }
@@ -116,12 +116,12 @@ export default component$(() => {
           <div>
             <label
               for="email"
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
             >
               {t("common.email@@Email:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               type="email"
               value={user.userEmail}
               readOnly
@@ -130,7 +130,7 @@ export default component$(() => {
           <div class="mt-6">
             <label
               for="language"
-              class="mb-2 mt-6 mr-1 text-lg font-medium text-gray-900 dark:text-white"
+              class="mb-2 mt-6 mr-1 text-2xl font-medium text-gray-900 dark:text-white"
             >
               {t("profile.language@@Language: ")}
             </label>
@@ -153,7 +153,7 @@ export default component$(() => {
             </div>
             <label
               for="hints"
-              class="mb-2 mt-6 mr-6 ml-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="mb-2 mt-6 mr-6 ml-6 text-2xl font-medium text-gray-900 dark:text-white"
             >
               {t("profile.turnOffHints@@Turn off hints:")}
             </label>
@@ -167,7 +167,7 @@ export default component$(() => {
             </div>
           </div>
           <button
-            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             onClick$={() =>
               save(store, user).then((result) => {
                 const speakLocale: SpeakLocale = {
@@ -195,7 +195,7 @@ export default component$(() => {
           <button
             data-modal-target="changePasswordModal"
             data-modal-toggle="changePasswordModal"
-            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             type="button"
           >
             {t("profile.changePassword@@Change Password")}
@@ -248,12 +248,12 @@ export default component$(() => {
               <div>
                 <label
                   for="password"
-                  class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 >
                   {t("common.password@@Password:")}
                 </label>
                 <input
-                  class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                  class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   onInput$={(event) =>
                     (store.newPassword1 = (
                       event.target as HTMLInputElement
@@ -271,12 +271,12 @@ export default component$(() => {
               <div>
                 <label
                   for="password"
-                  class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 >
                   {t("profile.passwordAgain@@Password again:")}
                 </label>
                 <input
-                  class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                  class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   onInput$={(event) =>
                     (store.newPassword2 = (
                       event.target as HTMLInputElement
@@ -296,7 +296,7 @@ export default component$(() => {
               </div>
               <button
                 type="submit"
-                class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
               >
                 {t("profile.changePassword@@Change")}
               </button>

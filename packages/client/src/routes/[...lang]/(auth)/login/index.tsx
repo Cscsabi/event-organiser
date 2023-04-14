@@ -49,12 +49,12 @@ export default component$(() => {
           <div>
             <label
               for="email"
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
             >
               {t("common.email@@Email:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.email = (event.target as HTMLInputElement).value)
               }
@@ -71,12 +71,12 @@ export default component$(() => {
           <div>
             <label
               for="password"
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
             >
               {t("common.password@@Password:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.password = (event.target as HTMLInputElement).value)
               }
@@ -98,13 +98,13 @@ export default component$(() => {
         </p>
         <button
           type="submit"
-          class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+          class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
         >
           {t("common.login@@Sign In")}
         </button>
         <button
           type="button"
-          class="text-white mr-2 bg-orange-700 hover:bg-orange-500 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-700 dark:hover:bg-orange-500"
+          class="text-white mr-2 bg-orange-700 hover:bg-orange-500 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-700 dark:hover:bg-orange-500"
           onClick$={async () => {
             const login = await loginUserWithProvider({
               provider: "google",
@@ -121,7 +121,7 @@ export default component$(() => {
         </button>
         <button
           type="button"
-          class="text-white mr-2 bg-blue-700 hover:bg-indigo-400 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center"
+          class="text-white mr-2 bg-blue-700 hover:bg-indigo-400 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center"
           onClick$={async () => {
             const login = await loginUserWithProvider({
               provider: "facebook",

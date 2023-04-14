@@ -30,7 +30,7 @@ export default component$(() => {
         ""
       ) : user.userEmail === "" ? (
         <div>
-          <h2 class="text-center font-semibold text-xl dark:text-white">
+          <h2 class="text-center font-semibold text-2xl dark:text-white">
             {t(
               "home.pleaseLogin@@To be able to start organising event first you need to log in to your profile"
             )}
@@ -58,7 +58,7 @@ export default component$(() => {
         </div>
       ) : (
         <div>
-          <h2 class="text-center font-semibold text-xl dark:text-white">
+          <h2 class="text-center font-semibold text-2xl dark:text-white">
             {t(
               "home.possibilities@@Start organising! Check out your possibilities:"
             )}

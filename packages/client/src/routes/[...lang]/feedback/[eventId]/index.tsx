@@ -115,22 +115,22 @@ export default component$(() => {
                 submitForm(store, params.eventId, user.userEmail ?? "")
               }
             >
-              <h1 class="mb-6 text-2xl font-semibold text-black dark:text-white">
+              <h1 class="mb-6 text-3xl font-semibold text-black dark:text-white">
                 {store.event.name}
               </h1>
-              <h2 class="mb-6 text-lg font-semibold text-black dark:text-white">
+              <h2 class="mb-6 text-2xl font-semibold text-black dark:text-white">
                 {t("feedback.organiser@@Organiser:")}{" "}
                 {user.firstname + " " + user.lastname}
               </h2>
               <div>
                 <label
                   for="firstname"
-                  class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 >
                   {t("common.firstname@@First name:")}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.firstname = (
                       event.target as HTMLInputElement
@@ -145,12 +145,12 @@ export default component$(() => {
               <div>
                 <label
                   for="lastname"
-                  class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 >
                   {t("common.lastname@@Last name:")}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.lastname = (
                       event.target as HTMLInputElement
@@ -165,12 +165,12 @@ export default component$(() => {
               <div>
                 <label
                   for="email"
-                  class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 >
                   {t("common.email@@Email:")}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.email = (
                       event.target as HTMLInputElement
@@ -187,7 +187,7 @@ export default component$(() => {
               </div>
               <div class="mt-4">
                 <label
-                  class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
+                  class="pr-4 mb-2 mt-12 text-2xl font-medium text-gray-900 dark:text-white"
                   for="lactose"
                 >
                   {t("feedback.lactose@@Are you lactose intolerant?")}{" "}
@@ -204,7 +204,7 @@ export default component$(() => {
               </div>
               <div>
                 <label
-                  class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
+                  class="pr-4 mb-2 mt-12 text-2xl font-medium text-gray-900 dark:text-white"
                   for="gluten"
                 >
                   {t("feedback.gluten@@Are you gluten intolerant?")}{" "}
@@ -221,7 +221,7 @@ export default component$(() => {
               </div>
               <div>
                 <label
-                  class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
+                  class="pr-4 mb-2 mt-12 text-2xl font-medium text-gray-900 dark:text-white"
                   for="diabetes"
                 >
                   {t("feedback.diabetes@@Are you suffering from diabetes?")}{" "}
@@ -238,7 +238,7 @@ export default component$(() => {
               </div>
               <div>
                 <label
-                  class="pr-4 mb-2 mt-12 text-lg font-medium text-gray-900 dark:text-white"
+                  class="pr-4 mb-2 mt-12 text-2xl font-medium text-gray-900 dark:text-white"
                   for="plusOne"
                 >
                   {t("feedback.plusOne@@Do you intend to bring a plus one?")}{" "}
@@ -256,14 +256,14 @@ export default component$(() => {
               <div>
                 <label
                   for="additional"
-                  class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 >
                   {t(
                     "feedback.additional@@Anything else the organiser should know:"
                   )}
                 </label>
                 <input
-                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
+                  class="ml-auto mr-auto text-center bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-1/2 block p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white placeholder-slate-700"
                   onInput$={(event) =>
                     (store.guest.additional = (
                       event.target as HTMLInputElement
@@ -278,7 +278,7 @@ export default component$(() => {
               </div>
               <button
                 type="submit"
-                class="ml-auto mr-auto mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                class="ml-auto mr-auto mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
               >
                 {t("feedback.submit@@Submit Form")}
               </button>

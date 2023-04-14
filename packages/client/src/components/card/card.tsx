@@ -20,9 +20,9 @@ export default component$((card: CardProps) => {
                 <i class="fa-solid fa-building fa-xl fa-beat"></i>
               )}
             </div>
-            <h2 class="font-bold text-xl">{card.name}</h2>
-            <h3 class="pt-2 font-semibold text-lg">{card.description}</h3>
-            <h3 class="font-semibold text-lg">{card.location}</h3>
+            <h2 class="font-bold text-2xl">{card.name}</h2>
+            <h3 class="pt-2 font-semibold text-xl">{card.description}</h3>
+            <h3 class="font-semibold text-xl">{card.location}</h3>
           </div>
         </div>
       </a>

@@ -96,13 +96,13 @@ export const GuestList = component$((props: GuestListProps) => {
             ).value.toLowerCase();
           }}
           type="search"
-          class="w-full p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          class="w-full p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-xl rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           placeholder={t("common.search@@Search..")}
         />
       </div>
       <div class="relative overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
-          <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+        <table class="w-full text-lg text-left text-gray-500 dark:text-gray-400 overflow-auto">
+          <thead class="text-xl bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
             <tr class="text-neutral-50 dark:bg-black">
               <th scope="col" class="px-6 py-4">
                 {t("common.firstname@@First name")}
@@ -139,7 +139,7 @@ export const GuestList = component$((props: GuestListProps) => {
               store.currentCursor = oldCursor;
             }}
             type="button"
-            class="float-left mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="float-left mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <svg
               aria-hidden="true"
@@ -164,7 +164,7 @@ export const GuestList = component$((props: GuestListProps) => {
               store.currentCursor = store.tableRows.at(-1)?.id;
             }}
             type="button"
-            class="float-right mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="float-right mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <svg
               aria-hidden="true"
@@ -201,13 +201,13 @@ export const GuestList = component$((props: GuestListProps) => {
                     ).value.toLowerCase();
                   }}
                   type="search"
-                  class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                  class="w-3/5 min-w-[40rem] p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-xl rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   placeholder={t("common.search@@Search..")}
                 />
               </div>
               <div class="relative overflow-x-auto overflow-y-auto sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
-                  <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                <table class="w-full text-lg text-left text-gray-500 dark:text-gray-400 overflow-auto">
+                  <thead class="text-xl bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                     <tr class="text-neutral-50 dark:bg-black">
                       <th scope="col" class="px-6 py-4">
                         {t("common.firstname@@First name")}
@@ -231,7 +231,7 @@ export const GuestList = component$((props: GuestListProps) => {
               </div>
               <button
                 type="button"
-                class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                 onClick$={() => {
                   addSelectedGuestsToEvent(store, props.eventId ?? "");
                 }}
@@ -252,7 +252,7 @@ export const GuestList = component$((props: GuestListProps) => {
       <button
         data-modal-target="selectableGuestlistModal"
         data-modal-toggle="selectableGuestlistModal"
-        class={`mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600 ${
+        class={`mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600 ${
           props.openedFromEvent ? "" : "hidden"
         }`}
         type="button"
@@ -312,7 +312,7 @@ export const generateSelectableGuestTable = (store: GuestListStore) => {
           </td>
           <td
             scope="row"
-            class="px-6 py-4 text-lg font-medium text-gray-900 dark:text-white"
+            class="px-6 py-4 text-2xl font-medium text-gray-900 dark:text-white"
           >
             <input
               class="min-w-4 min-h-4 dark:text-blue-600 bg-gray-300 border-gray-300 rounded dark:focus:ring-blue-500 text-sky-600 focus:ring-sky-700 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-900 dark:border-gray-600"
@@ -352,32 +352,32 @@ export const generateEventGuestTable = (
       <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
         <td
           scope="row"
-          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.firstname}
         </td>
         <td
           scope="row"
-          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.lastname}
         </td>
         <td
           scope="row"
-          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.email}
         </td>
         <td
           scope="row"
-          class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
           {guest.description}
         </td>
         <td scope="row" class="text-center">
           {props.openedFromEvent ? (
             <button
-              class="font-bold py-4 text-sm text-sky-700 dark:text-blue-700 hover:underline"
+              class="font-bold py-4 text-lg text-sky-700 dark:text-blue-700 hover:underline"
               preventdefault:click
               onClick$={() => {
                 let rowFound = false;

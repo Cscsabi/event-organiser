@@ -14,7 +14,7 @@ export default component$(() => {
           <a
             href={generateRoutingLink(location.params.lang, paths.newLocation)}
             role="button"
-            class="block max-w-[15rem] max-h-[7rem] mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="block max-w-[15rem] max-h-[7rem] mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <div>
               <i class="fa-solid fa-map-location-dot"></i>{" "}

@@ -72,13 +72,13 @@ export const Contact = component$(() => {
             ).value.toLowerCase();
           }}
           type="search"
-          class="w-full p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-md rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          class="w-full p-4 pl-10 mb-6 rounded-xl border bg-gray-300 border-slate-400 text-gray-900 text-lg rounded-lg p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           placeholder={t("common.search@@Search..")}
         />
       </div>
       <div class="relative overflow-x-auto sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
-          <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+        <table class="w-full text-lg text-left text-gray-500 dark:text-gray-400 overflow-auto">
+          <thead class="text-lg bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
             <tr class="text-neutral-50 dark:bg-black">
               <th scope="col" class="px-6 py-4">
                 {t("common.name@@Name")}
@@ -116,7 +116,7 @@ export const Contact = component$(() => {
               store.currentCursor = oldCursor;
             }}
             type="button"
-            class="float-left mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="float-left mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <svg
               aria-hidden="true"
@@ -141,7 +141,7 @@ export const Contact = component$(() => {
               store.currentCursor = store.contacts.at(-1)?.id;
             }}
             type="button"
-            class="float-right mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="float-right mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <svg
               aria-hidden="true"
@@ -174,31 +174,31 @@ export const generateContactList = async (
           <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
             <td
               scope="row"
-              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.name}
             </td>
             <td
               scope="row"
-              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.description}
             </td>
             <td
               scope="row"
-              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.email}
             </td>
             <td
               scope="row"
-              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {row.phone}
             </td>
             <td
               scope="row"
-              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               <a href={row.link} target="_blank">
                 {row.link}
@@ -206,7 +206,7 @@ export const generateContactList = async (
             </td>
             <td
               scope="row"
-              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 text-lg font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               <a
                 href={

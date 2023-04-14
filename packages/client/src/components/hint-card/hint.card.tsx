@@ -17,15 +17,15 @@ export default component$((props: TipCardProps) => {
         }`}
       >
         <div class="overflow-auto">
-          <div class="block hover:shadow-md m-3 p-5 h-80 w-96 rounded-xl shadow-sm transition-all card-light dark:card-dark text-justify">
-            <h1 class="font-bold text-center text-xl mt-6 mb-6">
+          <div class="block hover:shadow-md m-3 p-5 h-[370px] w-[420px] rounded-xl shadow-sm transition-all card-light dark:card-dark text-justify">
+            <h1 class="font-bold text-center text-2xl mt-6 mb-6">
               {t("hint.title@@HINT")}
             </h1>
-            <h1 class="text-center mb-6">
+            <h1 class="text-center mb-6 text-xl">
               <i class="fa-solid fa-circle-exclamation fa-beat fa-xl"></i>
             </h1>
-            <h2 class="font-semibold text-base mb-6">{props.hint1}</h2>
-            <h2 class="font-semibold text-base">{props.hint2}</h2>
+            <h2 class="font-semibold text-lg mb-6">{props.hint1}</h2>
+            <h2 class="font-semibold text-lg">{props.hint2}</h2>
           </div>
         </div>
       </div>

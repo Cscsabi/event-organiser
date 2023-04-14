@@ -158,13 +158,13 @@ export default component$(() => {
         <div>
           <div>
             <label
-              class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-2xl font-medium text-gray-900 dark:text-white"
               for="name"
             >
               {t("event.name@@Name:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               type="text"
               onChange$={(event) =>
                 (store.event.name = (event.target as HTMLInputElement).value)
@@ -175,13 +175,13 @@ export default component$(() => {
           <div class="grid gap-6 md:grid-cols-3 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="budget"
               >
                 {t("event.budget@@Budget:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="number"
                 onChange$={(event) =>
                   (store.event.budget = +(event.target as HTMLInputElement)
@@ -192,13 +192,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="headcount"
               >
                 {t("event.headcount@@Headcount:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="number"
                 onChange$={(event) =>
                   (store.event.headcount = +(event.target as HTMLInputElement)
@@ -209,13 +209,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900F dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900F dark:text-white"
                 for="eventType"
               >
                 {t("event.eventType@@Event Type:")}
               </label>
               <select
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-slate-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-indigo-600"
                 id="eventType"
                 name="eventType"
                 onClick$={(event) =>
@@ -256,13 +256,13 @@ export default component$(() => {
           <div class="grid gap-6 md:grid-cols-2 w-full">
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="startDate"
               >
                 {t("common.startDate@@Start Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="date"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -281,13 +281,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="startTime"
               >
                 {t("common.startTime@@Start Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="time"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -307,13 +307,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="endDate"
               >
                 {t("common.endDate@@End Date:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="date"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -332,13 +332,13 @@ export default component$(() => {
             </div>
             <div>
               <label
-                class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+                class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
                 for="time"
               >
                 {t("common.endTime@@End Time:")}
               </label>
               <input
-                class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="time"
                 onChange$={(event) => {
                   const inputs = (event.target as HTMLInputElement).value.split(
@@ -381,7 +381,7 @@ export default component$(() => {
             <tr>
               <td>
                 <button
-                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   preventdefault:click
                   onClick$={async () => {
                     if (store.event) {
@@ -418,7 +418,7 @@ export default component$(() => {
                 <button
                   data-modal-target="deleteEventModal"
                   data-modal-toggle="deleteEventModal"
-                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   type="button"
                 >
                   {t("common.delete@@Delete")}
@@ -426,7 +426,7 @@ export default component$(() => {
               </td>
               <td>
                 <button
-                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   preventdefault:click
                   onClick$={() => {
                     sendDataToGuestsViaEmail(
@@ -448,7 +448,7 @@ export default component$(() => {
               </td>
               <td>
                 <button
-                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   onClick$={() =>
                     navigate(
                       generateRoutingLink(
@@ -465,7 +465,7 @@ export default component$(() => {
               <td>
                 <a
                   role="button"
-                  class="inline-block mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="inline-block mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   target="_blank"
                   href={
                     store.origin +
@@ -480,7 +480,7 @@ export default component$(() => {
                 <a
                   target="_blank"
                   role="button"
-                  class="inline-block mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="inline-block mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   href={generateGoogleMapsLink(
                     false,
                     store.location.city,
@@ -496,7 +496,7 @@ export default component$(() => {
                 <button
                   data-modal-target="guestlistModal"
                   data-modal-toggle="guestlistModal"
-                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   type="button"
                 >
                   {t("event.showGuestlist@@Show Guestlist")}
@@ -506,7 +506,7 @@ export default component$(() => {
                 <button
                   data-modal-target="feedbackModal"
                   data-modal-toggle="feedbackModal"
-                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                  class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   type="button"
                 >
                   {t("event.showFeedbacks@@Show Feedbacks")}
@@ -549,7 +549,7 @@ export default component$(() => {
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                   {result.feedbacks.length > 0 ? (
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
-                      <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                      <thead class="text-lg bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                         <tr class="text-neutral-50 dark:bg-black">
                           <th scope="col" class="px-6 py-4">
                             {store.feedbackTranslations.firstname}
@@ -580,7 +580,7 @@ export default component$(() => {
                       <tbody>
                         {result.feedbacks.map((feedback) => {
                           return (
-                            <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700">
+                            <tr class="bg-slate-50 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700 text-lg">
                               <td
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -668,7 +668,7 @@ export default component$(() => {
       </div>
       <div>
         <label
-          class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+          class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
           for="budgetPlanning"
         >
           {t("event.budgetPlanning@@Budget Planning:")}

@@ -47,13 +47,13 @@ export default component$(() => {
         >
           <div>
             <label
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
               for="firstname"
             >
               {t("common.firstname@@First name:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onInput$={(event) =>
                 (store.firstname = (event.target as HTMLInputElement).value)
               }
@@ -66,13 +66,13 @@ export default component$(() => {
           </div>
           <div>
             <label
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
               for="lastname"
             >
               {t("common.lastname@@Last name:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.lastname = (event.target as HTMLInputElement).value;
               }}
@@ -83,13 +83,13 @@ export default component$(() => {
           </div>
           <div class="mb-6">
             <label
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
               for="email"
             >
               {t("common.email@@Email:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.email = (event.target as HTMLInputElement).value;
               }}
@@ -104,13 +104,13 @@ export default component$(() => {
           </div>
           <div class="mb-6">
             <label
-              class="block mb-2 mt-6 text-lg font-medium text-gray-900 dark:text-white"
+              class="block mb-2 mt-6 text-2xl font-medium text-gray-900 dark:text-white"
               for="description"
             >
               {t("common.description@@Description:")}
             </label>
             <input
-              class="bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-300 border border-slate-400 text-gray-900 text-xl rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               onChange$={(event) => {
                 store.description = (event.target as HTMLInputElement).value;
               }}
@@ -122,7 +122,7 @@ export default component$(() => {
             ></input>
           </div>
           <button
-            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-xl w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
             type="submit"
           >
             {t("guestlist.addGuest@@Add Guest")}

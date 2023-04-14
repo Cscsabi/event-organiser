@@ -109,14 +109,14 @@ export default component$((props: ModalProps) => {
                         true
                       );
                     }}
-                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none text-lg focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg inline-flex items-center px-5 py-2.5 text-center mr-2"
                   >
                     {t("modal.yes@@Yes, I'm sure")}
                   </button>
                   <button
                     data-modal-hide={props.id}
                     type="button"
-                    class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+                    class="mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
                   >
                     {t("modal.no@@No, cancel")}
                   </button>

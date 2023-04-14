@@ -10,11 +10,11 @@ export default component$(() => {
   return (
     <Speak assets={["list", "guestlist"]}>
       <div class="grid mb-6 md:grid-cols-3 w-full">
-        <div class="ml-12 self-start">
+        <div class="ml-12 self-start text-xl">
           <a
             href={generateRoutingLink(location.params.lang, paths.newGuest)}
             role="button"
-            class="block max-w-[15rem] max-h-[7rem] mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
+            class="block max-w-[15rem] max-h-[7rem] mt-6 mr-2 text-white bg-sky-600 hover:bg-sky-700 font-medium rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             <div>
               <i class="fa-solid fa-person-circle-plus"></i>{" "}

@@ -103,8 +103,8 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
         class="relative overflow-x-auto shadow-md sm:rounded-lg"
         style={props.budget !== 0 ? "" : "display:none"}
       >
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-auto">
-          <thead class="text-md bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+        <table class="w-full text-lg text-left text-gray-500 dark:text-gray-400 overflow-auto">
+          <thead class="text-xl bg-sky-700 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
             <tr class="text-neutral-50 dark:bg-black text-center">
               <th scope="col" class="px-6 py-4">
                 {t("budgetPlanning.contactName@@Contact Name")}
@@ -130,13 +130,13 @@ export const BudgetPlanning = component$((props: BudgetPlanningProps) => {
               contactsResource,
               EMPTY_ROW
             )}
-            <tr class="text-base text-center bg-gray-300 text-gray-900 dark:text-white dark:bg-slate-900">
-              <td scope="row" class="px-6 py-3 font-bold text-base">
+            <tr class="text-xl text-center bg-gray-300 text-gray-900 dark:text-white dark:bg-slate-900">
+              <td scope="row" class="px-6 py-3 font-bold text-xl">
                 {t("budgetPlanning.summary@@Summary:")}
               </td>
               <td class="px-6 py-3">{store.amountAltogether}</td>
               <td class="px-6 py-3">{store.percentAltogether}</td>
-              <td scope="row" class="px-6 py-3 font-bold text-base">
+              <td scope="row" class="px-6 py-3 font-bold text-xl">
                 {t("budgetPlanning.remaining@@Remaining:")}
               </td>
               <td class="px-6 py-3">{props.budget - store.amountAltogether}</td>
@@ -166,7 +166,7 @@ export const generateBudgetPlanningBody = async (
                 onResolved={(result) => {
                   return (
                     <select
-                      class="text-center mx-6 my-4 bg-gray-300 border border-gray-500 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-slate-500 w-10/12 p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-blue-600"
+                      class="text-center mx-6 my-4 bg-gray-300 border border-gray-500 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-slate-500 w-10/12 p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-600 dark:focus:border-blue-600"
                       disabled={!props.active ? true : row.isPaid}
                       name="contact"
                       onChange$={async (event) => {
@@ -223,7 +223,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
-                class="text-center ml-2 bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="text-center ml-2 bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 disabled={!props.active ? true : row.isPaid}
                 type="number"
                 value={row.amount}
@@ -241,7 +241,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td class="w-fit bg-transparent px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               <input
-                class="text-center ml-2 bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="text-center ml-2 bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="text"
                 disabled
                 value={((row.amount ?? 0) / props.budget) * 100}
@@ -249,7 +249,7 @@ export const generateBudgetPlanningBody = async (
             </td>
             <td>
               <input
-                class="text-center ml-2 bg-gray-300 border border-slate-400 text-gray-900 text-md rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                class="text-center ml-2 bg-gray-300 border border-slate-400 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 type="text"
                 disabled={!props.active ? true : row.isPaid}
                 value={row.description}

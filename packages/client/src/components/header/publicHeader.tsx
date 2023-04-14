@@ -55,7 +55,7 @@ export const PublicHeader = component$(() => {
     <Speak assets={["header", "common"]}>
       <nav class="px-2 bg-slate-400 border-gray-400 dark:bg-black dark:border-gray-700">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
-          <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-slate-400 md:flex-row md:space-x-8 md:mt-0 md:text-md md:font-medium md:border-0 md:bg-slate-400 dark:bg-black md:dark:bg-black dark:border-gray-700">
+          <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-slate-400 md:flex-row md:space-x-8 md:mt-0 md:text-xl md:font-medium md:border-0 md:bg-slate-400 dark:bg-black md:dark:bg-black dark:border-gray-700">
             <li>
               <a
                 class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-semibold text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0 md:w-auto dark:font-semibold dark:text-white dark:hover:text-blue-500 dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
@@ -119,7 +119,7 @@ export const PublicHeader = component$(() => {
             </li>
           </ul>
           <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-slate-400 md:flex-row md:space-x-8 md:mt-0 md:text-md md:font-medium md:border-0 md:bg-slate-400 dark:bg-black md:dark:bg-black dark:border-gray-700">
+            <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-slate-400 md:flex-row md:space-x-8 md:mt-0 md:text-xl md:font-medium md:border-0 md:bg-slate-400 dark:bg-black md:dark:bg-black dark:border-gray-700">
               <li>
                 <a
                   role="button"
